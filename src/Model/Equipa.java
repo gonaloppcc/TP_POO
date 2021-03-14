@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.Arrays;
+
 public class Equipa {
     /*
     Cada equipa é constituída por um conjunto fixo de jogadores,
@@ -13,6 +15,7 @@ public class Equipa {
 
     public Equipa(String nome) {
         this.nome = nome;
+        this.numberOfPlayers = 0;
     }
 
     public Equipa(int numJogadores) {
@@ -58,13 +61,27 @@ public class Equipa {
     }
 
     public void addJogador(Jogador jogador) {
-        if (this.equipa.length == numberOfPlayers) {
-            Jogador[] arr = new Jogador[numberOfPlayers*2];
-            System.arraycopy(arr, 0, this.equipa, 0, numberOfPlayers*2);
+        if (numberOfPlayers == 0 || this.equipa.length == numberOfPlayers) {
+            Jogador[] arr = new Jogador[numberOfPlayers*2+1];
+            if (numberOfPlayers == 0) {
+            arr[0] = jogador;
+            this.setEquipa(arr);
+            }
+            else {
+                System.arraycopy(arr, 0, this.equipa, 0, numberOfPlayers*2+1);
+            }
             numberOfPlayers++;
         } else {
             this.equipa[numberOfPlayers++] = jogador; // Fazer clone aqui!!!!!!!!!!!!!!
         }
     }
+    public String toString() {
+        return "Equipa{" +
+                "nome=" + nome + this.getNome() +
+                ", Jogadores=" +  Arrays.toString(this.getEquipa()) +
+                ", número de jogadores" + numberOfPlayers +
+                '}';
+    }
+
 
 }

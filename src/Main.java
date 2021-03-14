@@ -4,7 +4,7 @@ public class Main { // A main fica aqui???
 
     public static void main(String[] args) {
         Status s = new Status();
-        s.Load("src/Files/teste");
+        s.Load("Files/teste"); //s.Load("teste");
         createGoalKeeper("Bayern");
 
     }

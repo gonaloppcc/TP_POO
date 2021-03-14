@@ -19,6 +19,10 @@ public class Jogador {
         this.historial = historial;
     }
 
+    public Jogador() {
+        new Jogador(0, 0, 0, 0, 0, 0, "");
+    }
+
     public Jogador(int resistencia, int destreza, int implusao, int jogo_de_cabeca, int remate, int capacidade_de_passe, String historial) {
         this.resistencia = resistencia;
         this.destreza = destreza;
@@ -30,6 +34,11 @@ public class Jogador {
         this.historial[0] = historial;
     }
 
+    public Jogador(String[] data) {
+        new Jogador(Integer.parseInt(data[1]), Integer.parseInt(data[2]),
+                Integer.parseInt(data[3]), Integer.parseInt(data[4]), Integer.parseInt(data[5]),
+                Integer.parseInt(data[6]), data[7]);
+    }
 
     @Override
     public String toString() {
@@ -102,13 +111,7 @@ public class Jogador {
     }
 
 
-
-
-
-
-
-
-    static public class guarda_redes extends Jogador{
+    static public class guarda_redes extends Jogador {
         protected int elasticidade;
 
         public guarda_redes(int resistencia, int destreza, int implusao, int jogo_de_cabeca, int remate, int capacidade_de_passe, String[] historial, int elasticidade) {
@@ -121,6 +124,11 @@ public class Jogador {
             this.elasticidade = elasticidade;
         }
 
+        public guarda_redes(String[] data) {
+            new guarda_redes(Integer.parseInt(data[1]), Integer.parseInt(data[2]),
+                    Integer.parseInt(data[3]), Integer.parseInt(data[4]), Integer.parseInt(data[5]),
+                    Integer.parseInt(data[6]), data[7], Integer.parseInt(data[8]));
+        }
 
         @Override
         public String toString() {
@@ -147,43 +155,68 @@ public class Jogador {
 
         public int habilidadeGlobal() {
 
-            return (int) (0.2*(resistencia) + 0.2*(destreza) + 0.15*implusao + 0.1*jogo_de_cabeca + 0.1*remate + 0.1*capacidade_de_passe + 0.15*elasticidade);
+            return (int) (0.2 * (resistencia) + 0.2 * (destreza) + 0.15 * implusao + 0.1 * jogo_de_cabeca + 0.1 * remate + 0.1 * capacidade_de_passe + 0.15 * elasticidade);
         }
 
     }
 
-    class defesa extends Jogador{
+    static public class defesa extends Jogador {
 
 
         public defesa(int resistencia, int destreza, int implusao, int jogo_de_cabeca, int remate, int capacidade_de_passe, String[] historial) {
             super(resistencia, destreza, implusao, jogo_de_cabeca, remate, capacidade_de_passe, historial);
         }
-    }
+        public defesa(int resistencia, int destreza, int implusao, int jogo_de_cabeca, int remate, int capacidade_de_passe, String historial) {
 
-    class medio extends Jogador{
-
-
-        public medio(int resistencia, int destreza, int implusao, int jogo_de_cabeca, int remate, int capacidade_de_passe, String[] historial) {
             super(resistencia, destreza, implusao, jogo_de_cabeca, remate, capacidade_de_passe, historial);
+        }
+        public defesa(String[] data) {
+                new defesa(Integer.parseInt(data[1]), Integer.parseInt(data[2]),
+                        Integer.parseInt(data[3]), Integer.parseInt(data[4]), Integer.parseInt(data[5]),
+                        Integer.parseInt(data[6]), data[7]);
+            }
+        }
+
+
+    static public class medio extends Jogador {
+
+
+        public medio(int resistencia, int destreza, int implusao, int jogo_de_cabeca, int remate, int capacidade_de_passe, String historial) {
+            super(resistencia, destreza, implusao, jogo_de_cabeca, remate, capacidade_de_passe, historial);
+        }
+        public medio(String[] data) {
+            new medio(Integer.parseInt(data[1]), Integer.parseInt(data[2]),
+                    Integer.parseInt(data[3]), Integer.parseInt(data[4]), Integer.parseInt(data[5]),
+                    Integer.parseInt(data[6]), data[7]);
         }
     }
 
-    class avancado extends Jogador{
-
+    static public class avancado extends Jogador {
+        public avancado(String[] data) {
+            super(data);
+        }
 
         public avancado(int resistencia, int destreza, int implusao, int jogo_de_cabeca, int remate, int capacidade_de_passe, String[] historial) {
             super(resistencia, destreza, implusao, jogo_de_cabeca, remate, capacidade_de_passe, historial);
         }
     }
 
-    class laterais extends Jogador{
-
+    static public class laterais extends Jogador {
+        public laterais (String[] data) {
+            new laterais (Integer.parseInt(data[1]), Integer.parseInt(data[2]),
+                    Integer.parseInt(data[3]), Integer.parseInt(data[4]), Integer.parseInt(data[5]),
+                    Integer.parseInt(data[6]), data[7]);
+        }
         public int habilidadeGlobal() {
             return (int) ((resistencia) * 0.2 + (destreza));
         }
-
-        public laterais(int resistencia, int destreza, int implusao, int jogo_de_cabeca, int remate, int capacidade_de_passe, String[] historial) {
+        public laterais(int resistencia, int destreza, int implusao, int jogo_de_cabeca, int remate, int capacidade_de_passe, String historial) {
             super(resistencia, destreza, implusao, jogo_de_cabeca, remate, capacidade_de_passe, historial);
         }
+
+        public laterais(int resistencia, int destreza, int implusao, int jogo_de_cabeca, int remate, int capacidade_de_passe, String [] historial) {
+            super(resistencia, destreza, implusao, jogo_de_cabeca, remate, capacidade_de_passe, historial);
+        }
+
     }
 }
