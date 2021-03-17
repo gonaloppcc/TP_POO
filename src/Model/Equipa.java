@@ -1,6 +1,8 @@
 package Model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Equipa {
     /*
@@ -8,7 +10,7 @@ public class Equipa {
     sendo que em cada jogo podem jogar N jogadores titulares e utilizarem-se M suplentes.
     **/
     private String nome;
-    private Jogador[] equipa;
+    private List<Jogador> equipa;
     private int numberOfPlayers;
 
     // Construtores
@@ -19,15 +21,15 @@ public class Equipa {
     }
 
     public Equipa(int numJogadores) {
-        this.equipa = new Jogador[numJogadores];
+        this.equipa = new ArrayList<>();
         this.numberOfPlayers = 0;
     }
 
-    public Equipa(Jogador[] equipa) {
+    public Equipa(List<Jogador> equipa) {
         this.equipa = equipa;
     }
 
-    public Equipa(String nome, Jogador[] equipa, int numberOfPlayers) {
+    public Equipa(String nome, List<Jogador> equipa, int numberOfPlayers) {
         this.nome = nome;
         this.equipa = equipa;
         this.numberOfPlayers = numberOfPlayers;
@@ -52,33 +54,21 @@ public class Equipa {
         this.numberOfPlayers = numberOfPlayers;
     }
 
-    public Jogador[] getEquipa() {
+    public List<Jogador> getEquipa() {
         return equipa;
     }
 
-    public void setEquipa(Jogador[] equipa) {
+    public void setEquipa(List<Jogador> equipa) {
         this.equipa = equipa;
     }
 
     public void addJogador(Jogador jogador) {
-        if (numberOfPlayers == 0 || this.equipa.length == numberOfPlayers) {
-            Jogador[] arr = new Jogador[numberOfPlayers*2+1];
-            if (numberOfPlayers == 0) {
-            arr[0] = jogador;
-            this.setEquipa(arr);
-            }
-            else {
-                System.arraycopy(arr, 0, this.equipa, 0, numberOfPlayers*2+1);
-            }
-            numberOfPlayers++;
-        } else {
-            this.equipa[numberOfPlayers++] = jogador; // Fazer clone aqui!!!!!!!!!!!!!!
-        }
+        this.equipa.add(jogador);
     }
     public String toString() {
         return "Equipa{" +
                 "nome=" + nome + this.getNome() +
-                ", Jogadores=" +  Arrays.toString(this.getEquipa()) +
+                ", Jogadores=" +  Arrays.asList(equipa) +
                 ", número de jogadores" + numberOfPlayers +
                 '}';
     }
