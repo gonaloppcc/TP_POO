@@ -1,5 +1,6 @@
 import Model.*;
 
+import java.util.Arrays;
 public class Main { // A main fica aqui???
 
     public static void main(String[] args) {

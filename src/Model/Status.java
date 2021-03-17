@@ -2,13 +2,15 @@ package Model;
 
 import java.io.File;  // Import the File class
 import java.io.FileNotFoundException;  // Import this class to handle errors
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner; // Import the Scanner class to read text files
 
 public class Status { // Mudar para save?
     private String GameName;
     private int PlayersPerTeam;
-    private Equipa[] Teams; // Informações sobre o save atual
+    private List<Equipa> Teams; // Informações sobre o save atual
 
 
 /*
@@ -19,11 +21,11 @@ public class Status { // Mudar para save?
 
     public Status() {
         this.GameName = "Futebol";
-        this.Teams = new Equipa[8];
+        this.Teams = new ArrayList<>();
         this.PlayersPerTeam = 11;
     }
 
-    public Status(String gameName, int playersPerTeam, Equipa[] teams) {
+    public Status(String gameName, int playersPerTeam, List<Equipa> teams) {
         GameName = gameName;
         PlayersPerTeam = playersPerTeam;
         Teams = teams;
@@ -46,11 +48,11 @@ public class Status { // Mudar para save?
         PlayersPerTeam = playersPerTeam;
     }
 
-    public Equipa[] getTeams() {
+    public List<Equipa> getTeams() {
         return Teams;
     }
 
-    public void setTeams(Equipa[] teams) {
+    public void setTeams(ArrayList<Equipa> teams) {
         Teams = teams;
     }
 
@@ -71,9 +73,10 @@ public class Status { // Mudar para save?
                 data = scan.nextLine();
                 //  System.out.println("Meu: "+data.equals("."));
                 if (data.equals(".")) {
+                    //Define nome equipa
                     data = scan.nextLine();
                     Equipa nova = new Equipa(data);
-                    this.Teams[equipa_atual] = nova;
+                    this.Teams.add(nova);
                     while (!data.equals(".") && scan.hasNextLine()) {
                         data = scan.nextLine();
                         String[] gAux = data.split(";");
@@ -81,21 +84,21 @@ public class Status { // Mudar para save?
                         switch(data.charAt(0)){
                             case 'G':
                                 Jogador.guarda_redes g = new Jogador.guarda_redes(gAux);
-                                this.Teams[equipa_atual].addJogador(g);
+                                this.Teams.get(equipa_atual).addJogador(g);
                                 //Jogador.guarda_redes g = new Jogador.guarda_redes(gAux);
                                 //this.Teams[equipa_atual].addJogador(new Jogador.guarda_redes(gAux));
                             break;
                             case 'A':
-                                this.Teams[equipa_atual].addJogador(new Jogador.avancado(gAux));
+                                this.Teams.get(equipa_atual).addJogador(new Jogador.avancado(gAux));
                                 break;
                             case 'L':
-                                this.Teams[equipa_atual].addJogador(new Jogador.laterais(gAux));
+                                this.Teams.get(equipa_atual).addJogador(new Jogador.laterais(gAux));
                                 break;
                             case 'M':
-                                this.Teams[equipa_atual].addJogador(new Jogador.medio(gAux));
+                                this.Teams.get(equipa_atual).addJogador(new Jogador.medio(gAux));
                                 break;
                             case 'D':
-                                this.Teams[equipa_atual].addJogador(new Jogador.defesa(gAux));
+                                this.Teams.get(equipa_atual).addJogador(new Jogador.defesa(gAux));
 
                                 break;
                             default:
@@ -146,10 +149,10 @@ public class Status { // Mudar para save?
                 '}';
     }
     //Função auxiliar da toString, para imprimir uma equipa de cada vez
-    private String toStringAux(Equipa [] teams){
+    private String toStringAux(List<Equipa> teams){
         String equipas = "";
         Equipa x;
-        for(int i = 0; teams[i] != null; i++) equipas.concat(teams[i].toString());
+        for(int i = 0; teams.get(i) != null; i++) equipas.concat(teams.get(i).toString());
         return equipas;
     }
 
