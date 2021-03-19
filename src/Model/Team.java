@@ -16,6 +16,12 @@ public class Team {
 
     // Construtores
 
+    public Team() {
+        this.name = "Default";
+        this.players = new ArrayList<>();
+        this.numberOfPlayers = 0;
+    }
+
     public Team(String name) {
         this.name = name;
         this.players = new ArrayList<>();
@@ -41,6 +47,8 @@ public class Team {
         this.players = players;
         this.numberOfPlayers = numberOfPlayers;
     }
+
+
 
     // Metodos
 

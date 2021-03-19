@@ -114,7 +114,7 @@ public class Status { // Mudar para save?
                     }
                 }
 
-*/  this.toString();
+*/  //this.toString();
             }
 
     } catch(
