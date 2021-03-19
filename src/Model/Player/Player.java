@@ -1,17 +1,22 @@
 package Model.Player;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class Player {
+    private String name;
+    private LocalDate birthDate;
     private int resistance, dexterity, impulsion, headGame, finish, passing;
     private List<String> historial;
 
     // Construtores
 
 
-    public Player(int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, List<String> historial) {
+    public Player(String name, LocalDate birthDate, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, List<String> historial) {
+        this.name = name;
+        this.birthDate = birthDate;
         this.resistance = resistance;
         this.dexterity = dexterity;
         this.impulsion = impulsion;
@@ -22,10 +27,13 @@ public class Player {
     }
 
     public Player() {
-        new Player(0, 0, 0, 0, 0, 0, "");
+        LocalDate birth = LocalDate.of(2000, 1, 1);
+        new Player("Default", birth, 0, 0, 0, 0, 0, 0, "");
     }
 
-    public Player(int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, String historial) {
+    public Player(String name, LocalDate birthDate, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, String historial) {
+        this.name = name;
+        this.birthDate = birthDate;
         this.resistance = resistance;
         this.dexterity = dexterity;
         this.impulsion = impulsion;
@@ -37,7 +45,8 @@ public class Player {
     }
 
     public Player(String[] data) {
-        new Player(Integer.parseInt(data[1]), Integer.parseInt(data[2]),
+        LocalDate birth = LocalDate.of(2000, 1, 1);
+        new Player("Default" , birth, Integer.parseInt(data[1]), Integer.parseInt(data[2]),
                 Integer.parseInt(data[3]), Integer.parseInt(data[4]), Integer.parseInt(data[5]),
                 Integer.parseInt(data[6]), data[7]);
     }
@@ -55,6 +64,21 @@ public class Player {
                 '}';
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
 
     public int getResistance() {
         return resistance;
