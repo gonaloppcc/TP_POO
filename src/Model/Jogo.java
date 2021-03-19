@@ -31,4 +31,7 @@ public class Match {
     this.visitada= tt2;
      this.time = 0;
     }
+    
+    
+}
 
