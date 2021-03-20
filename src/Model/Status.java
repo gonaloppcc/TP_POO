@@ -89,7 +89,7 @@ public class Status { // Mudar para save?
                                 this.Teams.get(equipa_atual).addJogador(g);
                             }
                             case 'A' -> this.Teams.get(equipa_atual).addJogador(new Striker(gAux));
-                            case 'L' -> this.Teams.get(equipa_atual).addJogador(new Lateral(gAux));
+                            case 'L' -> this.Teams.get(equipa_atual).addJogador(new Back(gAux));
                             case 'M' -> this.Teams.get(equipa_atual).addJogador(new Midfield(gAux));
                             case 'D' -> this.Teams.get(equipa_atual).addJogador(new Defender(gAux));
                             default -> System.out.println("Quem?");

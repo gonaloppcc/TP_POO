@@ -11,8 +11,8 @@ public class Goalkeeper extends Player {
         this.elasticity = elasticity;
     }
 
-    public Goalkeeper(int resistance, int destreza, int implusao, int jogo_de_cabeca, int remate, int capacidade_de_passe, String historial, int elasticity) {
-        super(resistance, destreza, implusao, jogo_de_cabeca, remate, capacidade_de_passe, historial);
+    public Goalkeeper(int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, String historial, int elasticity) {
+        super(resistance, dexterity, impulsion, headGame, finish, passing, historial);
         this.elasticity = elasticity;
     }
 
@@ -26,11 +26,11 @@ public class Goalkeeper extends Player {
     public String toString() {
         return "Goalkeeper{" +
                 "resistance=" + super.getResistance() +
-                ", destreza=" + super.getDexterity() +
-                ", implusao=" + super.getImpulsion() +
-                ", jogo_de_cabeca=" + super.getHeadGame() +
-                ", remate=" + super.getFinish() +
-                ", capacidade_de_passe=" + super.getPassing() +
+                ", dexterity=" + super.getDexterity() +
+                ", impulsion=" + super.getImpulsion() +
+                ", headGame=" + super.getHeadGame() +
+                ", finish=" + super.getFinish() +
+                ", passing=" + super.getPassing() +
                 ", historial=" + super.getHistorial() +
                 ", elasticidade=" + this.elasticity +
                 '}';

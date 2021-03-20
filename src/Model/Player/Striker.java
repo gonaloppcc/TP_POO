@@ -8,7 +8,7 @@ public class Striker extends Player {
         super(data);
     }
 
-    public Striker(int resistance, int destreza, int implusao, int jogo_de_cabeca, int remate, int capacidade_de_passe, ArrayList<String> historial) {
-        super(resistance, destreza, implusao, jogo_de_cabeca, remate, capacidade_de_passe, historial);
+    public Striker(int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, ArrayList<String> historial) {
+        super(resistance, dexterity, impulsion, headGame, finish, passing, historial);
     }
 }

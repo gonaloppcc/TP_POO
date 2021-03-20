@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Player {
+abstract public class Player {
     private String name;
     private LocalDate birthDate;
     private int resistance, dexterity, impulsion, headGame, finish, passing;
@@ -26,10 +26,6 @@ public class Player {
         this.historial = historial;
     }
 
-    public Player() {
-        LocalDate birth = LocalDate.of(2000, 1, 1);
-        new Player("Default", birth, 0, 0, 0, 0, 0, 0, "");
-    }
 
     public Player(String name, LocalDate birthDate, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, String historial) {
         this.name = name;
@@ -44,22 +40,25 @@ public class Player {
         this.historial.add(historial);
     }
 
+    /*
     public Player(String[] data) {
         LocalDate birth = LocalDate.of(2000, 1, 1);
-        new Player("Default" , birth, Integer.parseInt(data[1]), Integer.parseInt(data[2]),
+        Player("Default" , birth, Integer.parseInt(data[1]), Integer.parseInt(data[2]),
                 Integer.parseInt(data[3]), Integer.parseInt(data[4]), Integer.parseInt(data[5]),
                 Integer.parseInt(data[6]), data[7]);
     }
+
+    */
 
     @Override
     public String toString() {
         return "Player{" +
                 "resistance=" + resistance +
-                ", destreza=" + dexterity +
-                ", implusao=" + impulsion +
-                ", jogo_de_cabeca=" + headGame +
-                ", remate=" + finish +
-                ", capacidade_de_passe=" + passing +
+                ", dexterity=" + dexterity +
+                ", impulsion=" + impulsion +
+                ", headGame=" + headGame +
+                ", finish=" + finish +
+                ", passing=" + passing +
                 ", historial=" + historial +
                 '}';
     }
