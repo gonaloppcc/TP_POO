@@ -133,8 +133,7 @@ abstract public class Player {
         return this.historial;
     }
 
-    public void setHistorial(List<String> historial) {this.historial = historial;
-    }
+    public void setHistorial(List<String> historial) {this.historial = historial;}
 
     public void addHistorial(String team) {
         this.historial.add(team);

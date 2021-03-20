@@ -86,20 +86,68 @@ public class Match {
         //Para gerar números aleatórios
         //int randomNum = rand.nextInt((max - min) + 1) + min;
         homeTeam *= rd.nextInt((6 - 2) + 1) + 2;
-    }
+        //3- porque está no outro lado
+        int visitorTeam = valuePlayers(this.home, 3-pos_ball);
+        //Para gerar números aleatórios
+        //int randomNum = rand.nextInt((max - min) + 1) + min;
+        visitorTeam *= rd.nextInt((6 - 2) + 1) + 2;
+        System.out.println("Confronto");
+        if (homeTeam == visitorTeam) return 0;
+        if (homeTeam > visitorTeam) return 1;
+        else return -1;
 
+    }
+    private boolean rematePossivel(int pos_ball){
+        return (pos_ball <= 0 || pos_ball >= 4);
+    }
     public void Game (){
+        int increment_time = 10;
         if (this.endGame())
         {
             System.out.println("Fim de jogo");
         }
         else {
             int where_ball = getPos_ball();
-            int temp_where_ball = confrontation(where_ball):
+            if (rematePossivel(where_ball)) remate(where_ball);
+            int temp_where_ball = confrontation(where_ball);
+            setPos_ball(where_ball + temp_where_ball);
+            setTime(getTime()+increment_time);
+
         }
     }
+    //Falta definir
+    private void remate (int pos_ball){
+        int res = confrontation(pos_ball);
+        if (res == -1) golo(true);
+        else golo(false);
+
+        return;
+    }
+    private void golo(boolean team_score){
+        if (team_score) setScoreAway(getScoreAway()+1);
+        else setScoreHome(getScoreHome()+1);
+        setPos_ball(2);
+    }
+
 
     //Getters e Setters
+
+    public int getScoreHome() {
+        return scoreHome;
+    }
+
+    public void setScoreHome(int scoreHome) {
+        this.scoreHome = scoreHome;
+    }
+
+    public int getScoreAway() {
+        return scoreAway;
+    }
+
+    public void setScoreAway(int scoreAway) {
+        this.scoreAway = scoreAway;
+    }
+
     public ArrayList<Player> getHome() {
         return home;
     }
