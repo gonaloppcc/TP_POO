@@ -40,15 +40,24 @@ abstract public class Player {
         this.historial.add(historial);
     }
 
-    /*
+    public abstract int globalSkill();
+
+
     public Player(String[] data) {
         LocalDate birth = LocalDate.of(2000, 1, 1);
-        Player("Default" , birth, Integer.parseInt(data[1]), Integer.parseInt(data[2]),
-                Integer.parseInt(data[3]), Integer.parseInt(data[4]), Integer.parseInt(data[5]),
-                Integer.parseInt(data[6]), data[7]);
+        this.name = "Default";
+        this.birthDate = birth;
+        this.resistance = Integer.parseInt(data[1]);
+        this.dexterity = Integer.parseInt(data[2]);
+        this.impulsion = Integer.parseInt(data[3]);
+        this.headGame = Integer.parseInt(data[4]);
+        this.finish = Integer.parseInt(data[5]);
+        this.passing = Integer.parseInt(data[6]);
+        this.historial = new ArrayList<>();
+        this.historial.add(data[7]);
     }
 
-    */
+
 
     @Override
     public String toString() {

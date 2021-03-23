@@ -5,13 +5,14 @@ import Model.Player.*;
 import java.io.File;  // Import the File class
 import java.io.FileNotFoundException;  // Import this class to handle errors
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner; // Import the Scanner class to read text files
 
 public class Status { // Mudar para save?
     private String GameName;
     private int PlayersPerTeam;
-    private ArrayList<Team> Teams; // Informações sobre o save atual
-    //private Jogos;
+    private List<Team> Teams; // Informações sobre o save atual
+    //  private Jogos;
 
 /*
     This class is use to contenting all data regarding the game
@@ -25,7 +26,7 @@ public class Status { // Mudar para save?
         this.PlayersPerTeam = 11;
     }
 
-    public Status(String gameName, int playersPerTeam, ArrayList<Team> teams) {
+    public Status(String gameName, int playersPerTeam, List<Team> teams) {
         GameName = gameName;
         PlayersPerTeam = playersPerTeam;
         Teams = teams;
@@ -48,7 +49,7 @@ public class Status { // Mudar para save?
         PlayersPerTeam = playersPerTeam;
     }
 
-    public ArrayList<Team> getTeams() {
+    public List<Team> getTeams() {
         return Teams;
     }
 
@@ -81,17 +82,17 @@ public class Status { // Mudar para save?
                         data = scan.nextLine();
                         String[] gAux = data.split(";");
 
-                        //Player.Goalkeeper g = new Player.Goalkeeper(gAux);
-                        //this.Teams[equipa_atual].addJogador(new Player.Goalkeeper(gAux));
+                        //Player.GoalKeeper g = new Player.GoalKeeper(gAux);
+                        //this.Teams[equipa_atual].addJogador(new Player.GoalKeeper(gAux));
                         switch (data.charAt(0)) {
                             case 'G' -> {
-                                Goalkeeper g = new Goalkeeper(gAux);
-                                this.Teams.get(equipa_atual).addJogador(g);
+                                GoalKeeper g = new GoalKeeper(gAux);
+                                this.Teams.get(equipa_atual).addPlayer(g);
                             }
-                            case 'A' -> this.Teams.get(equipa_atual).addJogador(new Striker(gAux));
-                            case 'L' -> this.Teams.get(equipa_atual).addJogador(new Back(gAux));
-                            case 'M' -> this.Teams.get(equipa_atual).addJogador(new Midfield(gAux));
-                            case 'D' -> this.Teams.get(equipa_atual).addJogador(new Defender(gAux));
+                            case 'A' -> this.Teams.get(equipa_atual).addPlayer(new Striker(gAux));
+                            case 'L' -> this.Teams.get(equipa_atual).addPlayer(new Back(gAux));
+                            case 'M' -> this.Teams.get(equipa_atual).addPlayer(new Midfield(gAux));
+                            case 'D' -> this.Teams.get(equipa_atual).addPlayer(new Defender(gAux));
                             default -> System.out.println("Quem?");
                         }
 
@@ -107,7 +108,7 @@ public class Status { // Mudar para save?
                 } else {
                     if (data.charAt(0) == 'G') {
                         ArrayList<String> gAux = data.split(";");
-                        Player.Goalkeeper g = new Player.Goalkeeper(Integer.parseInt(gAux[0]), Integer.parseInt(gAux[1]),
+                        Player.GoalKeeper g = new Player.GoalKeeper(Integer.parseInt(gAux[0]), Integer.parseInt(gAux[1]),
                                 Integer.parseInt(gAux[2]), Integer.parseInt(gAux[3]), Integer.parseInt(gAux[4]),
                                 Integer.parseInt(gAux[5]), gAux[7], Integer.parseInt(gAux[8]));
                         this.Teams[0].addJogador(g);
@@ -135,15 +136,8 @@ public class Status { // Mudar para save?
         return "Status{" +
                 "GameName='" + GameName + '\'' +
                 ", PlayersPerTeam=" + PlayersPerTeam +
-                ", Teams=" + toStringAux(this.Teams) +
+                ", Teams=" + Teams +
                 '}';
-    }
-    //Função auxiliar da toString, para imprimir uma equipa de cada vez
-    private String toStringAux(ArrayList<Team> teams){
-        String equipas = "";
-        Team x;
-        for(int i = 0; teams.get(i) != null; i++) equipas.concat(teams.get(i).toString());
-        return equipas;
     }
 
 }

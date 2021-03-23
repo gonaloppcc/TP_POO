@@ -77,7 +77,7 @@ public class Team {
         this.players = players;
     }
 
-    public void addJogador(Player player) {
+    public void addPlayer(Player player) {
         this.players.add(player);
     }
 

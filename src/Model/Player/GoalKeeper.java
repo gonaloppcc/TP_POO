@@ -1,30 +1,31 @@
 package Model.Player;
 
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
-public class Goalkeeper extends Player {
+public class GoalKeeper extends Player {
     private int elasticity;
 
-    public Goalkeeper(int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, ArrayList<String> historial, int elasticity) {
-        super(resistance, dexterity, impulsion, headGame, finish, passing, historial);
+    public GoalKeeper(String name, LocalDate birthDate, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, List<String> historial, int elasticity) {
+        super(name, birthDate, resistance, dexterity, impulsion, headGame, finish, passing, historial);
         this.elasticity = elasticity;
     }
 
-    public Goalkeeper(int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, String historial, int elasticity) {
-        super(resistance, dexterity, impulsion, headGame, finish, passing, historial);
+    public GoalKeeper(String name, LocalDate birthDate, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, String historial, int elasticity) {
+        super(name, birthDate, resistance, dexterity, impulsion, headGame, finish, passing, historial);
         this.elasticity = elasticity;
     }
 
-    public Goalkeeper(String[] data) {
-        new Goalkeeper(Integer.parseInt(data[1]), Integer.parseInt(data[2]),
-                Integer.parseInt(data[3]), Integer.parseInt(data[4]), Integer.parseInt(data[5]),
-                Integer.parseInt(data[6]), data[7], Integer.parseInt(data[8]));
+
+    public GoalKeeper(String[] data) {
+        super(data);
     }
 
     @Override
     public String toString() {
-        return "Goalkeeper{" +
+        return "GoalKeeper{" +
                 "resistance=" + super.getResistance() +
                 ", dexterity=" + super.getDexterity() +
                 ", impulsion=" + super.getImpulsion() +
