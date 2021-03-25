@@ -73,6 +73,10 @@ public class Team {
         return players;
     }
 
+    public Player getPlayer(int pos) {
+        return players.get(pos);
+    }
+
     public void setPlayers(ArrayList<Player> players) {
         this.players = players;
     }

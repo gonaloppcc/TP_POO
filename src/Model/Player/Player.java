@@ -72,6 +72,11 @@ abstract public class Player {
                 '}';
     }
 
+    public String toStringAlter() {
+        return "Player " + name + ": "
+                        + this.globalSkill();
+    }
+
     public String getName() {
         return name;
     }
