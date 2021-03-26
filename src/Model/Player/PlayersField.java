@@ -1,13 +1,11 @@
 package Model.Player;
 
-import Model.Team;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class PlayersField {
 
-    private List<Player> seated;
+    private List<Player> benched;
 
     private List<Player> defender;
     private List<Player> midfield;
@@ -18,7 +16,7 @@ public class PlayersField {
     //Aqui há encapsulamento, porque acedo diretamente ao seated e assim
     public void replace(Player in, Player out, int posOut) {
         //Está no banco sai
-        seated.remove(in);
+        benched.remove(in);
         //Do campo vai para o banco
         setSeated(out);
         //Tirar do campo
@@ -109,14 +107,14 @@ public class PlayersField {
         this.goalKeeper = goalKeeper;
     }
 
-    public List<Player> getSeated() {
-        return seated;
+    public List<Player> getBenched() {
+        return benched;
     }
 
-    public void setSeated(List<Player> seated) {
-        this.seated = seated;
+    public void setBenched(List<Player> benched) {
+        this.benched = benched;
     }
-    public void setSeated(Player seated) {
-        this.seated.add(seated);
+    public void setBenched(Player seated) {
+        this.benched.add(seated);
     }
 }

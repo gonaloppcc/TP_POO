@@ -74,10 +74,10 @@ public class Match {
         if (homeTeam.getNumberOfPlayers()>total_players){
             int [] playersChoosen =returnPosPlayers(homeTeam.getPlayers(), homeTeam.getName(), total_players);
             //vai buscar os jogadores que estão naquelas posições
-            for (int i : playersChoosen) field.setSeated(homeTeam.getPlayer(i));
+            for (int i : playersChoosen) field.setBenched(homeTeam.getPlayer(i));
         }
         //Vai a equipa toda para o seated
-        else field.setSeated(homeTeam.getPlayers());
+        else field.setBenched(homeTeam.getPlayers());
         //Separar por zonas as escolhas de equipas
         boolean printAll = stdout.printAllQuestion();
         int []strategy = strategy(3 );
@@ -152,8 +152,8 @@ public class Match {
     private void changePlayers(PlayersField team){
         ChosingPlayers stdout = new ChosingPlayers();
         //Imprime e recebe que posição do jogador recebe
-        int [] posPlayerIn = returnPosPlayers(team.getSeated(), "Wich player gets in?", 1);
-        Player in = team.getSeated().get(posPlayerIn[0]);
+        int [] posPlayerIn = returnPosPlayers(team.getBenched(), "Wich player gets in?", 1);
+        Player in = team.getBenched().get(posPlayerIn[0]);
         //saber onde o jogador que vai sair está
         int pos_absoluteOut = stdout.whereIsPlayer("Que vai sair");
         //Saber dos vários jogadores que está aí, qual é que sai, a posição dele
