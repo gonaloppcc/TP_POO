@@ -62,9 +62,12 @@ public class Match {
     }
 
     //Quando o jogo começa do início, só recebe as duas equipas
+    //Inicializa o tempo a 0, a bola a meio campo e sorteia a posse de bola de forma aleatória
+    //É o jogador (humano) que inicializa os jogadores nas suas posições. Para escolher os jogadores, pode ver todos os jogadores ou apenas os adequados para essa posição.
     public Match(Team homeTeam, Team awayTeam) {
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
+        //Número total de jogadores em campo (jogadores substitutos mais jogadores no campo)
         int total_players = 23;
         ChosingPlayers stdout = new ChosingPlayers();
         PlayersField field = new PlayersField();
@@ -131,7 +134,14 @@ public class Match {
         //Inicializa as coisas normais, tipo tempo e posição da bola
         this.standard();
     }
+    /*
+       returnPosPlayers
+Função muito utilizada que liga os módulos View e Controller. O objetivo desta função é saber que jogadores o utilizador escolhe a partir dum conjunto de jogadores.
+Recebe a lista de jogadores que serão impressos, uma descrição (String) do que será escrito para o utilizador e quantos jogadores serão escolhidos.
+Retorna um array com as posições dos jogadores escolhidos a partir da lista.
+**/
 
+    
     //Lista de Jogadores + Descrição para o output + número de valores lidos
     // Retorna o que o jogador escolhe, serão inteiros
     private int [] returnPosPlayers(List<Player> list, String name, int total_players){
@@ -141,7 +151,11 @@ public class Match {
         stdout.choosePlayers(playersChoosen, total_players);
         return playersChoosen;
    }
-
+    /*
+    strategy
+    Utilizando o módulo View, descobre que estratégia o utilizador vai utilizar no jogo.
+    Esta estratégia consiste na distribuição dos jogadores pelo campo.
+**/ 
     private int [] strategy(int total_players){
         ChosingPlayers stdout = new ChosingPlayers();
         stdout.ChooseStrategy(3);
@@ -149,6 +163,16 @@ public class Match {
         stdout.stategyChoose(playersChoosen);
         return playersChoosen;
     }
+    
+    
+    /*
+    Funções sobre a lógica do programa
+    **/
+    
+    /*
+    changePlayers
+    Função que utiliza o módulo View para saber que jogadores serão substítuidos, isto é, uma troca entre um jogador que está no campo por um que está no banco. 
+**/ 
     private void changePlayers(PlayersField team){
         ChosingPlayers stdout = new ChosingPlayers();
         //Imprime e recebe que posição do jogador recebe
@@ -163,14 +187,15 @@ public class Match {
         Player out = team.getPlayersPosition(posPlayerOut[0]).get(posPlayerIn[0]);
         team.replace(in, out, pos_absoluteOut);
     }
-/*
-    Funções sobre a lógica do programa
-    O jogo pode ser inicializado a partir de um jogo já existente ou a partir do início, com apenas 2 equipas
+    
+    /*
+    Função que verifica se o jogo chegou ao fim por tempo.     
     **/
 
     private boolean endGame(){
         return (this.getTime() >= 90);
     }
+    
     //Função inventada para isto dar
     private int skills (Player jogador){
         return 1;
@@ -182,6 +207,13 @@ public class Match {
         total += equipa.stream().mapToInt(n -> skills(n)).sum();
         return total;
     }
+    
+/*
+    confrontation
+    Função que compara as capacidades de duas equipas numa posição do campo. 
+    A vitória neste confronto resulta em duas possibilidades: recuperar bola ou avançar com a bola.
+    Se já estiver ao pé da baliza adveresária, pode rematar.
+    **/
     private int confrontation(int pos_ball){
         Random rd = new Random();
         int homeTeam = valuePlayers(homeField.getPlayersPosition(pos_ball));
@@ -199,9 +231,18 @@ public class Match {
         else return -1;
 
     }
+    
+/*
+    Função que verifica se é possível rematar por causa da posição da bola.    
+    **/
     private boolean rematePossivel(int pos_ball){
         return (pos_ball <= 0 || pos_ball >= 4);
     }
+    
+/*
+    Função que interliga as várias funções desta classe. 
+    
+    **/
     public void Game (){
         int increment_time = 10;
         if (this.endGame())
@@ -274,6 +315,10 @@ public class Match {
     public void setPos_ball(int pos_ball) {
         this.pos_ball = pos_ball;
     }
+    
+/*
+    Um setter que inicializa as váriáveis da classe no início do jogo.
+    **/
     private void standard(){
         setTime(0);
         setScoreAway(0);
