@@ -62,13 +62,13 @@ abstract public class Player {
     @Override
     public String toString() {
         return "Player{" +
-                "resistance=" + resistance +
-                ", dexterity=" + dexterity +
-                ", impulsion=" + impulsion +
-                ", headGame=" + headGame +
-                ", finish=" + finish +
-                ", passing=" + passing +
-                ", historial=" + historial +
+                "res " + resistance +
+                " dex " + dexterity +
+                " imp " + impulsion +
+                " head " + headGame +
+                " fin= " + finish +
+            " pass " + passing +
+                //", historial=" + historial +
                 '}';
     }
 
@@ -152,4 +152,6 @@ abstract public class Player {
     public void addHistorial(String team) {
         this.historial.add(team);
     }
+
+    abstract public Player clone();
 }

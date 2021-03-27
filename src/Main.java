@@ -1,19 +1,25 @@
+import Controller.StatusController;
 import Model.*;
 import Model.DefaultGames.Football;
 import Model.Player.GoalKeeper;
+import View.StatusView;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 
-public class Main { // A main fica aqui???
+public class Main {
 
     public static void main(String[] args) {
         Football footballGame = new Football();
-        Status s = new Status( "Football", 11, footballGame.generateTeams());
+        Status model = new Status("Football", 11, footballGame.generateTeams());
+        StatusView view = new StatusView();
+        StatusController controller = new StatusController(model, view);
 
-        // s.Load("src/Files/teste"); //s.Load("teste");
-        System.out.println(s);
+        System.out.println(controller.getTeamsName());
+
+        controller.updateView();
+
     }
 
     private static void createGoalKeeper() {

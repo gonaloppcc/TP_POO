@@ -13,8 +13,33 @@ public class Midfield extends Player {
         super(name, birthDate, resistance, dexterity, impulsion, headGame, finish, passing, historial);
     }
 
-    public Midfield(String[]data) {
+    public Midfield(Midfield m) {
+        super(m.getName(), m.getBirthDate(), m.getResistance(), m.getDexterity(), m.getImpulsion(), m.getHeadGame(), m.getFinish(), m.getPassing(), m.getHistorial());
+    }
+
+    public Midfield(String[] data) {
         super(data);
+    }
+
+    public Midfield(Defender m) {
+        super(m.getName(), m.getBirthDate(), m.getResistance(), m.getDexterity(), m.getImpulsion(), m.getHeadGame(), m.getFinish(), m.getPassing(), m.getHistorial());
+    }
+
+    @Override
+    public String toString() {
+        return "M" +
+                " res " + super.getResistance() +
+                " dex " + super.getDexterity() +
+                " imp " + super.getImpulsion() +
+                " head " + super.getHeadGame() +
+                " fin " + super.getFinish() +
+                " pass " + super.getPassing();
+        //", historial=" + super.getHistorial() +
+    }
+
+    @Override
+    public Player clone() {
+        return new Midfield(this);
     }
 
     @Override

@@ -9,12 +9,34 @@ public class Defender extends Player {
     public Defender(String name, LocalDate birthDate, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, ArrayList<String> historial) {
         super(name, birthDate, resistance, dexterity, impulsion, headGame, finish, passing, historial);
     }
-    public Defender(String name, LocalDate birthDate, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, String historial) {
 
+    public Defender(String name, LocalDate birthDate, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, String historial) {
         super(name, birthDate, resistance, dexterity, impulsion, headGame, finish, passing, historial);
     }
+
+    public Defender(Defender d) {
+        super(d.getName(), d.getBirthDate(), d.getResistance(), d.getDexterity(), d.getImpulsion(), d.getHeadGame(), d.getFinish(), d.getPassing(), d.getHistorial());
+    }
+
     public Defender(String[] data) {
         super(data);
+    }
+
+    @Override
+    public String toString() {
+        return "D" +
+                " res " + super.getResistance() +
+                " dex " + super.getDexterity() +
+                " imp " + super.getImpulsion() +
+                " head " + super.getHeadGame() +
+                " fin " + super.getFinish() +
+                " pass " + super.getPassing();
+        //", historial=" + super.getHistorial() +
+    }
+
+    @Override
+    public Player clone() {
+        return new Defender(this);
     }
 
     @Override

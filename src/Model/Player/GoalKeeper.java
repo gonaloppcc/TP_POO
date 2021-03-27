@@ -2,7 +2,6 @@ package Model.Player;
 
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GoalKeeper extends Player {
@@ -18,6 +17,10 @@ public class GoalKeeper extends Player {
         this.elasticity = elasticity;
     }
 
+    public GoalKeeper(GoalKeeper g) {
+        super(g.getName(), g.getBirthDate(), g.getResistance(), g.getDexterity(), g.getImpulsion(), g.getHeadGame(), g.getFinish(), g.getPassing(), g.getHistorial());
+        this.elasticity = g.getElasticity();
+    }
 
     public GoalKeeper(String[] data) {
         super(data);
@@ -25,16 +28,20 @@ public class GoalKeeper extends Player {
 
     @Override
     public String toString() {
-        return "GoalKeeper{" +
-                "resistance=" + super.getResistance() +
-                ", dexterity=" + super.getDexterity() +
-                ", impulsion=" + super.getImpulsion() +
-                ", headGame=" + super.getHeadGame() +
-                ", finish=" + super.getFinish() +
-                ", passing=" + super.getPassing() +
-                ", historial=" + super.getHistorial() +
-                ", elasticidade=" + this.elasticity +
-                '}';
+        return "G" +
+                " res " + super.getResistance() +
+                " dex " + super.getDexterity() +
+                " imp " + super.getImpulsion() +
+                " head " + super.getHeadGame() +
+                " fin " + super.getFinish() +
+                " pass " + super.getPassing() +
+                //", historial=" + super.getHistorial() +
+                " elas " + this.elasticity;
+    }
+
+    @Override
+    public Player clone() {
+        return new GoalKeeper(this);
     }
 
     public int getElasticity() {
