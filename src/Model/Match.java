@@ -3,11 +3,9 @@ package Model;
 import Model.Player.*;
 import View.ChosingPlayers;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import javax.sound.midi.MidiDevice;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class Match {
@@ -39,6 +37,7 @@ public class Match {
     private PlayersField homeField;
     private PlayersField awayField;
 
+    enum Zones {GOAL, DEFENSE, MIDDLE, OPPOSITE}
 
     /*
     Construtores
@@ -65,75 +64,145 @@ public class Match {
     //Inicializa o tempo a 0, a bola a meio campo e sorteia a posse de bola de forma aleatória
     //É o jogador (humano) que inicializa os jogadores nas suas posições. Para escolher os jogadores, pode ver todos os jogadores ou apenas os adequados para essa posição.
     public Match(Team homeTeam, Team awayTeam) {
-        this.homeTeam = homeTeam;
-        this.awayTeam = awayTeam;
+        setHomeTeam(homeTeam);
+        setAwayTeam(awayTeam);
         //Número total de jogadores em campo (jogadores substitutos mais jogadores no campo)
         int total_players = 23;
         ChosingPlayers stdout = new ChosingPlayers();
-        PlayersField field = new PlayersField();
+        PlayersField fieldHome = new PlayersField();
         //Para já só na Home
         //Quando nem todos os jogadores da equipa jogam
         //É preciso escolher quais é que jogam e quais é que não
         if (homeTeam.getNumberOfPlayers()>total_players){
-            int [] playersChoosen =returnPosPlayers(homeTeam.getPlayers(), homeTeam.getName(), total_players);
+            int [] playersChoosen =returnPosPlayers(homeTeam.getPlayers(),"Choose the players: "+ homeTeam.getName(), total_players);
             //vai buscar os jogadores que estão naquelas posições
-            for (int i : playersChoosen) field.setBenched(homeTeam.getPlayer(i));
+            for (int i : playersChoosen) fieldHome.setBenched(homeTeam.getPlayer(i));
         }
         //Vai a equipa toda para o seated
-        else field.setBenched(homeTeam.getPlayers());
+        else fieldHome.setBenched(homeTeam.getPlayers());
         //Separar por zonas as escolhas de equipas
         boolean printAll = stdout.printAllQuestion();
         int []strategy = strategy(3 );
 
         if (printAll) {
             //Imprime todos os jogadores, e retorna um array com a posição do jogador que será guarda-redes
-            int [] goalKeepersPos = returnPosPlayers(homeTeam.getPlayers(), "GoalKeepers", 1 );
+            int [] goalKeepersPos = returnPosPlayers(fieldHome.getBenched(), "GoalKeepers", 1 );
             //vai buscar os jogadores que estão naquelas posições
-            for (int i : goalKeepersPos) field.setGoalKeeper(homeTeam.getPlayer(i));
+            for (int i : goalKeepersPos) fieldHome.setGoalKeeper(fieldHome.getBenched(i));
             //Defesas
             //Imprime todos os jogadores, e retorna um array com a posição do jogador que será guarda-redes
-            int [] backsPos = returnPosPlayers(homeTeam.getPlayers(), "Back", strategy[0] );
+            int [] backsPos = returnPosPlayers(fieldHome.getBenched(), "Back", strategy[0] );
             //vai buscar os jogadores que estão naquelas posições
-            for (int i : backsPos) field.setDefender(homeTeam.getPlayer(i));
+            for (int i : backsPos) fieldHome.setDefender(fieldHome.getBenched(i));
             //Médios
-            int [] midPos = returnPosPlayers(homeTeam.getPlayers(), "Midfields", strategy[1] );
+            int [] midPos = returnPosPlayers(fieldHome.getBenched(), "Midfields", strategy[1] );
             //vai buscar os jogadores que estão naquelas posições
-            for (int i : midPos) field.setMidfield(homeTeam.getPlayer(i));
+            for (int i : midPos) fieldHome.setMidfield(fieldHome.getBenched(i));
             //Ataque
-            int [] strikPos = returnPosPlayers(homeTeam.getPlayers(), "Strikers", strategy[2] );
+            int [] strikPos = returnPosPlayers(fieldHome.getBenched(), "Strikers", strategy[2] );
             //vai buscar os jogadores que estão naquelas posições
-            for (int i : strikPos) field.setStriker(homeTeam.getPlayer(i));
+            for (int i : strikPos) fieldHome.setStriker(fieldHome.getBenched(i));
         }
         else {
             //Filtra os Guarda-Redes
-            int [] goalKeepersPos = returnPosPlayers((List<Player>) homeTeam.getPlayers().stream().
+            int [] goalKeepersPos = returnPosPlayers((List<Player>) fieldHome.getBenched().stream().
                     filter(item -> item instanceof GoalKeeper), "GoalKeepers", 1 );
             //vai buscar os jogadores que estão naquelas posições
-            for (int i : goalKeepersPos) field.setGoalKeeper(((List<Player>) homeTeam.getPlayers().stream().
+            for (int i : goalKeepersPos) fieldHome.setGoalKeeper(((List<Player>) fieldHome.getBenched().stream().
                     filter(item -> item instanceof GoalKeeper)).get(i));
             //Filtra Defesas
-            int [] backsPos = returnPosPlayers((List<Player>) homeTeam.getPlayers().stream().
+            int [] backsPos = returnPosPlayers((List<Player>) fieldHome.getBenched().stream().
                     filter(item -> item instanceof Defender), "Back", strategy[0] );
             //vai buscar os jogadores que estão naquelas posições
-            for (int i : backsPos) field.setGoalKeeper(((List<Player>) homeTeam.getPlayers().stream().
+            for (int i : backsPos) fieldHome.setGoalKeeper(((List<Player>) fieldHome.getBenched().stream().
                     filter(item -> item instanceof Defender)).get(i));
             //Defesas
-            int [] midPos = returnPosPlayers((List<Player>) homeTeam.getPlayers().stream().
+            int [] midPos = returnPosPlayers((List<Player>) fieldHome.getBenched().stream().
                     filter(item -> item instanceof Midfield), "Midfield", strategy[1] );
             //vai buscar os jogadores que estão naquelas posições
-            for (int i : midPos) field.setMidfield(((List<Player>) homeTeam.getPlayers().stream().
+            for (int i : midPos) fieldHome.setMidfield(((List<Player>) fieldHome.getBenched().stream().
                     filter(item -> item instanceof Midfield)).get(i));
             //Atacantes
-            int [] strikPos = returnPosPlayers((List<Player>) homeTeam.getPlayers().stream().
+            int [] strikPos = returnPosPlayers((List<Player>) fieldHome.getBenched().stream().
                     filter(item -> item instanceof Striker), "Striker", strategy[2] );
             //vai buscar os jogadores que estão naquelas posições
-            for (int i : strikPos) field.setMidfield(((List<Player>) homeTeam.getPlayers().stream().
+            for (int i : strikPos) fieldHome.setMidfield(((List<Player>) fieldHome.getBenched().stream().
                     filter(item -> item instanceof Striker)).get(i));
 
         }
         //Inicializa as coisas normais, tipo tempo e posição da bola
         this.standard();
+        //Inicialização da equipa oposta
+        setAwayField(setBot(awayTeam));
     }
+    /*
+    Funções que inicializam a classe PlayersField de forma automática da melhor forma.
+    Estas funções selecionam os jogadores mais capazes para cada uma das posições, baseado nas suas posições base
+     */
+
+    private PlayersField setBot(Team away){
+        PlayersField fieldAway = new PlayersField();
+        //Number of players in bench + field in bot team
+        int goalkeepers = (int) awayTeam.getPlayers().stream().filter(item -> item instanceof GoalKeeper).count();
+        if (goalkeepers > 2) goalkeepers = 2;
+        int backs = (int) awayTeam.getPlayers().stream().filter(item -> position(item, Zones.DEFENSE)).count();
+        if (backs > 8) backs = 8;
+
+        int mediuns = (int) awayTeam.getPlayers().stream().filter(item -> position (item, Zones.MIDDLE)).count();
+        if (mediuns > 7) mediuns = 7;
+        int strikers = (int) awayTeam.getPlayers().stream().filter(item -> position(item, Zones.OPPOSITE)).count();
+        if (strikers > 5) strikers = 5;
+        //Se tiver menos que 17 e a equipa tiver a mais, faz qualquer coisa, mas não sei o quê
+        //Verificar onde se podem meter mais jogadores
+        //Talvez um bool que a partir daqui passa a iserir mais?
+        if (goalkeepers + backs + mediuns + strikers < 17 && awayTeam.getPlayers().stream().count() > 17) ;
+        //No banco ficam todos
+        //Se não separarmos não garantimos que a equipa não é só Ronaldos sem Ruis Patrícios
+        filterAndSort(awayTeam.getPlayers(), goalkeepers, Zones.GOAL).stream().forEach(p ->  fieldAway.setBenched(p));
+        filterAndSort(awayTeam.getPlayers(), backs, Zones.DEFENSE).stream().forEach(p ->  fieldAway.setBenched(p));
+        filterAndSort(awayTeam.getPlayers(), mediuns, Zones.MIDDLE).stream().forEach(p ->  fieldAway.setBenched(p));
+        filterAndSort(awayTeam.getPlayers(), strikers, Zones.OPPOSITE).stream().forEach(p ->  fieldAway.setBenched(p));
+
+        //meter o guarda redes no campo
+        Player toField = filterAndSort(fieldAway.getBenched(), 1, Zones.GOAL).get(1);
+        fieldAway.leaveBench(toField);
+        fieldAway.setGoalKeeper(toField);
+        filterAndSort(fieldAway.getBenched(), 4, Zones.DEFENSE).
+                stream().forEach(x -> setPlayerInField(fieldAway, x, Zones.DEFENSE) );
+        filterAndSort(fieldAway.getBenched(), 4, Zones.MIDDLE).
+                stream().forEach(x -> setPlayerInField(fieldAway, x, Zones.MIDDLE) );
+        filterAndSort(fieldAway.getBenched(), 3, Zones.OPPOSITE).
+                stream().forEach(x -> setPlayerInField(fieldAway, x, Zones.OPPOSITE) );
+        return awayField;
+
+    }
+    private void setPlayerInField(PlayersField lists, Player p, Zones zone){
+        lists.leaveBench(p);
+        switch (zone){
+            case  DEFENSE:
+                lists.setDefender(p);
+                break;
+            case MIDDLE:
+                lists.setMidfield(p);
+                break;
+            case OPPOSITE:
+                lists.setStriker(p);
+                break;
+        }
+    }
+
+    private List<Player> filterAndSort(List<Player> players, int howMany, Zones position)
+    {
+        return players.stream().filter(player -> position(player, position)).
+            sorted().limit(howMany).collect(Collectors.toList());
+    }
+    private boolean position(Player p, Zones z){
+        return ((p instanceof GoalKeeper && z == Zones.GOAL)
+                || ((p instanceof Back || p instanceof Defender) && z == Zones.DEFENSE)
+                || (p instanceof Midfield && z == Zones.MIDDLE)
+                || (p instanceof Striker && z == Zones.OPPOSITE));
+    }
+
     /*
        returnPosPlayers
 Função muito utilizada que liga os módulos View e Controller. O objetivo desta função é saber que jogadores o utilizador escolhe a partir dum conjunto de jogadores.
@@ -141,7 +210,7 @@ Recebe a lista de jogadores que serão impressos, uma descrição (String) do qu
 Retorna um array com as posições dos jogadores escolhidos a partir da lista.
 **/
 
-    
+
     //Lista de Jogadores + Descrição para o output + número de valores lidos
     // Retorna o que o jogador escolhe, serão inteiros
     private int [] returnPosPlayers(List<Player> list, String name, int total_players){
@@ -155,7 +224,7 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
     strategy
     Utilizando o módulo View, descobre que estratégia o utilizador vai utilizar no jogo.
     Esta estratégia consiste na distribuição dos jogadores pelo campo.
-**/ 
+**/
     private int [] strategy(int total_players){
         ChosingPlayers stdout = new ChosingPlayers();
         stdout.ChooseStrategy(3);
@@ -172,7 +241,7 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
     /*
     changePlayers
     Função que utiliza o módulo View para saber que jogadores serão substítuidos, isto é, uma troca entre um jogador que está no campo por um que está no banco. 
-**/ 
+**/
     private void changePlayers(PlayersField team){
         ChosingPlayers stdout = new ChosingPlayers();
         //Imprime e recebe que posição do jogador recebe
@@ -184,10 +253,20 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
         int [] posPlayerOut = returnPosPlayers(team.getPlayersPosition(pos_absoluteOut),
                 "Wich player leaves?", 1);
         //O Jogador que está nessa posição
-        Player out = team.getPlayersPosition(posPlayerOut[0]).get(posPlayerIn[0]);
-        team.replace(in, out, pos_absoluteOut);
+        Player out = team.getPlayersPosition(posPlayerOut[0]).get(posPlayerOut[0]);
+       // team.replace(in, out, pos_absoluteOut);
     }
-    
+    private void movePlayers(PlayersField team){
+        ChosingPlayers stdout = new ChosingPlayers();
+        int pos_absoluteStart = stdout.whereIsPlayer("Where it is?");
+        //Saber dos vários jogadores que está aí, qual é que sai, a posição dele
+        int [] posPlayerStart = returnPosPlayers(team.getPlayersPosition(pos_absoluteStart),
+                "Wich player leaves?", 1);
+        int pos_absoluteEnd = stdout.whereIsPlayer("Where player goes?");
+        //Saber dos vários jogadores que está aí, qual é que sai, a posição dele
+        //team.move(team.getPlayersPosition(pos_absoluteStart).get(0),
+        //        pos_absoluteStart,  pos_absoluteEnd);
+    }
     /*
     Função que verifica se o jogo chegou ao fim por tempo.     
     **/
@@ -195,7 +274,7 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
     private boolean endGame(){
         return (this.getTime() >= 90);
     }
-    
+
     //Função inventada para isto dar
     private int skills (Player jogador){
         return 1;

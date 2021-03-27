@@ -1,4 +1,10 @@
-package Model.Player;
+package Model;
+//Coisas para fazer, importante
+/*
+Nos getter e setter meter clones, se não é apenas o endereço que vai e pode dar problemas
+Meter os enum a funcionar para ele poder usar aqui os enum, caso contrário é muito chato
+ */
+import Model.Player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +17,8 @@ public class PlayersField {
     private List<Player> midfield;
     private List<Player> striker;
     private Player goalKeeper;
+   // enum Zones {GOAL, DEFENSE, MIDDLE, OPPOSITE}
+/*
 
     //Função que substitui
     //Aqui há encapsulamento, porque acedo diretamente ao seated e assim
@@ -18,7 +26,7 @@ public class PlayersField {
         //Está no banco sai
         benched.remove(in);
         //Do campo vai para o banco
-        setSeated(out);
+        setBenched(out);
         //Tirar do campo
         switch (posOut) {
             case 0:
@@ -38,6 +46,25 @@ public class PlayersField {
 
         }
     }
+    public void move(Player startP, int startZ, int endZ){
+        switch(startZ){
+            case 0: leaveZone(startP, Zones.GOAL);
+                SETZone(startP, Zones.GOAL );
+            break;
+            case 1: leaveZone(startP, Zones.DEFENSE);
+                SETZone(startP, Zones.DEFENSE );
+                break;
+            case 2: leaveZone(startP, Zones.MIDDLE);
+                SETZone(startP, Zones.MIDDLE );
+                break;
+            
+            case 3: leaveZone(startP, Zones.OPPOSITE);
+                SETZone(startP, Zones.OPPOSITE );
+                break;
+            default:
+                System.out.println("Mas, queres tirar o guarda-redes e meter onde óóóóó...");
+
+    };*/
     //Construtores
 
 
@@ -56,7 +83,7 @@ public class PlayersField {
     //4 -> Bola está frente à baliza do visitante
     public List<Player> getPlayersPosition(int pos) {
         switch(pos){
-            case 0: return (List<Player>) getGoalKeeper();
+            case 0: return (List<Player>) getGoalKeeper(); 
             case 1: return getDefender();
             case 2: return getDefender();
             case 3: return getStriker();
@@ -110,7 +137,47 @@ public class PlayersField {
     public List<Player> getBenched() {
         return benched;
     }
+    public Player getBenched(int i) {
+        return benched.get(i);
+    }
 
+    public void leaveBench(Player in){
+        this.getBenched().remove(in);
+    }
+   /* private void leaveZone(Player out, Zones zone){
+            switch (zone) {
+                case Zones.DEFENSE:
+                    this.getDefender().remove(out);
+                    break;
+                case Zones.MIDDLE:
+                    this.getMidfield().remove(out);
+                    break;
+                case Zones.OPPOSITE:
+                    this.getStriker().remove(out);
+                    break;
+                case Zones.GOAL:
+                    this.setGoalKeeper(null);
+                    break;
+            }
+        }
+        private void SETZone(Player out, Zones zone){
+            switch (zone) {
+                case Zones.DEFENSE:
+                    this.setDefender(out);
+                    break;
+                case Zones.MIDDLE:
+                    this.setMidfield(out);
+                    break;
+                case Zones.OPPOSITE:
+                    this.setStriker(out);
+                    break;
+                case Zones.GOAL:
+                    this.setGoalKeeper(out);
+                    break;
+            }
+        }
+
+    */
     public void setBenched(List<Player> benched) {
         this.benched = benched;
     }

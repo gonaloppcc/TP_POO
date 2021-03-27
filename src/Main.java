@@ -11,6 +11,7 @@ public class Main { // A main fica aqui???
     public static void main(String[] args) {
         Football footballGame = new Football();
         Status s = new Status( "Football", 11, footballGame.generateTeams());
+
         // s.Load("src/Files/teste"); //s.Load("teste");
         System.out.println(s);
     }
