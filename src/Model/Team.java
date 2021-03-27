@@ -4,6 +4,7 @@ import Model.Player.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Team {
     /*
@@ -12,32 +13,27 @@ public class Team {
     **/
     private String name;
     private List<Player> players;
-    private int numberOfPlayers;
 
     // Construtores
 
     public Team() {
         this.name = "Default";
         this.players = new ArrayList<>();
-        this.numberOfPlayers = 0;
     }
 
     public Team(String name) {
         this.name = name;
         this.players = new ArrayList<>();
-        this.numberOfPlayers = 0;
     }
 
     public Team(int numJogadores) {
         this.name = "Default";
         this.players = new ArrayList<>(numJogadores);
-        this.numberOfPlayers = numJogadores;
     }
 
     public Team(ArrayList<Player> players) {
         this.name = "Default";
         this.players = players;
-        this.numberOfPlayers = 0;
     }
 
     public Team(String name, ArrayList<Player> players, int numberOfPlayers) {
@@ -45,10 +41,22 @@ public class Team {
         this.players = new ArrayList<>();
         //this.players = (ArrayList) players.clone();
         this.players = players;
-        this.numberOfPlayers = numberOfPlayers;
     }
 
+    public Team(Team team) {
+        this.name = team.getName();
+        this.players = team.getPlayers();//.stream().map(x -> x.clone()).collect(Collectors.toList());
+    }
 
+    public Team(String name, int numberOfPlayers) {
+        this.name = name;
+        this.players = new ArrayList<>(numberOfPlayers);
+    }
+
+    public Team(String name, List<Player> players, int numberOfPlayers) {
+        this.name = name;
+        this.players = players;
+    }
 
     // Metodos
 
@@ -62,23 +70,19 @@ public class Team {
     }
 
     public int getNumberOfPlayers() {
-        return numberOfPlayers;
-    }
-
-    public void setNumberOfPlayers(int numberOfPlayers) {
-        this.numberOfPlayers = numberOfPlayers;
+        return this.players.size();
     }
 
     public List<Player> getPlayers() {
         return players;
     }
 
-    public Player getPlayer(int pos) {
-        return players.get(pos);
-    }
-
     public void setPlayers(ArrayList<Player> players) {
         this.players = players;
+    }
+
+    public Player getPlayer(int pos) {
+        return players.get(pos);
     }
 
     public void addPlayer(Player player) {
@@ -87,10 +91,12 @@ public class Team {
 
     @Override
     public String toString() {
-        return "Team{" +
-                "name='" + name + '\'' +
-                ", players=" + players +
-                ", numberOfPlayers=" + numberOfPlayers +
-                '}';
+        return name + ":\n\t " +
+                players +
+                "}\n";
+    }
+
+    public Team clone() {
+        return new Team(this);
     }
 }

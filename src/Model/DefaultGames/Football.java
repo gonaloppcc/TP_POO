@@ -2,6 +2,7 @@ package Model.DefaultGames;
 
 import Model.Player.*;
 import Model.Team;
+import org.jetbrains.annotations.NotNull;
 //import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
@@ -48,7 +49,7 @@ public class Football {
      * @param teamSize number of Player's in a Team
      * @param goalKeepers number of GoalKeeper's in a Team
      * @param defenders number of Defender's in a Team
-     * @param back number of Back's in a Team
+     * @param back number of BackWing's in a Team
      * @param midfields number of Midfield's in a Team
      * @param strikers number of Striker's in a Team
      */
@@ -71,7 +72,7 @@ public class Football {
     public List<Team> generateTeams() {
         List<Team> teams = new ArrayList<>();
         for (int i = 0; i < teamNum; i++) {
-            teams.add(generateTeam());
+            teams.add(generateTeam(i));
         }
         return teams;
     }
@@ -80,8 +81,8 @@ public class Football {
      * Generate a random team
      * @return the random team
      */
-    private Team generateTeam() {
-        Team team = new Team(teamSize);
+    private Team generateTeam(int teamNumber) {
+        Team team = new Team("Team " + teamNumber, teamSize);
         for (int i = 0; i < goalKeepers; i++) {
             team.addPlayer(generatePlayer(playerType.GoalKeeper));
         }
@@ -115,7 +116,7 @@ public class Football {
                 r.nextInt(28) + 1);
 
         switch (pType) {
-            case Back -> player = new Back(name, birthdate, playerAttribuite(ratingMin, ratingMax), playerAttribuite(ratingMin, ratingMax),
+            case Back -> player = new BackWing(name, birthdate, playerAttribuite(ratingMin, ratingMax), playerAttribuite(ratingMin, ratingMax),
                     playerAttribuite(ratingMin, ratingMax), playerAttribuite(ratingMin, ratingMax), playerAttribuite(ratingMin, ratingMax),
                     playerAttribuite(ratingMin, ratingMax), "");
             case Striker -> player = new Striker(name, birthdate, playerAttribuite(ratingMin, ratingMax), playerAttribuite(ratingMin, ratingMax),

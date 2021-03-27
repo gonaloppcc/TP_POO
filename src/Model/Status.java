@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner; // Import the Scanner class to read text files
 
-public class Status { // Mudar para save?
-    private String GameName;
-    private int PlayersPerTeam;
-    private List<Team> Teams; // Informações sobre o save atual
-    //  private Jogos;
+public class Status {
+    private String gameName;
+    private int playersPerTeam;
+    private List<Team> teams; // Informações sobre o save atual
+    private List<Match> games; // Ainda falta desenvolver!!!!!!!!!1
 
 /*
     This class is use to contenting all data regarding the game
@@ -20,41 +20,57 @@ public class Status { // Mudar para save?
     It has methods for saving and loading game purposes
     */
 
-    public Status() {
-        this.GameName = "Futebol";
-        this.Teams = new ArrayList<>();
-        this.PlayersPerTeam = 11;
+    public Status() { // Construtor básico, cria com o jogo "Futebol"
+        this.gameName = "Futebol";
+        this.teams = new ArrayList<>();
+        this.playersPerTeam = 11;
+        this.games = new ArrayList<>();
     }
 
     public Status(String gameName, int playersPerTeam, List<Team> teams) {
-        GameName = gameName;
-        PlayersPerTeam = playersPerTeam;
-        Teams = teams;
+        this.gameName = gameName;
+        this.playersPerTeam = playersPerTeam;
+        this.teams = teams;
     }
 
+    public static void Saving(String filename) {
+        // return ...
+    }
 
     public String getGameName() {
-        return GameName;
+        return gameName;
     }
 
     public void setGameName(String gameName) {
-        GameName = gameName;
+        this.gameName = gameName;
     }
 
     public int getPlayersPerTeam() {
-        return PlayersPerTeam;
+        return playersPerTeam;
     }
 
     public void setPlayersPerTeam(int playersPerTeam) {
-        PlayersPerTeam = playersPerTeam;
+        this.playersPerTeam = playersPerTeam;
     }
 
     public List<Team> getTeams() {
-        return Teams;
+        return teams /*.stream().map(Team::clone).collect(Collectors.toList())*/;
     }
 
     public void setTeams(ArrayList<Team> teams) {
-        Teams = teams;
+        this.teams = teams;
+    }
+
+    public void setTeams(List<Team> teams) {
+        this.teams = teams;
+    }
+
+    public List<Match> getGames() {
+        return games;
+    }
+
+    public void setGames(List<Match> games) {
+        this.games = games;
     }
 
     public void Load(String filename) {
@@ -77,7 +93,7 @@ public class Status { // Mudar para save?
                     //Define nome equipa
                     data = scan.nextLine();
                     Team nova = new Team(data);
-                    this.Teams.add(nova);
+                    this.teams.add(nova);
                     while (!data.equals(".") && scan.hasNextLine()) {
                         data = scan.nextLine();
                         String[] gAux = data.split(";");
@@ -87,12 +103,12 @@ public class Status { // Mudar para save?
                         switch (data.charAt(0)) {
                             case 'G' -> {
                                 GoalKeeper g = new GoalKeeper(gAux);
-                                this.Teams.get(equipa_atual).addPlayer(g);
+                                this.teams.get(equipa_atual).addPlayer(g);
                             }
-                            case 'A' -> this.Teams.get(equipa_atual).addPlayer(new Striker(gAux));
-                            case 'L' -> this.Teams.get(equipa_atual).addPlayer(new Back(gAux));
-                            case 'M' -> this.Teams.get(equipa_atual).addPlayer(new Midfield(gAux));
-                            case 'D' -> this.Teams.get(equipa_atual).addPlayer(new Defender(gAux));
+                            case 'A' -> this.teams.get(equipa_atual).addPlayer(new Striker(gAux));
+                            case 'L' -> this.teams.get(equipa_atual).addPlayer(new BackWing(gAux));
+                            case 'M' -> this.teams.get(equipa_atual).addPlayer(new Midfield(gAux));
+                            case 'D' -> this.teams.get(equipa_atual).addPlayer(new Defender(gAux));
                             default -> System.out.println("Quem?");
                         }
 
@@ -118,26 +134,21 @@ public class Status { // Mudar para save?
 */  //this.toString();
             }
 
-    } catch(
-    FileNotFoundException e)
+        } catch (
+                FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
 
-    {
-        System.out.println("An error occurred.");
-        e.printStackTrace();
     }
 
-}
-
-    public static void Saving(String filename) {
-        // return ...
-    }
     @Override
     public String toString() {
         return "Status{" +
-                "GameName='" + GameName + '\'' +
-                ", PlayersPerTeam=" + PlayersPerTeam +
-                ", Teams=" + Teams +
-                '}';
+                "\n\tGameName= " + gameName +
+                "\n\tPlayersPerTeam= " + playersPerTeam +
+                "\n\tTeams= " + teams +
+                "\n\t}";
     }
 
 }
