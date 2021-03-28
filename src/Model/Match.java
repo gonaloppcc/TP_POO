@@ -3,6 +3,8 @@ package Model;
 import Model.Player.*;
 import View.ChosingPlayers;
 
+import java.lang.annotation.IncompleteAnnotationException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -74,8 +76,8 @@ public class Match {
         //Para já só na Home
         //Quando nem todos os jogadores da equipa jogam
         //É preciso escolher quais é que jogam e quais é que não
-        if (homeTeam.getNumberOfPlayers()>total_players){
-            int [] playersChoosen =returnPosPlayers(homeTeam.getPlayers(), homeTeam.getName(), total_players);
+        if (homeTeam.getNumberOfPlayers() > total_players) {
+            int[] playersChoosen = returnPosPlayers(homeTeam.getPlayers(), homeTeam.getName(), total_players);
             //vai buscar os jogadores que estão naquelas posições
             for (int i : playersChoosen) field.setBenched(homeTeam.getPlayer(i));
         }
@@ -83,52 +85,55 @@ public class Match {
         else field.setBenched(homeTeam.getPlayers());
         //Separar por zonas as escolhas de equipas
         boolean printAll = stdout.printAllQuestion();
-        int []strategy = strategy(3 );
+        int[] strategy = strategy(3);
 
         if (printAll) {
             //Imprime todos os jogadores, e retorna um array com a posição do jogador que será guarda-redes
-            int [] goalKeepersPos = returnPosPlayers(homeTeam.getPlayers(), "GoalKeepers", 1 );
+            int[] goalKeepersPos = returnPosPlayers(homeTeam.getPlayers(), "GoalKeepers", 1);
             //vai buscar os jogadores que estão naquelas posições
             for (int i : goalKeepersPos) field.setGoalKeeper(homeTeam.getPlayer(i));
             //Defesas
             //Imprime todos os jogadores, e retorna um array com a posição do jogador que será guarda-redes
-            int [] backsPos = returnPosPlayers(homeTeam.getPlayers(), "Back", strategy[0] );
+            int[] backsPos = returnPosPlayers(homeTeam.getPlayers(), "Back", strategy[0]);
             //vai buscar os jogadores que estão naquelas posições
             for (int i : backsPos) field.setDefender(homeTeam.getPlayer(i));
             //Médios
-            int [] midPos = returnPosPlayers(homeTeam.getPlayers(), "Midfields", strategy[1] );
+            int[] midPos = returnPosPlayers(homeTeam.getPlayers(), "Midfields", strategy[1]);
             //vai buscar os jogadores que estão naquelas posições
             for (int i : midPos) field.setMidfield(homeTeam.getPlayer(i));
             //Ataque
-            int [] strikPos = returnPosPlayers(homeTeam.getPlayers(), "Strikers", strategy[2] );
+            int[] strikPos = returnPosPlayers(homeTeam.getPlayers(), "Strikers", strategy[2]);
             //vai buscar os jogadores que estão naquelas posições
             for (int i : strikPos) field.setStriker(homeTeam.getPlayer(i));
-        }
-        else {
+        } else {
             //Filtra os Guarda-Redes
-            int [] goalKeepersPos = returnPosPlayers((List<Player>) homeTeam.getPlayers().stream().
-                    filter(item -> item instanceof GoalKeeper), "GoalKeepers", 1 );
+            int[] goalKeepersPos = returnPosPlayers((List<Player>) homeTeam.getPlayers().stream().
+                    filter(item -> item instanceof GoalKeeper), "GoalKeepers", 1);
             //vai buscar os jogadores que estão naquelas posições
-            for (int i : goalKeepersPos) field.setGoalKeeper(((List<Player>) homeTeam.getPlayers().stream().
-                    filter(item -> item instanceof GoalKeeper)).get(i));
+            for (int i : goalKeepersPos)
+                field.setGoalKeeper(((List<Player>) homeTeam.getPlayers().stream().
+                        filter(item -> item instanceof GoalKeeper)).get(i));
             //Filtra Defesas
-            int [] backsPos = returnPosPlayers((List<Player>) homeTeam.getPlayers().stream().
-                    filter(item -> item instanceof Defender), "Back", strategy[0] );
+            int[] backsPos = returnPosPlayers((List<Player>) homeTeam.getPlayers().stream().
+                    filter(item -> item instanceof Defender), "Back", strategy[0]);
             //vai buscar os jogadores que estão naquelas posições
-            for (int i : backsPos) field.setGoalKeeper(((List<Player>) homeTeam.getPlayers().stream().
-                    filter(item -> item instanceof Defender)).get(i));
+            for (int i : backsPos)
+                field.setGoalKeeper(((List<Player>) homeTeam.getPlayers().stream().
+                        filter(item -> item instanceof Defender)).get(i));
             //Defesas
-            int [] midPos = returnPosPlayers((List<Player>) homeTeam.getPlayers().stream().
-                    filter(item -> item instanceof Midfield), "Midfield", strategy[1] );
+            int[] midPos = returnPosPlayers((List<Player>) homeTeam.getPlayers().stream().
+                    filter(item -> item instanceof Midfield), "Midfield", strategy[1]);
             //vai buscar os jogadores que estão naquelas posições
-            for (int i : midPos) field.setMidfield(((List<Player>) homeTeam.getPlayers().stream().
-                    filter(item -> item instanceof Midfield)).get(i));
+            for (int i : midPos)
+                field.setMidfield(((List<Player>) homeTeam.getPlayers().stream().
+                        filter(item -> item instanceof Midfield)).get(i));
             //Atacantes
-            int [] strikPos = returnPosPlayers((List<Player>) homeTeam.getPlayers().stream().
-                    filter(item -> item instanceof Striker), "Striker", strategy[2] );
+            int[] strikPos = returnPosPlayers((List<Player>) homeTeam.getPlayers().stream().
+                    filter(item -> item instanceof Striker), "Striker", strategy[2]);
             //vai buscar os jogadores que estão naquelas posições
-            for (int i : strikPos) field.setMidfield(((List<Player>) homeTeam.getPlayers().stream().
-                    filter(item -> item instanceof Striker)).get(i));
+            for (int i : strikPos)
+                field.setMidfield(((List<Player>) homeTeam.getPlayers().stream().
+                        filter(item -> item instanceof Striker)).get(i));
 
         }
         //Inicializa as coisas normais, tipo tempo e posição da bola
@@ -141,25 +146,26 @@ Recebe a lista de jogadores que serão impressos, uma descrição (String) do qu
 Retorna um array com as posições dos jogadores escolhidos a partir da lista.
 **/
 
-    
+
     //Lista de Jogadores + Descrição para o output + número de valores lidos
     // Retorna o que o jogador escolhe, serão inteiros
-    private int [] returnPosPlayers(List<Player> list, String name, int total_players){
+    private int[] returnPosPlayers(List<Player> list, String name, int total_players) {
         ChosingPlayers stdout = new ChosingPlayers();
         stdout.printPlayers(list, name);
-        int [] playersChoosen = new int[total_players];
+        int[] playersChoosen = new int[total_players];
         stdout.choosePlayers(playersChoosen, total_players);
         return playersChoosen;
-   }
+    }
+
     /*
     strategy
     Utilizando o módulo View, descobre que estratégia o utilizador vai utilizar no jogo.
     Esta estratégia consiste na distribuição dos jogadores pelo campo.
-**/ 
-    private int [] strategy(int total_players){
+**/
+    private int[] strategy(int total_players) {
         ChosingPlayers stdout = new ChosingPlayers();
         stdout.ChooseStrategy(3);
-        int [] playersChoosen = new int[total_players];
+        int[] playersChoosen = new int[total_players];
         stdout.stategyChoose(playersChoosen);
         return playersChoosen;
     }
@@ -168,21 +174,21 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
     /*
     Funções sobre a lógica do programa
     **/
-    
+
     /*
     changePlayers
     Função que utiliza o módulo View para saber que jogadores serão substítuidos, isto é, uma troca entre um jogador que está no campo por um que está no banco. 
-**/ 
-    private void changePlayers(PlayersField team){
+**/
+    private void changePlayers(PlayersField team) {
         ChosingPlayers stdout = new ChosingPlayers();
         //Imprime e recebe que posição do jogador recebe
-        int [] posPlayerIn = returnPosPlayers(team.getBenched(), "Wich player gets in?", 1);
+        int[] posPlayerIn = returnPosPlayers(team.getBenched(), "Which player gets in?", 1);
         Player in = team.getBenched().get(posPlayerIn[0]);
         //saber onde o jogador que vai sair está
         int pos_absoluteOut = stdout.whereIsPlayer("Que vai sair");
         //Saber dos vários jogadores que está aí, qual é que sai, a posição dele
-        int [] posPlayerOut = returnPosPlayers(team.getPlayersPosition(pos_absoluteOut),
-                "Wich player leaves?", 1);
+        int[] posPlayerOut = returnPosPlayers(team.getPlayersPosition(pos_absoluteOut),
+                "Which player leaves?", 1);
         //O Jogador que está nessa posição
         Player out = team.getPlayersPosition(posPlayerOut[0]).get(posPlayerIn[0]);
         team.replace(in, out, pos_absoluteOut);
@@ -192,17 +198,18 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
     Função que verifica se o jogo chegou ao fim por tempo.     
     **/
 
-    private boolean endGame(){
+    private boolean endGame() {
         return (this.getTime() >= 90);
     }
-    
+
     //Função inventada para isto dar
-    private int skills (Player jogador){
+    private int skills(Player jogador) {
         return 1;
     }
+
     //IMPORTANTE
     //Falta filtrar os titulares na posição do campo em que a bola está
-    private int valuePlayers (List<Player> equipa){
+    private int valuePlayers(List<Player> equipa) {
         int total = 0;
         total += equipa.stream().mapToInt(n -> skills(n)).sum();
         return total;
@@ -212,8 +219,9 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
     confrontation
     Função que compara as capacidades de duas equipas numa posição do campo. 
     A vitória neste confronto resulta em duas possibilidades: recuperar bola ou avançar com a bola.
-    Se já estiver ao pé da baliza adveresária, pode rematar.
+    Se já estiver ao pé da baliza adversária, pode rematar.
     **/
+    /*
     private int confrontation(int pos_ball){
         Random rd = new Random();
         int homeTeam = valuePlayers(homeField.getPlayersPosition(pos_ball));
@@ -229,46 +237,162 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
         if (homeTeam == visitorTeam) return 0;
         if (homeTeam > visitorTeam) return 1;
         else return -1;
-
     }
-    
-/*
-    Função que verifica se é possível rematar por causa da posição da bola.    
-    **/
-    private boolean rematePossivel(int pos_ball){
+
+     */
+
+    private void confrontation(int pos_ball) {
+        int outcome = (int) Math.floor(Math.random() * 10);
+        int confrontation_result = resultConfrontation(pos_ball, this.getHomeField(), this.getAwayField());
+        switch (confrontation_result) {
+            case 1:
+                if (outcome <= 6) {
+                    if (pos_ball == 4) {
+                        this.pos_ball = 2;
+                        this.scoreHome++;
+                        this.posse_bola = true;
+                    } else {
+                        this.pos_ball++;
+                    }
+                } else {
+                    if (pos_ball == 0) {
+                        this.pos_ball = 2;
+                        this.scoreAway++;
+                        this.posse_bola = false;
+                    } else {
+                        this.pos_ball--;
+                    }
+                }
+                break;
+            case -1:   // 0 1 2 | 3 4 5 6 7 8 9        // 0 | 1 2 3 4 5 6 7 8 9
+                if (outcome < 2) {
+                    if (pos_ball == 4) {
+                        this.pos_ball = 2;
+                        this.scoreHome++;
+                        this.posse_bola = true;
+                    } else {
+                        this.pos_ball++;
+                    }
+                } else {
+                    if (pos_ball == 0) {
+                        this.pos_ball = 2;
+                        this.scoreAway++;
+                        this.posse_bola = false;
+                    } else {
+                        this.pos_ball--;
+                    }
+                }
+                break;
+            default:   // 0 1 2 3 4 | 5 6 7 8 9
+                if (outcome < 5) {
+                    if (pos_ball == 4) {
+                        this.pos_ball = 2;
+                        this.scoreHome++;
+                        this.posse_bola = true;
+                    } else {
+                        this.pos_ball++;
+                    }
+                } else {
+                    if (pos_ball == 0) {
+                        this.pos_ball = 2;
+                        this.scoreAway++;
+                        this.posse_bola = false;
+                    } else {
+                        this.pos_ball--;
+                    }
+                }
+                break;
+        }
+        this.time += 10;
+    }
+
+    //0 -> Bola está do frente à baliza de casa
+    //1 -> Bola está do lado home
+    //2 -> Bola está no meio campo
+    //3 -> Bola está no lado visitante
+    //4 -> Bola está frente à baliza do visitante
+
+    private int resultConfrontation(int pos_ball, PlayersField homeField, PlayersField awayField) {
+        int i;
+        int homeSkill = 0;
+        int awaySkill = 0;
+        switch (pos_ball) {
+            case (0):
+                homeSkill += homeField.getGoalKeeper().globalSkill();
+                int awayStriker = (int) Math.floor(Math.random() * awayField.getStriker().size());
+                awaySkill += awayField.getStriker().get(awayStriker).globalSkill();
+                break;
+            case (1):
+                for (i = 0; i < homeField.getDefender().size(); i++) {
+                    homeSkill += homeField.getDefender().get(i).globalSkill();
+                }
+                for (i = 0; i < awayField.getStriker().size(); i++) {
+                    awaySkill += awayField.getStriker().get(i).globalSkill();
+                }
+                break;
+            case (2):
+                for (i = 0; i < homeField.getMidfield().size(); i++) {
+                    homeSkill += homeField.getMidfield().get(i).globalSkill();
+                }
+                for (i = 0; i < awayField.getMidfield().size(); i++) {
+                    awaySkill += awayField.getMidfield().get(i).globalSkill();
+                }
+                break;
+            case (3):
+                for (i = 0; i < homeField.getStriker().size(); i++) {
+                    homeSkill += homeField.getStriker().get(i).globalSkill();
+                }
+                for (i = 0; i < awayField.getDefender().size(); i++) {
+                    awaySkill += awayField.getDefender().get(i).globalSkill();
+                }
+                break;
+            case (4):
+                int homeStriker = (int) Math.floor(Math.random() * homeField.getStriker().size());
+                homeSkill += homeField.getStriker().get(homeStriker).globalSkill();
+                awaySkill += awayField.getGoalKeeper().globalSkill();
+                break;
+        }
+        if (homeSkill == awaySkill) return 0;
+        if (homeSkill > awaySkill) return 1;
+        else return -1;
+    }
+
+    /*
+        Função que verifica se é possível rematar por causa da posição da bola.
+        **/
+    private boolean rematePossivel(int pos_ball) {
         return (pos_ball <= 0 || pos_ball >= 4);
     }
-    
-/*
-    Função que interliga as várias funções desta classe. 
-    
-    **/
-    public void Game (){
+
+    /*
+        Função que interliga as várias funções desta classe.
+
+        **/
+    public void Game() {
         int increment_time = 10;
-        if (this.endGame())
-        {
+        if (this.endGame()) {
             System.out.println("Fim de jogo");
-        }
-        else {
+        } else {
             int where_ball = getPos_ball();
             if (rematePossivel(where_ball)) remate(where_ball);
             int temp_where_ball = confrontation(where_ball);
             setPos_ball(where_ball + temp_where_ball);
-            setTime(getTime()+increment_time);
+            setTime(getTime() + increment_time);
 
         }
     }
+
     //Falta definir
-    private void remate (int pos_ball){
+    private void remate(int pos_ball) {
         int res = confrontation(pos_ball);
         if (res == -1) golo(true);
         else golo(false);
-
         return;
     }
-    private void golo(boolean team_score){
-        if (team_score) setScoreAway(getScoreAway()+1);
-        else setScoreHome(getScoreHome()+1);
+
+    private void golo(boolean team_score) {
+        if (team_score) setScoreAway(getScoreAway() + 1);
+        else setScoreHome(getScoreHome() + 1);
         setPos_ball(2);
     }
 
@@ -315,11 +439,11 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
     public void setPos_ball(int pos_ball) {
         this.pos_ball = pos_ball;
     }
-    
-/*
-    Um setter que inicializa as váriáveis da classe no início do jogo.
-    **/
-    private void standard(){
+
+    /*
+        Um setter que inicializa as váriáveis da classe no início do jogo.
+        **/
+    private void standard() {
         setTime(0);
         setScoreAway(0);
         setScoreHome(0);
@@ -360,4 +484,3 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
         this.awayField = awayField;
     }
 }
-

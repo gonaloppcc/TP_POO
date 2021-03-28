@@ -8,8 +8,11 @@ public class PlayersField {
     private List<Player> benched;
 
     private List<Player> defender;
+
     private List<Player> midfield;
+
     private List<Player> striker;
+
     private Player goalKeeper;
 
     //Função que substitui
@@ -18,7 +21,7 @@ public class PlayersField {
         //Está no banco sai
         benched.remove(in);
         //Do campo vai para o banco
-        setSeated(out);
+        setBenched(out);
         //Tirar do campo
         switch (posOut) {
             case 0:
