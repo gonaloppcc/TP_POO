@@ -37,7 +37,6 @@ public class Match {
     private PlayersField homeField;
     private PlayersField awayField;
 
-    enum Zones {GOAL, DEFENSE, MIDDLE, OPPOSITE}
 
     /*
     Construtores
@@ -198,7 +197,7 @@ public class Match {
     }
     private boolean position(Player p, Zones z){
         return ((p instanceof GoalKeeper && z == Zones.GOAL)
-                || ((p instanceof Back || p instanceof Defender) && z == Zones.DEFENSE)
+                || ((p instanceof BackWing || p instanceof Defender) && z == Zones.DEFENSE)
                 || (p instanceof Midfield && z == Zones.MIDDLE)
                 || (p instanceof Striker && z == Zones.OPPOSITE));
     }

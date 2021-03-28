@@ -2,7 +2,7 @@ package Model.DefaultGames;
 
 import Model.Player.*;
 import Model.Team;
-import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.NotNull;
 //import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
@@ -108,7 +108,7 @@ public class Football {
      * @param pType The player type
      * @return The random player
      */
-    private Player generatePlayer(@NotNull playerType pType) {
+    private Player generatePlayer(/*@NotNull*/ playerType pType) {
         Random r = new Random();
         Player player;
         String name = "Player " + r.nextInt();

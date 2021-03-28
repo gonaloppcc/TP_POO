@@ -15,7 +15,7 @@ public class Main {
         Status model = new Status("Football", 11, footballGame.generateTeams());
         StatusView view = new StatusView();
         StatusController controller = new StatusController(model, view);
-
+    Match teste = new Match(model.getTeams().get(0), model.getTeams().get(1));
         System.out.println(controller.getTeamsName());
 
         controller.updateView();
