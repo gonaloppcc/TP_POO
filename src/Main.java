@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
-        Football footballGame = new Football();
+     /*   Football footballGame = new Football();
         Status model = new Status("Football", 11, footballGame.generateTeams());
         StatusView view = new StatusView();
         StatusController controller = new StatusController(model, view);
@@ -19,6 +19,8 @@ public class Main {
         System.out.println(controller.getTeamsName());
 
         controller.updateView();
+*/
+        Match test = new Match("/home/banderitas/Desktop/2_ano_2_sem/POO/TP_POO/src/Files/profFicheiro");
 
     }
 

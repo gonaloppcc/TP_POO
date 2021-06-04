@@ -12,7 +12,6 @@ import java.util.List;
 public class PlayersField {
 
     private List<Player> benched;
-
     private List<Player> defender;
     private List<Player> midfield;
     private List<Player> striker;

@@ -12,9 +12,26 @@ public class Status {
     private String gameName;
     private int playersPerTeam;
     private List<Team> teams; // Informações sobre o save atual
-    private List<Match> games; // Ainda falta desenvolver!!!!!!!!!1
+    private List<Match> games; // Ainda falta desenvolver!!!!!!!!!
 
-/*
+    /*
+    View do Status
+    Pergunta o ficheiro para carregar status
+    abre o meu Status
+    Imprime nome equipas e pergunta: Escolhe uma ou aleatória
+    ---------
+    View do Game
+    Começa mesmo o jogo
+    Torneio/Jogo?
+    Tratar da minha equipa
+    Consultar outras equipas
+    ---------
+    View do Match
+    Confrontos e coisas dos género!
+     */
+
+
+    /*
     This class is use to contenting all data regarding the game
     It's here where we comand basically everything (Create a team, transfer a player)
     It has methods for saving and loading game purposes

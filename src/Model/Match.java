@@ -38,8 +38,15 @@ public class Match {
     //4 -> Bola está frente à baliza do visitante
     private int pos_ball;
     //Classe que tem os jogadores que estão a jogar, válidos para os confrontos
-    private PlayersField homeField;
-    private PlayersField awayField;
+ //                  private PlayersField homeField;
+ //  Vão ser pares   private PlayersField awayField;
+    //Pares de subsituições
+    //Uma "lista" para cada equipa
+
+    //(Jogador, posição, cartões)  -> -1 estar no banco
+
+
+
 
 
     /*
@@ -59,8 +66,6 @@ public class Match {
         this.scoreAway = scoreAway;
         this.posse_bola = posse_bola;
         this.pos_ball = pos_ball;
-        this.homeField = homeField;
-        this.awayField = awayField;
     }
 
     //Quando o jogo começa do início, só recebe as duas equipas
@@ -136,13 +141,12 @@ public class Match {
         //Inicializa as coisas normais, tipo tempo e posição da bola
         this.standard();
         //Inicialização da equipa oposta
-        setAwayField(setBot(awayTeam));
     }
     /*
     Funções que inicializam a classe PlayersField de forma automática da melhor forma.
     Estas funções selecionam os jogadores mais capazes para cada uma das posições, baseado nas suas posições base
      */
-
+/*
     private PlayersField setBot(Team away){
         PlayersField fieldAway = new PlayersField();
         //Number of players in bench + field in bot team
@@ -176,9 +180,10 @@ public class Match {
                 stream().forEach(x -> setPlayerInField(fieldAway, x, Zones.MIDDLE) );
         filterAndSort(fieldAway.getBenched(), 3, Zones.OPPOSITE).
                 stream().forEach(x -> setPlayerInField(fieldAway, x, Zones.OPPOSITE) );
-        return awayField;
 
     }
+    */
+
     private void setPlayerInField(PlayersField lists, Player p, Zones zone){
         lists.leaveBench(p);
         switch (zone){
@@ -298,19 +303,12 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
     **/
     private int confrontation(int pos_ball){
         Random rd = new Random();
-        int homeTeam = valuePlayers(homeField.getPlayersPosition(pos_ball));
         //Para gerar números aleatórios
         //int randomNum = rand.nextInt((max - min) + 1) + min;
-        homeTeam *= rd.nextInt((6 - 2) + 1) + 2;
         //3- porque está no outro lado
-        int visitorTeam = valuePlayers(homeField.getPlayersPosition(4-pos_ball));
         //Para gerar números aleatórios
         //int randomNum = rand.nextInt((max - min) + 1) + min;
-        visitorTeam *= rd.nextInt((6 - 2) + 1) + 2;
-        System.out.println("Confronto");
-        if (homeTeam == visitorTeam) return 0;
-        if (homeTeam > visitorTeam) return 1;
-        else return -1;
+         return -1;
 
     }
     
@@ -424,22 +422,6 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
 
     public void setAwayTeam(Team awayTeam) {
         this.awayTeam = awayTeam;
-    }
-
-    public PlayersField getHomeField() {
-        return homeField;
-    }
-
-    public void setHomeField(PlayersField homeField) {
-        this.homeField = homeField;
-    }
-
-    public PlayersField getAwayField() {
-        return awayField;
-    }
-
-    public void setAwayField(PlayersField awayField) {
-        this.awayField = awayField;
     }
 
     public Match(String path) {
