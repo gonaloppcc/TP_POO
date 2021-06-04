@@ -4,6 +4,10 @@ import Model.Player.*;
 import View.ChosingPlayers;
 
 import javax.sound.midi.MidiDevice;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -436,6 +440,31 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
 
     public void setAwayField(PlayersField awayField) {
         this.awayField = awayField;
+    }
+
+    public Match(String path) {
+        readFile(path);
+    }
+
+    public Match readFile(String path){
+        BufferedReader bufferedReader = null;
+        try {
+            bufferedReader = new BufferedReader(new FileReader(path));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        String curLine = new String();
+        while (true){
+            try {
+                if (!((curLine = bufferedReader.readLine()) != null)) break;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //process the line as you require
+            if (curLine.startsWith("Jogo:"))System.out.println(curLine);
+        }
+        return null;
     }
 }
 
