@@ -1,13 +1,23 @@
 package Model.Player;
 
+import Model.Team;
+
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
 
-abstract public class Player {
+abstract public class Player implements Serializable {
     private String name;
     private LocalDate birthDate;
+
+    // v. i. que adicionei // Gonçalo
+    private String nationality;
+    private Team currentTeam;
+    //
+
     private int resistance, dexterity, impulsion, headGame, finish, passing;
     private List<String> historial;
 
@@ -40,9 +50,6 @@ abstract public class Player {
         this.historial.add(historial);
     }
 
-    public abstract int globalSkill();
-
-
     public Player(String[] data) {
         LocalDate birth = LocalDate.of(2000, 1, 1);
         this.name = "Default";
@@ -57,25 +64,19 @@ abstract public class Player {
         this.historial.add(data[7]);
     }
 
-
+    public abstract int globalSkill();
 
     @Override
-    public String toString() {
-        return "Player{" +
-                "res " + resistance +
-                " dex " + dexterity +
-                " imp " + impulsion +
-                " head " + headGame +
-                " fin= " + finish +
-            " pass " + passing +
-                //", historial=" + historial +
-                '}';
-    }
+    public abstract String toString();
+
 
     public String toStringAlter() {
         return "Player " + name + ": "
                         + this.globalSkill();
     }
+
+
+    /*------------------------------------------ Getters e Setters -----------------------------------------*/
 
     public String getName() {
         return name;
@@ -142,12 +143,17 @@ abstract public class Player {
     }
 
     public List<String> getHistorial() {
-        //List<String> his = new ArrayList<>();
-        //his = (List<String>) this.getHistorial().clone();
-        return this.historial;
+        return new ArrayList<>(this.historial);
     }
 
     public void setHistorial(List<String> historial) {this.historial = historial;}
+
+    /* ------------------------------------- Other methods ---------------------------------------------------------- */
+
+    public int getIdade() {
+        // Idade do jogador relativa a agora
+        return Period.between(birthDate, LocalDate.now()).getYears();
+    }
 
     public void addHistorial(String team) {
         this.historial.add(team);

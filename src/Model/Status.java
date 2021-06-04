@@ -2,36 +2,18 @@ package Model;
 
 import Model.Player.*;
 
-import java.io.File;  // Import the File class
-import java.io.FileNotFoundException;  // Import this class to handle errors
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner; // Import the Scanner class to read text files
+import java.io.*;
+import java.util.*;
+import java.util.stream.Collectors;
 
-public class Status {
+public class Status implements Serializable {
     private String gameName;
     private int playersPerTeam;
     private List<Team> teams; // Informações sobre o save atual
-    private List<Match> games; // Ainda falta desenvolver!!!!!!!!!
+    private Set<List<Match>> games; // Ainda falta desenvolver!!!!!!!!! A forma de ordenar seria a data do jogo
+    // A lista seria os jogos que tinhamos ocorrido naquele dia
 
-    /*
-    View do Status
-    Pergunta o ficheiro para carregar status
-    abre o meu Status
-    Imprime nome equipas e pergunta: Escolhe uma ou aleatória
-    ---------
-    View do Game
-    Começa mesmo o jogo
-    Torneio/Jogo?
-    Tratar da minha equipa
-    Consultar outras equipas
-    ---------
-    View do Match
-    Confrontos e coisas dos género!
-     */
-
-
-    /*
+/*
     This class is use to contenting all data regarding the game
     It's here where we comand basically everything (Create a team, transfer a player)
     It has methods for saving and loading game purposes
@@ -41,7 +23,7 @@ public class Status {
         this.gameName = "Futebol";
         this.teams = new ArrayList<>();
         this.playersPerTeam = 11;
-        this.games = new ArrayList<>();
+        this.games = new TreeSet<>();
     }
 
     public Status(String gameName, int playersPerTeam, List<Team> teams) {
@@ -50,51 +32,33 @@ public class Status {
         this.teams = teams;
     }
 
-    public static void Saving(String filename) {
-        // return ...
+    public void save(String filePath) throws IOException {
+        FileOutputStream fos = new FileOutputStream(filePath);
+        ObjectOutputStream out = new ObjectOutputStream(fos);
+        out.writeObject(this);
+
+        // Closing stuff
+        out.close();
+        fos.close();
     }
 
-    public String getGameName() {
-        return gameName;
+    public static Status load(String filePath) throws IOException, ClassNotFoundException {
+        FileInputStream fis = new FileInputStream(filePath);
+        ObjectInputStream in = new ObjectInputStream(fis);
+        Status status = (Status) in.readObject();
+
+        // Closing stuff
+        in.close();
+        fis.close();
+
+        return status;
     }
 
-    public void setGameName(String gameName) {
-        this.gameName = gameName;
-    }
-
-    public int getPlayersPerTeam() {
-        return playersPerTeam;
-    }
-
-    public void setPlayersPerTeam(int playersPerTeam) {
-        this.playersPerTeam = playersPerTeam;
-    }
-
-    public List<Team> getTeams() {
-        return teams /*.stream().map(Team::clone).collect(Collectors.toList())*/;
-    }
-
-    public void setTeams(ArrayList<Team> teams) {
-        this.teams = teams;
-    }
-
-    public void setTeams(List<Team> teams) {
-        this.teams = teams;
-    }
-
-    public List<Match> getGames() {
-        return games;
-    }
-
-    public void setGames(List<Match> games) {
-        this.games = games;
-    }
-
-    public void Load(String filename) {
+    public void loadText(String filePath) {
         try {
             //Team atual a ser preenchida
             int equipa_atual = 0;
-            File f = new File(filename);
+            File f = new File(filePath);
             Scanner scan = new Scanner(f);
             // GameName
             String data = scan.nextLine();
@@ -158,6 +122,47 @@ public class Status {
         }
 
     }
+
+    /*------------------------------------------ Getters e Setters ---------------------------------------------------*/
+
+    public String getGameName() {
+        return gameName;
+    }
+
+    public void setGameName(String gameName) {
+        this.gameName = gameName;
+    }
+
+    public int getPlayersPerTeam() {
+        return playersPerTeam;
+    }
+
+    public void setPlayersPerTeam(int playersPerTeam) {
+        this.playersPerTeam = playersPerTeam;
+    }
+
+    public List<Team> getTeams() {
+        return teams /*.stream().map(Team::clone).collect(Collectors.toList())*/;
+    }
+
+    public void setTeams(ArrayList<Team> teams) {
+        this.teams = teams;
+    }
+
+    public void setTeams(List<Team> teams) {
+        this.teams = teams;
+    }
+
+    public Set<List<Match>> getGames() {
+        return games.stream().
+                map(list -> list.stream().map(Match::clone).collect(Collectors.toList())).
+                collect(Collectors.toSet());
+    }
+
+    public void setGames(Set<List<Match>> games) {
+        this.games = games;
+    }
+
 
     @Override
     public String toString() {

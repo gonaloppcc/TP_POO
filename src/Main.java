@@ -4,6 +4,7 @@ import Model.DefaultGames.Football;
 import Model.Player.GoalKeeper;
 import View.StatusView;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -11,16 +12,29 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
-     /*   Football footballGame = new Football();
+        Football footballGame = new Football();
         Status model = new Status("Football", 11, footballGame.generateTeams());
         StatusView view = new StatusView();
         StatusController controller = new StatusController(model, view);
-    Match teste = new Match(model.getTeams().get(0), model.getTeams().get(1));
+        //Match teste = new Match(model.getTeams().get(0), model.getTeams().get(1));
         System.out.println(controller.getTeamsName());
 
         controller.updateView();
-*/
-        Match test = new Match("/home/banderitas/Desktop/2_ano_2_sem/POO/TP_POO/src/Files/profFicheiro");
+
+        try {
+            model.save("save.bin");
+        } catch (IOException e) {
+            System.out.println("Error saving the game!");
+        }
+
+        try {
+            model = Status.load("save.bin");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
+        //Match test = new Match("/home/banderitas/Desktop/2_ano_2_sem/POO/TP_POO/src/Files/profFicheiro");
 
     }
 

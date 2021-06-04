@@ -4,15 +4,12 @@ import Model.Player.*;
 import View.ChosingPlayers;
 
 import javax.sound.midi.MidiDevice;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-public class Match {
+public class Match implements Serializable {
     /*
     Cada equipa é constituída por um conjunto fixo de jogadores,
     sendo que em cada jogo podem jogar N jogadores titulares e utilizarem-se M suplentes.
@@ -46,6 +43,10 @@ public class Match {
     //(Jogador, posição, cartões)  -> -1 estar no banco
 
 
+    public Match clone() {
+        // Fazer cenas;
+        return this;
+    }
 
 
 

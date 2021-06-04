@@ -23,7 +23,8 @@ public class Striker extends Player {
 
     @Override
     public String toString() {
-        return "S" +
+        return "S " +
+                getName() +
                 " res " + super.getResistance() +
                 " dex " + super.getDexterity() +
                 " imp " + super.getImpulsion() +

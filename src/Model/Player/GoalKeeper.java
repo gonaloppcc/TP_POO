@@ -28,7 +28,8 @@ public class GoalKeeper extends Player {
 
     @Override
     public String toString() {
-        return "G" +
+        return "G " +
+                getName() +
                 " res " + super.getResistance() +
                 " dex " + super.getDexterity() +
                 " imp " + super.getImpulsion() +

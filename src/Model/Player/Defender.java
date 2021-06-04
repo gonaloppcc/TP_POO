@@ -24,7 +24,8 @@ public class Defender extends Player {
 
     @Override
     public String toString() {
-        return "D" +
+        return "D " +
+                getName() +
                 " res " + super.getResistance() +
                 " dex " + super.getDexterity() +
                 " imp " + super.getImpulsion() +

@@ -27,7 +27,8 @@ public class Midfield extends Player {
 
     @Override
     public String toString() {
-        return "M" +
+        return "M " +
+                getName() +
                 " res " + super.getResistance() +
                 " dex " + super.getDexterity() +
                 " imp " + super.getImpulsion() +

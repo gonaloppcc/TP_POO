@@ -23,7 +23,8 @@ public class BackWing extends Player {
 
     @Override
     public String toString() {
-        return "B" +
+        return "B " +
+                getName() +
                 " res " + super.getResistance() +
                 " dex " + super.getDexterity() +
                 " imp " + super.getImpulsion() +

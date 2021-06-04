@@ -2,11 +2,13 @@ package Model;
 
 import Model.Player.*;
 
+import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Team {
+public class Team implements Serializable {
     /*
     Cada equipa é constituída por um conjunto fixo de jogadores,
     sendo que em cada jogo podem jogar N jogadores titulares e utilizarem-se M suplentes.
