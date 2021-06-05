@@ -1,4 +1,4 @@
-package Model;
+package Model.Match;
 //Coisas para fazer, importante
 /*
 Nos getter e setter meter clones, se não é apenas o endereço que vai e pode dar problemas
@@ -10,13 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlayersField {
+    List<PlayerField> playersPlaying;
+    List<PlayerField> playersBench;
 
-    private List<Player> benched;
-    private List<Player> defender;
-    private List<Player> midfield;
-    private List<Player> striker;
-    private Player goalKeeper;
-   // enum Zones {GOAL, DEFENSE, MIDDLE, OPPOSITE}
 /*
 
     //Função que substitui
@@ -67,11 +63,9 @@ public class PlayersField {
     //Construtores
 
 
-    public PlayersField() {
-        this.defender = new ArrayList<>();
-        this.midfield = new ArrayList<>();
-        this.striker = new ArrayList<>();
-        this.goalKeeper = null;
+    public PlayersField(List<PlayerField> playersPlaying, List<PlayerField> playersBench) {
+        this.playersPlaying = playersPlaying;
+        this.playersBench  = playersBench;
     }
 
     //Getters e Setters
