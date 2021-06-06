@@ -4,16 +4,17 @@ package Model.Match;
 Nos getter e setter meter clones, se não é apenas o endereço que vai e pode dar problemas
 Meter os enum a funcionar para ele poder usar aqui os enum, caso contrário é muito chato
  */
-import Model.Player.Player;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PlayersField {
     private List<PlayerField> playersPlaying;
     private List<PlayerField> playersBench;
-    private double radius;
+
+
+
+    private static final double radius = 5;
 
     // Construtores
     public PlayersField(List<PlayerField> playersPlaying, List<PlayerField> playersBench) {
@@ -70,8 +71,11 @@ public class PlayersField {
         in.setLateral(lateral);
     }
 
-    // Function that moves the player in the field
-    public void move(PlayerField startP, int startZ, int endZ) {
+    // Function that moves players in the field
+    public void movePlayers(PlayerField startP, Point pos_ball) {
+
+
+
 
     }
 

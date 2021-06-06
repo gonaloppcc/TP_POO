@@ -4,11 +4,12 @@ import Model.Player.Player;
 
 class PlayerField {
     private Player player;
+
     private Point position; // current position on the field
     private Position mainPosition; // main position
     private boolean lateral;
 
-    private Energy energy;
+    private Energy energy; // range [0, 100]
 
     private int yellowCards;
     private int redCards;
@@ -88,8 +89,16 @@ class PlayerField {
         return new PlayerField(player, position, mainPosition, lateral, energy, yellowCards, redCards);
     }
 
-
     public double distance(Point point) {
         return this.position.distance(point);
+    }
+
+    public double skill() { // Skill formula
+        return player.globalSkill() * (energy.getEnergy() / 100); // Falta ter em atenção o facto do jogador não estar na sua posição
+    }
+
+    // Combines the x and y arguments with the position of the player
+    public void move(int x, int y) {
+        this.position.addVector(x, y);
     }
 }

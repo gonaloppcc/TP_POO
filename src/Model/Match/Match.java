@@ -5,6 +5,7 @@ import Model.Team;
 import View.ChosingPlayers;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -17,6 +18,9 @@ public class Match implements Serializable {
     Existem golos de ambas as equipas
     A bola pode estar na posse de uma ou outra equipa e pode estar em 3 zonas distintas do campo.
     **/
+    // Data do encontro
+    LocalDate date;
+
     // Equipas completas,
     private Team homeTeam;
     private Team awayTeam;
@@ -38,6 +42,7 @@ public class Match implements Serializable {
 
     // pos_ball is a point in the field.
     private Point pos_ball;
+
     // Classe que tem os jogadores que estão a jogar, válidos para os confrontos
     //                  private PlayersField homeField;
     // Vão ser pares   private PlayersField awayField;
@@ -64,11 +69,9 @@ public class Match implements Serializable {
 
 
 
-    /*
-    Construtores
+    /*-----------------------------------------------------Construtores-------------------------------------------------
     O jogo pode ser inicializado a partir de um jogo já existente ou a partir do início, com apenas 2 equipas
     **/
-
 
     //Quando o jogo começa do início, só recebe as duas equipas
     //Inicializa o tempo a 0, a bola a meio campo e sorteia a posse de bola de forma aleatória
@@ -151,73 +154,105 @@ public class Match implements Serializable {
     public Match(String path) {
         readFile(path);
     }
-    /*
-    Funções que inicializam a classe PlayersField de forma automática da melhor forma.
-    Estas funções selecionam os jogadores mais capazes para cada uma das posições, baseado nas suas posições base
-     */
-/*
-    private PlayersField setBot(Team away){
-        PlayersField fieldAway = new PlayersField();
-        //Number of players in bench + field in bot team
-        int goalkeepers = (int) awayTeam.getPlayers().stream().filter(item -> item instanceof GoalKeeper).count();
-        if (goalkeepers > 2) goalkeepers = 2;
-        int backs = (int) awayTeam.getPlayers().stream().filter(item -> position(item, Zones.DEFENSE)).count();
-        if (backs > 8) backs = 8;
-
-        int mediuns = (int) awayTeam.getPlayers().stream().filter(item -> position (item, Zones.MIDDLE)).count();
-        if (mediuns > 7) mediuns = 7;
-        int strikers = (int) awayTeam.getPlayers().stream().filter(item -> position(item, Zones.OPPOSITE)).count();
-        if (strikers > 5) strikers = 5;
-        //Se tiver menos que 17 e a equipa tiver a mais, faz qualquer coisa, mas não sei o quê
-        //Verificar onde se podem meter mais jogadores
-        //Talvez um bool que a partir daqui passa a iserir mais?
-        if (goalkeepers + backs + mediuns + strikers < 17 && awayTeam.getPlayers().stream().count() > 17) ;
-        //No banco ficam todos
-        //Se não separarmos não garantimos que a equipa não é só Ronaldos sem Ruis Patrícios
-        filterAndSort(awayTeam.getPlayers(), goalkeepers, Zones.GOAL).stream().forEach(p ->  fieldAway.setBenched(p));
-        filterAndSort(awayTeam.getPlayers(), backs, Zones.DEFENSE).stream().forEach(p ->  fieldAway.setBenched(p));
-        filterAndSort(awayTeam.getPlayers(), mediuns, Zones.MIDDLE).stream().forEach(p ->  fieldAway.setBenched(p));
-        filterAndSort(awayTeam.getPlayers(), strikers, Zones.OPPOSITE).stream().forEach(p ->  fieldAway.setBenched(p));
-
-        //meter o guarda redes no campo
-        Player toField = filterAndSort(fieldAway.getBenched(), 1, Zones.GOAL).get(1);
-        fieldAway.leaveBench(toField);
-        fieldAway.setGoalKeeper(toField);
-        filterAndSort(fieldAway.getBenched(), 4, Zones.DEFENSE).
-                stream().forEach(x -> setPlayerInField(fieldAway, x, Zones.DEFENSE) );
-        filterAndSort(fieldAway.getBenched(), 4, Zones.MIDDLE).
-                stream().forEach(x -> setPlayerInField(fieldAway, x, Zones.MIDDLE) );
-        filterAndSort(fieldAway.getBenched(), 3, Zones.OPPOSITE).
-                stream().forEach(x -> setPlayerInField(fieldAway, x, Zones.OPPOSITE) );
-
-    }
-    */
 
     public Match clone() {
         // Fazer cenas;
         return this;
     }
 
-    private List<Player> filterAndSort(List<Player> players, int howMany, Zones position) {
-        return players.stream().filter(player -> position(player, position)).
-                sorted().limit(howMany).collect(Collectors.toList());
+
+    /*------------------------------------------Getters and Setters---------------------------------------------------*/
+
+    public LocalDate getDate() {
+        return date;
     }
 
-    /*
-       returnPosPlayers
-Função muito utilizada que liga os módulos View e Controller. O objetivo desta função é saber que jogadores o utilizador escolhe a partir dum conjunto de jogadores.
-Recebe a lista de jogadores que serão impressos, uma descrição (String) do que será escrito para o utilizador e quantos jogadores serão escolhidos.
-Retorna um array com as posições dos jogadores escolhidos a partir da lista.
-**/
-
-    private boolean position(Player p, Zones z) {
-        return ((p instanceof GoalKeeper && z == Zones.GOAL)
-                || ((p instanceof BackWing || p instanceof Defender) && z == Zones.DEFENSE)
-                || (p instanceof Midfield && z == Zones.MIDDLE)
-                || (p instanceof Striker && z == Zones.OPPOSITE));
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
-    //Lista de Jogadores + Descrição para o output + número de valores lidos
+    public Team getHomeTeam() {
+        return homeTeam;
+    }
+
+    public void setHomeTeam(Team homeTeam) {
+        this.homeTeam = homeTeam;
+    }
+
+    public Team getAwayTeam() {
+        return awayTeam;
+    }
+
+    public void setAwayTeam(Team awayTeam) {
+        this.awayTeam = awayTeam;
+    }
+
+    public PlayersField getPlayersHome() {
+        return playersHome;
+    }
+
+    public void setPlayersHome(PlayersField playersHome) {
+        this.playersHome = playersHome;
+    }
+
+    public PlayersField getPlayersAway() {
+        return playersAway;
+    }
+
+    public void setPlayersAway(PlayersField playersAway) {
+        this.playersAway = playersAway;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
+
+    public int getScoreHome() {
+        return scoreHome;
+    }
+
+    public void setScoreHome(int scoreHome) {
+        this.scoreHome = scoreHome;
+    }
+
+    public int getScoreAway() {
+        return scoreAway;
+    }
+
+    public void setScoreAway(int scoreAway) {
+        this.scoreAway = scoreAway;
+    }
+
+    public boolean isPosse_bola() {
+        return posse_bola;
+    }
+
+    public void setPosse_bola(boolean posse_bola) {
+        this.posse_bola = posse_bola;
+    }
+
+    public Point getPos_ball() {
+        return pos_ball;
+    }
+
+    public void setPos_ball(Point pos_ball) {
+        this.pos_ball = pos_ball;
+    }
+
+
+    /*------------------------------------------Other methods---------------------------------------------------------*/
+
+    /** returnPosPlayers
+        Função muito utilizada que liga os módulos View e Controller. O objetivo desta função é saber que jogadores o utilizador escolhe a partir dum conjunto de jogadores.
+        Recebe a lista de jogadores que serão impressos, uma descrição (String) do que será escrito para o utilizador e quantos jogadores serão escolhidos.
+        Retorna um array com as posições dos jogadores escolhidos a partir da lista.
+    */
+
+    // Lista de Jogadores + Descrição para o output + número de valores lidos
     // Retorna o que o jogador escolhe, serão inteiros
     private int[] returnPosPlayers(List<Player> list, String name, int total_players) {
         ChosingPlayers stdout = new ChosingPlayers();
@@ -226,17 +261,14 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
         stdout.choosePlayers(playersChoosen, total_players);
         return playersChoosen;
     }
-    
-    
-    /*
-    Funções sobre a lógica do programa
-    **/
 
-    /*
-    strategy
-    Utilizando o módulo View, descobre que estratégia o utilizador vai utilizar no jogo.
-    Esta estratégia consiste na distribuição dos jogadores pelo campo.
-**/
+
+    /*------------------------------------------Funções sobre a lógica do programa------------------------------------*/
+
+    /** strategy
+        Utilizando o módulo View, descobre que estratégia o utilizador vai utilizar no jogo.
+        Esta estratégia consiste na distribuição dos jogadores pelo campo.
+    */
     private int[] strategy(int total_players) {
         ChosingPlayers stdout = new ChosingPlayers();
         stdout.ChooseStrategy(3);
@@ -245,10 +277,9 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
         return playersChoosen;
     }
 
-    /*
-    changePlayers
-    Função que utiliza o módulo View para saber que jogadores serão substítuidos, isto é, uma troca entre um jogador que está no campo por um que está no banco.
-**/
+    /** changePlayers
+        Função que utiliza o módulo View para saber que jogadores serão substítuidos, isto é, uma troca entre um jogador que está no campo por um que está no banco.
+    */
     private void changePlayers(PlayersField team) {
         ChosingPlayers stdout = new ChosingPlayers();
         //Imprime e recebe que posição do jogador recebe
@@ -263,10 +294,10 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
         Player out = team.getPlayersCloseToTheBall(posPlayerOut[0]).get(posPlayerOut[0]);
         // team.replace(in, out, pos_absoluteOut);
     }
-    /*
-    Função que verifica se o jogo chegou ao fim por tempo.     
-    **/
 
+    /**
+    Função que verifica se o jogo chegou ao fim por tempo.     
+    */
     private void movePlayers(PlayersField team) {
         ChosingPlayers stdout = new ChosingPlayers();
         int pos_absoluteStart = stdout.whereIsPlayer("Where it is?");
@@ -283,47 +314,53 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
         return (this.getTime() >= 90);
     }
 
-    //Função inventada para isto dar
+    // Função inventada para isto dar
     private int skills(Player jogador) {
         return 1;
     }
 
-    //IMPORTANTE
-    //Falta filtrar os titulares na posição do campo em que a bola está
+    // IMPORTANTE
+    // Falta filtrar os titulares na posição do campo em que a bola está
     private int valuePlayers(List<Player> equipa) {
         int total = 0;
         total += equipa.stream().mapToInt(this::skills).sum();
         return total;
     }
 
-    /*
-        confrontation
+    /** confrontation
         Função que compara as capacidades de duas equipas numa posição do campo.
         A vitória neste confronto resulta em duas possibilidades: recuperar bola ou avançar com a bola.
         Se já estiver ao pé da baliza adveresária, pode rematar.
-        **/
-    private int confrontation(Point pos_ball) {
+    **/
+    private int confrontation(int pos_ball){
         Random rd = new Random();
         //Para gerar números aleatórios
         //int randomNum = rand.nextInt((max - min) + 1) + min;
         //3- porque está no outro lado
         //Para gerar números aleatórios
         //int randomNum = rand.nextInt((max - min) + 1) + min;
-        return -1;
 
+        // Soma das skills do jogadores perto da bola de ambas equipas
+        double homeValue = this.playersHome.getPlayersCloseToTheBall(pos_ball).stream().mapToDouble(PlayerField::skill).sum();
+        double awayValue = this.playersAway.getPlayersCloseToTheBall(pos_ball).stream().mapToDouble(PlayerField::skill).sum();
+
+        int probability = rd.nextInt();
+        if (homeValue - awayValue < 0) {
+            if (probability < 3) {return 1;}
+            else return -1;
+        } else if (homeValue - awayValue > 0) {
+            if (probability < 7) {return 1;}
+            else return -1;
+        } else {
+            if (probability < 5) {return 1;}
+            else return -1;
+        }
     }
 
-    /*
-        Função que verifica se é possível rematar por causa da posição da bola.
-        **/
-    private boolean rematePossivel(Point pos_ball) {
-        return (pos_ball <= 0 || pos_ball >= 4);
-    }
 
-    /*
+    /**
         Função que interliga as várias funções desta classe.
-
-        **/
+    */
     public void Game() {
         int increment_time = 10;
         if (this.endGame()) {
@@ -355,49 +392,10 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
         setPos_ball(2);
     }
 
-    public int getScoreHome() {
-        return scoreHome;
-    }
 
-    public void setScoreHome(int scoreHome) {
-        this.scoreHome = scoreHome;
-    }
-
-    public int getScoreAway() {
-        return scoreAway;
-    }
-
-    public void setScoreAway(int scoreAway) {
-        this.scoreAway = scoreAway;
-    }
-
-    public int getTime() {
-        return time;
-    }
-
-    public void setTime(int time) {
-        this.time = time;
-    }
-
-    public boolean isPosse_bola() {
-        return posse_bola;
-    }
-
-    public void setPosse_bola(boolean posse_bola) {
-        this.posse_bola = posse_bola;
-    }
-
-    public Point getPos_ball() {
-        return pos_ball;
-    }
-
-    public void setPos_ball(Point pos_ball) {
-        this.pos_ball = pos_ball;
-    }
-
-    /*
+    /**
         Um setter que inicializa as váriáveis da classe no início do jogo.
-        **/
+    */
     private void standard() {
         setTime(0);
         setScoreAway(0);
@@ -405,22 +403,6 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
         setPos_ball(2);
         Random rd = new Random();
         setPosse_bola(rd.nextBoolean());
-    }
-
-    public Team getHomeTeam() {
-        return homeTeam;
-    }
-
-    public void setHomeTeam(Team homeTeam) {
-        this.homeTeam = homeTeam;
-    }
-
-    public Team getAwayTeam() {
-        return awayTeam;
-    }
-
-    public void setAwayTeam(Team awayTeam) {
-        this.awayTeam = awayTeam;
     }
 
     public Match readFile(String path) {
