@@ -2,13 +2,30 @@ package Model.Match;
 
 import Model.Player.Player;
 
-class PlayerField{
+class PlayerField {
     private Player player;
-    private Point point;
+    private Point position; // current position on the field
+    private Position mainPosition; // main position
+    private boolean lateral;
 
-    public PlayerField(Player player, Point point) {
-        this.player = player;
-        this.point = point;
+    private Energy energy;
+
+    private int yellowCards;
+    private int redCards;
+    // Manipular isto dps para que não ultrapasse certos valores
+
+
+    // Falta encapsular
+
+
+    public PlayerField(Player player, Point position, Position mainPosition, boolean lateral, Energy energy, int yellowCards, int redCards) {
+        this.player = player.clone();
+        this.position = position;
+        this.mainPosition = mainPosition;
+        this.lateral = lateral;
+        this.energy = energy.clone();
+        this.yellowCards = yellowCards;
+        this.redCards = redCards;
     }
 
     public Player getPlayer() {
@@ -19,11 +36,60 @@ class PlayerField{
         this.player = player;
     }
 
-    public Point getPoint() {
-        return point;
+    public Point getPosition() {
+        return position;
     }
 
-    public void setPoint(Point point) {
-        this.point = point;
+    public void setPosition(Point position) {
+        this.position = position;
+    }
+
+    public Position getMainPosition() {
+        return mainPosition;
+    }
+
+    public void setMainPosition(Position mainPosition) {
+        this.mainPosition = mainPosition;
+    }
+
+    public boolean isLateral() {
+        return lateral;
+    }
+
+    public void setLateral(boolean lateral) {
+        this.lateral = lateral;
+    }
+
+    public Energy getEnergy() {
+        return energy;
+    }
+
+    public void setEnergy(Energy energy) {
+        this.energy = energy;
+    }
+
+    public int getYellowCards() {
+        return yellowCards;
+    }
+
+    public void setYellowCards(int yellowCards) {
+        this.yellowCards = yellowCards;
+    }
+
+    public int getRedCards() {
+        return redCards;
+    }
+
+    public void setRedCards(int redCards) {
+        this.redCards = redCards;
+    }
+
+    public PlayerField clone() {
+        return new PlayerField(player, position, mainPosition, lateral, energy, yellowCards, redCards);
+    }
+
+
+    public double distance(Point point) {
+        return this.position.distance(point);
     }
 }

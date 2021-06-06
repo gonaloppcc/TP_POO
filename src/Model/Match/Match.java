@@ -22,7 +22,8 @@ public class Match implements Serializable {
     private Team awayTeam;
 
     // Jogadores no campo
-    private PlayersField jogadores;
+    private PlayersField playersHome;
+    private PlayersField playersAway;
 
     // Tempo jogado
     private int time;
@@ -35,15 +36,11 @@ public class Match implements Serializable {
     // true -> Visitante tem a bola
     private boolean posse_bola;
 
-    // 0 -> Bola está do frente à baliza de casa
-    // 1 -> Bola está do lado home
-    // 2 -> Bola está no meio campo
-    // 3 -> Bola está no lado visitante
-    // 4 -> Bola está frente à baliza do visitante
+    // pos_ball is a point in the field.
     private Point pos_ball;
-    //Classe que tem os jogadores que estão a jogar, válidos para os confrontos
+    // Classe que tem os jogadores que estão a jogar, válidos para os confrontos
     //                  private PlayersField homeField;
-    //  Vão ser pares   private PlayersField awayField;
+    // Vão ser pares   private PlayersField awayField;
     //Pares de subsituições
     //Uma "lista" para cada equipa
 
@@ -201,21 +198,6 @@ public class Match implements Serializable {
         return this;
     }
 
-    private void setPlayerInField(PlayersField lists, Player p, Zones zone) {
-        lists.leaveBench(p);
-        switch (zone) {
-            case DEFENSE:
-                lists.setDefender(p);
-                break;
-            case MIDDLE:
-                lists.setMidfield(p);
-                break;
-            case OPPOSITE:
-                lists.setStriker(p);
-                break;
-        }
-    }
-
     private List<Player> filterAndSort(List<Player> players, int howMany, Zones position) {
         return players.stream().filter(player -> position(player, position)).
                 sorted().limit(howMany).collect(Collectors.toList());
@@ -270,15 +252,15 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
     private void changePlayers(PlayersField team) {
         ChosingPlayers stdout = new ChosingPlayers();
         //Imprime e recebe que posição do jogador recebe
-        int[] posPlayerIn = returnPosPlayers(team.getBenched(), "Wich player gets in?", 1);
-        Player in = team.getBenched().get(posPlayerIn[0]);
+        int[] posPlayerIn = returnPosPlayers(team.getPlayersBench(), "Which player gets in?", 1);
+        PlayerField in = team.getBenched().get(posPlayerIn[0]);
         //saber onde o jogador que vai sair está
         int pos_absoluteOut = stdout.whereIsPlayer("Que vai sair");
         //Saber dos vários jogadores que está aí, qual é que sai, a posição dele
-        int[] posPlayerOut = returnPosPlayers(team.getPlayersPosition(pos_absoluteOut),
-                "Wich player leaves?", 1);
+        int[] posPlayerOut = returnPosPlayers(team.getPlayersCloseToTheBall(pos_absoluteOut),
+                "Which player leaves?", 1);
         //O Jogador que está nessa posição
-        Player out = team.getPlayersPosition(posPlayerOut[0]).get(posPlayerOut[0]);
+        Player out = team.getPlayersCloseToTheBall(posPlayerOut[0]).get(posPlayerOut[0]);
         // team.replace(in, out, pos_absoluteOut);
     }
     /*
@@ -290,7 +272,7 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
         int pos_absoluteStart = stdout.whereIsPlayer("Where it is?");
         //Saber dos vários jogadores que está aí, qual é que sai, a posição dele
         int[] posPlayerStart = returnPosPlayers(team.getPlayersPosition(pos_absoluteStart),
-                "Wich player leaves?", 1);
+                "Which player leaves?", 1);
         int pos_absoluteEnd = stdout.whereIsPlayer("Where player goes?");
         //Saber dos vários jogadores que está aí, qual é que sai, a posição dele
         //team.move(team.getPlayersPosition(pos_absoluteStart).get(0),
@@ -310,7 +292,7 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
     //Falta filtrar os titulares na posição do campo em que a bola está
     private int valuePlayers(List<Player> equipa) {
         int total = 0;
-        total += equipa.stream().mapToInt(n -> skills(n)).sum();
+        total += equipa.stream().mapToInt(this::skills).sum();
         return total;
     }
 

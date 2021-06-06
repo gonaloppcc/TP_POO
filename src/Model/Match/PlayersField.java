@@ -8,173 +8,71 @@ import Model.Player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PlayersField {
-    List<PlayerField> playersPlaying;
-    List<PlayerField> playersBench;
+    private List<PlayerField> playersPlaying;
+    private List<PlayerField> playersBench;
+    private double radius;
 
-/*
-
-    //Função que substitui
-    //Aqui há encapsulamento, porque acedo diretamente ao seated e assim
-    public void replace(Player in, Player out, int posOut) {
-        //Está no banco sai
-        benched.remove(in);
-        //Do campo vai para o banco
-        setBenched(out);
-        //Tirar do campo
-        switch (posOut) {
-            case 0:
-               break ;
-            case 1:
-                defender.remove(out);
-                break;
-            case 2:
-                midfield.remove(out);
-                break;
-            case 3:
-                striker.remove(out);
-                break;
-            default:
-                System.out.println("Erro?");
-                return;
-
-        }
-    }
-    public void move(Player startP, int startZ, int endZ){
-        switch(startZ){
-            case 0: leaveZone(startP, Zones.GOAL);
-                SETZone(startP, Zones.GOAL );
-            break;
-            case 1: leaveZone(startP, Zones.DEFENSE);
-                SETZone(startP, Zones.DEFENSE );
-                break;
-            case 2: leaveZone(startP, Zones.MIDDLE);
-                SETZone(startP, Zones.MIDDLE );
-                break;
-            
-            case 3: leaveZone(startP, Zones.OPPOSITE);
-                SETZone(startP, Zones.OPPOSITE );
-                break;
-            default:
-                System.out.println("Mas, queres tirar o guarda-redes e meter onde óóóóó...");
-
-    };*/
-    //Construtores
-
-
+    // Construtores
     public PlayersField(List<PlayerField> playersPlaying, List<PlayerField> playersBench) {
         this.playersPlaying = playersPlaying;
         this.playersBench  = playersBench;
     }
 
-    //Getters e Setters
-    //0 -> Bola está do frente à baliza de casa
-    //1 -> Bola está do lado home
-    //2 -> Bola está no meio campo
-    //3 -> Bola está no lado visitante
-    //4 -> Bola está frente à baliza do visitante
-    public List<Player> getPlayersPosition(int pos) {
-        switch(pos){
-            case 0: return (List<Player>) getGoalKeeper(); 
-            case 1: return getDefender();
-            case 2: return getDefender();
-            case 3: return getStriker();
-            default:
-                System.out.println("Erro?");
-                return getStriker();
-         }
+    public List<PlayerField> getPlayersCloseToTheBall(Point ballPosition) {
+        return this.playersPlaying.stream().
+                filter(player -> player.distance(ballPosition) > radius).
+                map(PlayerField::clone).
+                collect(Collectors.toList());
     }
 
-
-    public List<Player> getDefender() {
-        return defender;
+    public void setBenched(List<PlayerField> benched) {
+        this.playersBench = benched;
     }
 
-    public void setDefender(List<Player> defender) {
-        this.defender = defender;
-    }
-    public void setDefender(Player defender) {
-        this.defender.add(defender);
+    public List<PlayerField> getPlayersPlaying() {
+        return playersPlaying;
     }
 
-    public List<Player> getMidfield() {
-        return midfield;
+    public void setPlayersPlaying(List<PlayerField> playersPlaying) {
+        this.playersPlaying = playersPlaying;
     }
 
-    public void setMidfield(List<Player> midfield) {
-        this.midfield = midfield;
-    }
-    public void setMidfield(Player midfield) {
-        this.midfield.add(midfield);
+    public List<PlayerField> getPlayersBench() {
+        return playersBench;
     }
 
-    public List<Player> getStriker() {
-        return striker;
+    public void setPlayersBench(List<PlayerField> playersBench) {
+        this.playersBench = playersBench;
     }
 
-    public void setStriker(List<Player> striker) {
-        this.striker = striker;
-    }
-    public void setStriker(Player striker) {
-        this.striker.add(striker);
-    }
-    public Player getGoalKeeper() {
-        return goalKeeper;
+    //Função que faz um substituição
+    public void replace(PlayerField in, PlayerField out) {
+        if (!playersBench.contains(in) || !playersPlaying.contains(out)) return;
+        // ^ Talvez retorna um valor de retorno para dizer se a substituição correu bem
+
+        // Vai do banco para o campo
+        playersBench.remove(in);
+        playersPlaying.add(in);
+
+        // Do campo vai para o banco
+        playersPlaying.remove(out);
+        playersBench.add(out);
     }
 
-    public void setGoalKeeper(Player goalKeeper) {
-        this.goalKeeper = goalKeeper;
+    public void replace(PlayerField in, PlayerField out, Position inPosition, boolean lateral) {
+        this.replace(in, out);
+
+        // Colocar uma nova mainPosition e meter a lateral
+        in.setMainPosition(inPosition);
+        in.setLateral(lateral);
     }
 
-    public List<Player> getBenched() {
-        return benched;
-    }
-    public Player getBenched(int i) {
-        return benched.get(i);
+    // Function that moves the player in the field
+    public void move(PlayerField startP, int startZ, int endZ) {
+
     }
 
-    public void leaveBench(Player in){
-        this.getBenched().remove(in);
-    }
-   /* private void leaveZone(Player out, Zones zone){
-            switch (zone) {
-                case Zones.DEFENSE:
-                    this.getDefender().remove(out);
-                    break;
-                case Zones.MIDDLE:
-                    this.getMidfield().remove(out);
-                    break;
-                case Zones.OPPOSITE:
-                    this.getStriker().remove(out);
-                    break;
-                case Zones.GOAL:
-                    this.setGoalKeeper(null);
-                    break;
-            }
-        }
-        private void SETZone(Player out, Zones zone){
-            switch (zone) {
-                case Zones.DEFENSE:
-                    this.setDefender(out);
-                    break;
-                case Zones.MIDDLE:
-                    this.setMidfield(out);
-                    break;
-                case Zones.OPPOSITE:
-                    this.setStriker(out);
-                    break;
-                case Zones.GOAL:
-                    this.setGoalKeeper(out);
-                    break;
-            }
-        }
-
-    */
-    public void setBenched(List<Player> benched) {
-        this.benched = benched;
-    }
-    public void setBenched(Player seated) {
-        this.benched.add(seated);
-    }
 }
