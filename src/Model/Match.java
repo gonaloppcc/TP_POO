@@ -5,6 +5,7 @@ import View.ChosingPlayers;
 
 import javax.sound.midi.MidiDevice;
 import java.io.*;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -22,6 +23,8 @@ public class Match implements Serializable {
     private Team awayTeam;
     //Tempo jogado
     private int time;
+    private LocalDate date;
+
     //Pontos
     private int scoreHome;
     private int scoreAway;
@@ -373,6 +376,9 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
     }
 
 
+    public LocalDate getDate() {
+        return date;
+    }
     public int getTime() {
         return time;
     }

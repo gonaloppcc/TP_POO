@@ -3,6 +3,7 @@ package Model;
 import Model.Player.*;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -22,7 +23,7 @@ public class Status implements Serializable {
         this.gameName = "Futebol";
         this.teams = new ArrayList<>();
         this.playersPerTeam = 11;
-        this.games = new TreeSet<>();
+        this.games = new TreeMap<LocalDate, List<Match>>();
     }
     private void addgame(Match toInsert){
         if (games.containsKey(toInsert.getDate()))
@@ -70,23 +71,30 @@ public class Status implements Serializable {
         try{
             File fd = new File(filePath);
             Scanner file = new Scanner(fd);
+            String line = file.nextLine();
             while (file.hasNextLine()) {
-                String line = file.nextLine();
                 //Caso a linha seja sobre um jogo
                 if (line.startsWith("Jogo:")) {
                     Match one = new Match(line);
                     //Adicionar um método para adicionar matchs ao Set
                     //if (one != null) games.contains()
-                }
-                if (line.startsWith("Equipa:")) {
-                    StringBuilder team = new StringBuilder(line);
                     line = file.nextLine();
-                    while (isTeam(line)) {team.append(line); line = file.nextLine();}
-                    teams.add(new Team(team.toString()));
-                } else {
-                    //Linha inválida
-                    //Para fazer debugging
-                    System.out.println(line);
+                }
+                else {
+                    if (line.startsWith("Equipa:")) {
+
+                        StringBuilder team = new StringBuilder(line.substring(7)+"###");
+                        line = file.nextLine();
+                        while (isTeam(line)) {team.append(line+"\n"); line = file.nextLine();}
+                      //System.out.println("Equipa: "+team.toString());
+                        teams.add(new Team(team.toString()));
+                    } else {
+                        //Linha inválida
+                        //Para fazer debugging
+                        System.out.println("Inválida . -> "+ line);
+                        line = file.nextLine();
+                    }
+
                 }
             }
         } catch (FileNotFoundException e) {
@@ -106,11 +114,8 @@ public class Status implements Serializable {
         try{
             load(path);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-//O ficheiro está em texto
-            loadText(path);
+        } catch (Exception e) {
+                loadText(path);
         }
     }
 

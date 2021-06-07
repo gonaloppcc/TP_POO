@@ -52,7 +52,7 @@ abstract public class Player implements Serializable {
 
     public Player(String[] data) {
         LocalDate birth = LocalDate.of(2000, 1, 1);
-        this.name = "Default";
+        this.name = data[0];
         this.birthDate = birth;
         this.resistance = Integer.parseInt(data[1]);
         this.dexterity = Integer.parseInt(data[2]);

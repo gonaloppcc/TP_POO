@@ -24,6 +24,7 @@ public class GoalKeeper extends Player {
 
     public GoalKeeper(String[] data) {
         super(data);
+        elasticity = Integer.parseInt(data[9]);
     }
 
     @Override

@@ -6,6 +6,7 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class Team implements Serializable {
@@ -24,8 +25,34 @@ public class Team implements Serializable {
     }
 //Diogo Fazer esta
     public Team(String fromFile) {
-        this.name = name;
+        String [] divisoes = fromFile.split("###");
+        this.name = divisoes[0];
+        //for (String x : divisoes) System.out.println("Jogador: "+x);
+        Scanner jogadores = new Scanner(divisoes[1]);
         this.players = new ArrayList<>();
+
+        while (jogadores.hasNextLine())
+        {
+            String line = jogadores.nextLine();
+            String[] info = line.split(":");
+            if (line.startsWith("Guarda-Redes")) {
+                players.add(new GoalKeeper(info[1].split(",")));
+            }
+            if (line.startsWith("Lateral")) {
+                players.add(new BackWing(info[1].split(",")));
+            }
+            if (line.startsWith("Defesa")) {
+                players.add(new Defender(info[1].split(",")));
+            }
+            if (line.startsWith("Medio")) {
+                players.add(new Midfield(info[1].split(",")));
+            }
+            if (line.startsWith("Avancado")) {
+                players.add(new Striker(info[1].split(",")));
+            }
+
+        }
+        System.out.println(this.toString());
     }
 
     public Team(int numJogadores) {
