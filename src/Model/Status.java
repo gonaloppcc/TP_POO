@@ -4,6 +4,8 @@ import Model.Match.Match;
 import Model.Player.*;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -11,7 +13,7 @@ public class Status implements Serializable {
     private String gameName;
     private int playersPerTeam;
     private List<Team> teams; // Informações sobre o save atual
-    private Set<List<Match>> games; // Ainda falta desenvolver!!!!!!!!! A forma de ordenar seria a data do jogo
+    private Map<LocalDate, List<Match>> games; // Ainda falta desenvolver!!!!!!!!! A forma de ordenar seria a data do jogo
     // A lista seria os jogos que tinhamos ocorrido naquele dia
 
 /*
@@ -19,12 +21,25 @@ public class Status implements Serializable {
     It's here where we comand basically everything (Create a team, transfer a player)
     It has methods for saving and loading game purposes
     */
+    private void addgame(Match toInsert){
+        if (games.containsKey(toInsert.getDate()))
+        {
+            List<Match> one = games.get(toInsert.getDate());
+            one.add(toInsert);
+            games.put(toInsert.getDate(), one);
 
+        }
+        else {
+            List <Match> newList = new ArrayList();
+            newList.add(toInsert);
+            games.put(toInsert.getDate(),newList);
+        }
+    }
     public Status() { // Construtor básico, cria com o jogo "Futebol"
         this.gameName = "Futebol";
         this.teams = new ArrayList<>();
         this.playersPerTeam = 11;
-        this.games = new TreeSet<>();
+        this.games = new TreeMap<>();
     }
 
     public Status(String gameName, int playersPerTeam, List<Team> teams) {
@@ -154,14 +169,12 @@ public class Status implements Serializable {
         this.teams = teams;
     }
 
-    public Set<List<Match>> getGames() {
-        return games.stream().
-                map(list -> list.stream().map(Match::clone).collect(Collectors.toList())).
-                collect(Collectors.toSet());
+    public Map<LocalDate, List<Match>> getGames() {
+        return games.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    public void setGames(Set<List<Match>> games) {
-        this.games = games;
+    public void setGames(Map <LocalDate, List<Match>> games) {
+        this.games = new HashMap<>(games) ;
     }
 
 
