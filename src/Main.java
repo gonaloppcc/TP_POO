@@ -1,7 +1,9 @@
+import Controller.CtrlPreStatus;
 import Controller.StatusController;
 import Model.*;
 import Model.DefaultGames.Football;
 import Model.Player.GoalKeeper;
+import View.PreStatus;
 import View.StatusView;
 
 import java.io.IOException;
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
+       /*
         Football footballGame = new Football();
         Status model = new Status("Football", 11, footballGame.generateTeams());
         StatusView view = new StatusView();
@@ -32,9 +35,15 @@ public class Main {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+        */
+        PreStatus novo = new PreStatus();
+        novo.welcomeAndLoad();
+        CtrlPreStatus maybeFilePath = new CtrlPreStatus();
+        String maybePath = maybeFilePath.readStatus();
+        if (maybePath != null) System.out.println("Tenho ficheiro");
+        else System.out.printf("Não tenho ficheiro");
 
 
-        //Match test = new Match("/home/banderitas/Desktop/2_ano_2_sem/POO/TP_POO/src/Files/profFicheiro");
 
     }
 
