@@ -11,6 +11,6 @@ public class PreStatus {
         else System.out.printf("Let's create a new one");
     }
     public void invalidChoice(){
-        System.out.println("Please enter a valid path -_- ");
+        System.out.println("Please enter a valid path ");
     }
 }
