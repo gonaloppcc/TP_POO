@@ -10,8 +10,7 @@ public class Status implements Serializable {
     private String gameName;
     private int playersPerTeam;
     private List<Team> teams; // Informações sobre o save atual
-    private Set<List<Match>> games; // Ainda falta desenvolver!!!!!!!!! A forma de ordenar seria a data do jogo
-    // A lista seria os jogos que tinhamos ocorrido naquele dia
+    private Map<LocalDate, List<Match>> games;    // A lista seria os jogos que tinhamos ocorrido naquele dia
 
 /*
     This class is use to contenting all data regarding the game
@@ -25,7 +24,20 @@ public class Status implements Serializable {
         this.playersPerTeam = 11;
         this.games = new TreeSet<>();
     }
+    private void addgame(Match toInsert){
+        if (games.containsKey(toInsert.getDate()))
+        {
+            List<Match> one = games.get(toInsert.getDate());
+            one.add(toInsert);
+            games.put(toInsert.getDate(), one);
 
+        }
+        else {
+            List <Match> newList = new ArrayList();
+            newList.add(toInsert);
+            games.put(toInsert.getDate(),newList);
+        }
+    }
     public Status(String gameName, int playersPerTeam, List<Team> teams) {
         this.gameName = gameName;
         this.playersPerTeam = playersPerTeam;
@@ -132,14 +144,13 @@ public class Status implements Serializable {
         this.teams = teams;
     }
 
-    public Set<List<Match>> getGames() {
-        return games.stream().
-                map(list -> list.stream().map(Match::clone).collect(Collectors.toList())).
-                collect(Collectors.toSet());
+    
+    public Map<LocalDate, List<Match>> getGames() {
+        return games.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    public void setGames(Set<List<Match>> games) {
-        this.games = games;
+    public void setGames(Map <LocalDate, List<Match>> games) {
+        this.games = new HashMap<>(games) ;
     }
 
 
