@@ -53,74 +53,53 @@ public class Status implements Serializable {
 
         return status;
     }
-
+//Quando o ficheiro original é .txt
     public void loadText(String filePath) {
-        try {
-            //Team atual a ser preenchida
-            int equipa_atual = 0;
-            File f = new File(filePath);
-            Scanner scan = new Scanner(f);
-            // GameName
-            String data = scan.nextLine();
-            this.setGameName(data);
-            // PlayerPerTeam
-            data = scan.nextLine();
-            this.setPlayersPerTeam(Integer.parseInt(data));
-            // Teams
-            while (scan.hasNextLine()) {
-                data = scan.nextLine();
-                //  System.out.println("Meu: "+data.equals("."));
-                if (data.equals(".")) {
-                    //Define nome equipa
-                    data = scan.nextLine();
-                    Team nova = new Team(data);
-                    this.teams.add(nova);
-                    while (!data.equals(".") && scan.hasNextLine()) {
-                        data = scan.nextLine();
-                        String[] gAux = data.split(";");
-
-                        //Player.GoalKeeper g = new Player.GoalKeeper(gAux);
-                        //this.Teams[equipa_atual].addJogador(new Player.GoalKeeper(gAux));
-                        switch (data.charAt(0)) {
-                            case 'G' -> {
-                                GoalKeeper g = new GoalKeeper(gAux);
-                                this.teams.get(equipa_atual).addPlayer(g);
-                            }
-                            case 'A' -> this.teams.get(equipa_atual).addPlayer(new Striker(gAux));
-                            case 'L' -> this.teams.get(equipa_atual).addPlayer(new BackWing(gAux));
-                            case 'M' -> this.teams.get(equipa_atual).addPlayer(new Midfield(gAux));
-                            case 'D' -> this.teams.get(equipa_atual).addPlayer(new Defender(gAux));
-                            default -> System.out.println("Quem?");
-                        }
-
-
-                    }
+        try{
+            File fd = new File(filePath);
+            Scanner file = new Scanner(fd);
+            while (file.hasNextLine()) {
+                String line = file.nextLine();
+                //Caso a linha seja sobre um jogo
+                if (line.startsWith("Jogo:")) {
+                    Match one = new Match(line);
+                    //Adicionar um método para adicionar matchs ao Set
+                    //if (one != null) games.contains()
                 }
-                equipa_atual++;
-                        /*    //Nova equipa
-                    // System.out.println(data);
-                    if (data.charAt(1) != ';') {
-                    // Team name(//)
-                    // this.Teams[0].setNome(data);
+                if (line.startsWith("Equipa:")) {
+                    StringBuilder team = new StringBuilder(line);
+                    line = file.nextLine();
+                    while (isTeam(line)) {team.append(line); line = file.nextLine();}
+                    teams.add(new Team(team.toString()));
                 } else {
-                    if (data.charAt(0) == 'G') {
-                        ArrayList<String> gAux = data.split(";");
-                        Player.GoalKeeper g = new Player.GoalKeeper(Integer.parseInt(gAux[0]), Integer.parseInt(gAux[1]),
-                                Integer.parseInt(gAux[2]), Integer.parseInt(gAux[3]), Integer.parseInt(gAux[4]),
-                                Integer.parseInt(gAux[5]), gAux[7], Integer.parseInt(gAux[8]));
-                        this.Teams[0].addJogador(g);
-                    }
+                    //Linha inválida
+                    //Para fazer debugging
+                    System.out.println(line);
                 }
-
-*/  //this.toString();
             }
-
-        } catch (
-                FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
 
+    }
+    private boolean isTeam(String lineFile){
+        if (!lineFile.startsWith("Equipa:") &&
+                !lineFile.startsWith("Jogo:")
+        ) return true;
+        else return false;
+    }
+
+    public void loadPath(String path) {
+        try{
+            load(path);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+//O ficheiro está em texto
+            loadText(path);
+        }
     }
 
     /*------------------------------------------ Getters e Setters ---------------------------------------------------*/

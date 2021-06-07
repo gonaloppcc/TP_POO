@@ -40,8 +40,12 @@ public class Main {
         novo.welcomeAndLoad();
         CtrlPreStatus maybeFilePath = new CtrlPreStatus();
         String maybePath = maybeFilePath.readStatus();
-        if (maybePath != null) System.out.println("Tenho ficheiro");
-        else System.out.printf("Não tenho ficheiro");
+        if (maybePath != null) {
+            System.out.println("Tenho ficheiro");
+            Status fromFile = new Status();
+            fromFile.loadPath(maybePath); //Carrega o status
+        }
+        else System.out.printf("Não tenho ficheiro"); //Gerar um status aleatório?
 
 
 

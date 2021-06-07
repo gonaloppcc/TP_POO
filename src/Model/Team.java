@@ -22,8 +22,8 @@ public class Team implements Serializable {
         this.name = "Default";
         this.players = new ArrayList<>();
     }
-
-    public Team(String name) {
+//Diogo Fazer esta
+    public Team(String fromFile) {
         this.name = name;
         this.players = new ArrayList<>();
     }

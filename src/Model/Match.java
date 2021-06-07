@@ -426,7 +426,8 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
     }
 
     public Match(String path) {
-        readFile(path);
+        //Recebe a linha lida, tipo: Jogo: Spoting....
+        return;
     }
 
     public Match readFile(String path){
