@@ -50,13 +50,13 @@ public class Main {
 
 
     }
-
     private static void createGoalKeeper() {
         String name = "Manuel Neuer";
         LocalDate birth = LocalDate.of(1986, 3, 27);
         ArrayList<String> neuerHistorial = new ArrayList<>();
         neuerHistorial.add("Bayern");
-        GoalKeeper neuer = new GoalKeeper(name, birth, 96, 87, 87, 88, 95, 96, neuerHistorial, 97);
+        GoalKeeper neuer = new GoalKeeper(name, birth, 30, 30, 96, 87, 87, 88, 95, 96, neuerHistorial, 97);
         System.out.println(neuer.globalSkill());
     }
+
 }

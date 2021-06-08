@@ -5,16 +5,16 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class Striker extends Player {
-    public Striker(String name, LocalDate birthDate, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, List<String> historial) {
-        super(name, birthDate, resistance, dexterity, impulsion, headGame, finish, passing, historial);
+    public Striker(String name, LocalDate birthDate, int num, int velocity, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, List<String> historial) {
+        super(name, birthDate, num, velocity, resistance, dexterity, impulsion, headGame, finish, passing, historial);
     }
 
-    public Striker(String name, LocalDate birthDate, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, String historial) {
-        super(name, birthDate, resistance, dexterity, impulsion, headGame, finish, passing, historial);
+    public Striker(String name, LocalDate birthDate, int num, int velocity, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, String historial) {
+        super(name, birthDate, num, velocity, resistance, dexterity, impulsion, headGame, finish, passing, historial);
     }
 
     public Striker(Striker s) {
-        super(s.getName(), s.getBirthDate(), s.getResistance(), s.getDexterity(), s.getImpulsion(), s.getHeadGame(), s.getFinish(), s.getPassing(), s.getHistorial());
+        super(s.getName(), s.getBirthDate(), s.getNum(), s.getVelocity(), s.getResistance(), s.getDexterity(), s.getImpulsion(), s.getHeadGame(), s.getFinish(), s.getPassing(), s.getHistorial());
     }
 
     public Striker(String[] data) {
@@ -24,7 +24,9 @@ public class Striker extends Player {
     @Override
     public String toString() {
         return "S " +
-                getName() +
+                super.getName() +
+                " num " + super.getNum() +
+                " vel " + super.getVelocity() +
                 " res " + super.getResistance() +
                 " dex " + super.getDexterity() +
                 " imp " + super.getImpulsion() +

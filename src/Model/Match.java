@@ -38,8 +38,8 @@ public class Match implements Serializable {
     //4 -> Bola está frente à baliza do visitante
     private int pos_ball;
     //Classe que tem os jogadores que estão a jogar, válidos para os confrontos
- //                  private PlayersField homeField;
- //  Vão ser pares   private PlayersField awayField;
+    //                  private PlayersField homeField;
+    //  Vão ser pares   private PlayersField awayField;
     //Pares de subsituições
     //Uma "lista" para cada equipa
 
@@ -158,7 +158,6 @@ public class Match implements Serializable {
         if (goalkeepers > 2) goalkeepers = 2;
         int backs = (int) awayTeam.getPlayers().stream().filter(item -> position(item, Zones.DEFENSE)).count();
         if (backs > 8) backs = 8;
-
         int mediuns = (int) awayTeam.getPlayers().stream().filter(item -> position (item, Zones.MIDDLE)).count();
         if (mediuns > 7) mediuns = 7;
         int strikers = (int) awayTeam.getPlayers().stream().filter(item -> position(item, Zones.OPPOSITE)).count();
@@ -173,7 +172,6 @@ public class Match implements Serializable {
         filterAndSort(awayTeam.getPlayers(), backs, Zones.DEFENSE).stream().forEach(p ->  fieldAway.setBenched(p));
         filterAndSort(awayTeam.getPlayers(), mediuns, Zones.MIDDLE).stream().forEach(p ->  fieldAway.setBenched(p));
         filterAndSort(awayTeam.getPlayers(), strikers, Zones.OPPOSITE).stream().forEach(p ->  fieldAway.setBenched(p));
-
         //meter o guarda redes no campo
         Player toField = filterAndSort(fieldAway.getBenched(), 1, Zones.GOAL).get(1);
         fieldAway.leaveBench(toField);
@@ -184,7 +182,6 @@ public class Match implements Serializable {
                 stream().forEach(x -> setPlayerInField(fieldAway, x, Zones.MIDDLE) );
         filterAndSort(fieldAway.getBenched(), 3, Zones.OPPOSITE).
                 stream().forEach(x -> setPlayerInField(fieldAway, x, Zones.OPPOSITE) );
-
     }
     */
 
@@ -206,7 +203,7 @@ public class Match implements Serializable {
     private List<Player> filterAndSort(List<Player> players, int howMany, Zones position)
     {
         return players.stream().filter(player -> position(player, position)).
-            sorted().limit(howMany).collect(Collectors.toList());
+                sorted().limit(howMany).collect(Collectors.toList());
     }
     private boolean position(Player p, Zones z){
         return ((p instanceof GoalKeeper && z == Zones.GOAL)
@@ -231,7 +228,7 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
         int [] playersChoosen = new int[total_players];
         stdout.choosePlayers(playersChoosen, total_players);
         return playersChoosen;
-   }
+    }
     /*
     strategy
     Utilizando o módulo View, descobre que estratégia o utilizador vai utilizar no jogo.
@@ -244,15 +241,15 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
         stdout.stategyChoose(playersChoosen);
         return playersChoosen;
     }
-    
-    
+
+
     /*
     Funções sobre a lógica do programa
     **/
-    
+
     /*
     changePlayers
-    Função que utiliza o módulo View para saber que jogadores serão substítuidos, isto é, uma troca entre um jogador que está no campo por um que está no banco. 
+    Função que utiliza o módulo View para saber que jogadores serão substítuidos, isto é, uma troca entre um jogador que está no campo por um que está no banco.
 **/
     private void changePlayers(PlayersField team){
         ChosingPlayers stdout = new ChosingPlayers();
@@ -266,7 +263,7 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
                 "Wich player leaves?", 1);
         //O Jogador que está nessa posição
         Player out = team.getPlayersPosition(posPlayerOut[0]).get(posPlayerOut[0]);
-       // team.replace(in, out, pos_absoluteOut);
+        // team.replace(in, out, pos_absoluteOut);
     }
     private void movePlayers(PlayersField team){
         ChosingPlayers stdout = new ChosingPlayers();
@@ -280,7 +277,7 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
         //        pos_absoluteStart,  pos_absoluteEnd);
     }
     /*
-    Função que verifica se o jogo chegou ao fim por tempo.     
+    Função que verifica se o jogo chegou ao fim por tempo.
     **/
 
     private boolean endGame(){
@@ -298,13 +295,13 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
         total += equipa.stream().mapToInt(n -> skills(n)).sum();
         return total;
     }
-    
-/*
-    confrontation
-    Função que compara as capacidades de duas equipas numa posição do campo. 
-    A vitória neste confronto resulta em duas possibilidades: recuperar bola ou avançar com a bola.
-    Se já estiver ao pé da baliza adveresária, pode rematar.
-    **/
+
+    /*
+        confrontation
+        Função que compara as capacidades de duas equipas numa posição do campo.
+        A vitória neste confronto resulta em duas possibilidades: recuperar bola ou avançar com a bola.
+        Se já estiver ao pé da baliza adveresária, pode rematar.
+        **/
     private int confrontation(int pos_ball){
         Random rd = new Random();
         //Para gerar números aleatórios
@@ -312,21 +309,21 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
         //3- porque está no outro lado
         //Para gerar números aleatórios
         //int randomNum = rand.nextInt((max - min) + 1) + min;
-         return -1;
+        return -1;
 
     }
-    
-/*
-    Função que verifica se é possível rematar por causa da posição da bola.    
-    **/
+
+    /*
+        Função que verifica se é possível rematar por causa da posição da bola.
+        **/
     private boolean rematePossivel(int pos_ball){
         return (pos_ball <= 0 || pos_ball >= 4);
     }
-    
-/*
-    Função que interliga as várias funções desta classe. 
-    
-    **/
+
+    /*
+        Função que interliga as várias funções desta classe.
+
+        **/
     public void Game (){
         int increment_time = 10;
         if (this.endGame())
@@ -402,10 +399,10 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
     public void setPos_ball(int pos_ball) {
         this.pos_ball = pos_ball;
     }
-    
-/*
-    Um setter que inicializa as váriáveis da classe no início do jogo.
-    **/
+
+    /*
+        Um setter que inicializa as váriáveis da classe no início do jogo.
+        **/
     private void standard(){
         setTime(0);
         setScoreAway(0);
@@ -457,4 +454,3 @@ Retorna um array com as posições dos jogadores escolhidos a partir da lista.
         return null;
     }
 }
-
