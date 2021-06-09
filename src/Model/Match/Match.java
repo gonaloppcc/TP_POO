@@ -2,62 +2,124 @@ package Model.Match;
 
 import Model.Player.*;
 import Model.Team;
-import View.ChosingPlayers;
-
-import java.io.*;
+import java.awt.*;
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
 public class Match implements Serializable {
-    /*
-    Cada equipa é constituída por um conjunto fixo de jogadores,
-    sendo que em cada jogo podem jogar N jogadores titulares e utilizarem-se M suplentes.
-    Cada jogo tem uma certa duração (tima).
-    Existem golos de ambas as equipas
-    A bola pode estar na posse de uma ou outra equipa e pode estar em 3 zonas distintas do campo.
-    **/
-    // Data do encontro
-    LocalDate date;
 
-    // Equipas completas,
+    // Variável para indicar o dia do jogo.
+
+    private LocalDate gameDate;
+
+    // Variável para contador do jogo (AINDA POR DEFINIR).
+
+
+
+    // Equipas que vão jogar. Team possui uma string para o nome da equipa e uma List<Player> para a lista de jogadores.
+
     private Team homeTeam;
     private Team awayTeam;
 
-    // Jogadores no campo
-    private PlayersField playersHome;
-    private PlayersField playersAway;
+    //
 
-    // Tempo jogado
-    private int time;
+    // Variáveis para manter registos dos resultados em termos de golos.
 
-    // Pontos
-    private int scoreHome;
-    private int scoreAway;
+    private int homeGoals;
+    private int awayGoals;
 
-    // false -> home tem a bola
-    // true -> Visitante tem a bola
-    private boolean posse_bola;
+    // Variável que controla quem possui a bola neste momento. True representa homeTeam e False representa awayTeam.
 
-    // pos_ball is a point in the field.
-    private Point pos_ball;
+    private boolean ball_pos;
 
-    public Match(LocalDate date, Team homeTeam, Team awayTeam, PlayersField playersHome, PlayersField playersAway, int time, int scoreHome, int scoreAway, boolean posse_bola, Point pos_ball) {
-        this.date = date;
-        this.homeTeam = homeTeam;
-        this.awayTeam = awayTeam;
-        this.playersHome = playersHome;
-        this.playersAway = playersAway;
-        this.time = time;
-        this.scoreHome = scoreHome;
-        this.scoreAway = scoreAway;
-        this.posse_bola = posse_bola;
-        this.pos_ball = pos_ball;
+    // Tracker da bola. A posição da bola, sendo o ponto (0,0) o centro do campo.
+
+    private Point ball_tracker;
+
+    public Match clone () {
+
+        //Perguntar ao Gonçalo.
+
+        return this;
     }
 
-    public Match() {
+    public Match (Team homeTeam, Team awayTeam) {
+
+        Random rand = new Random();
+
+        this.gameDate = LocalDate.now();
+
+        this.homeTeam.setName(homeTeam.getName()); this.homeTeam.setPlayers(homeTeam.getPlayers()); // Preciso de ver com o Pires este erro.
+        this.awayTeam.setName(awayTeam.getName()); this.awayTeam.setPlayers(awayTeam.getPlayers()); // Preciso de ver com o Pires este erro.
+
+        this.homeGoals = 0;
+        this.awayGoals = 0;
+
+        this.ball_pos = rand.nextBoolean();
+
+        this.ball_tracker.setX(0);
+        this.ball_tracker.setY(0);
     }
+
+    public Match (LocalDate gameDate, Team homeTeam, Team awayTeam, int homeGoals, int awayGoals, boolean ball_pos, Point ball_tracker) {
+        this.gameDate = gameDate;
+
+        this.homeTeam.setName(homeTeam.getName()); this.homeTeam.setPlayers(homeTeam.getPlayers()); // Preciso de ver com o Pires este erro.
+        this.awayTeam.setName(awayTeam.getName()); this.awayTeam.setPlayers(awayTeam.getPlayers()); // Preciso de ver com o Pires este erro.
+
+        this.homeGoals = homeGoals;
+        this.awayGoals = awayGoals;
+
+        this.ball_pos = ball_pos;
+
+        this.ball_tracker.setX(ball_tracker.getX());
+        this.ball_tracker.setY(ball_tracker.getY());
+    }
+
+    public Match (Match match) {
+        this.gameDate = match.gameDate;
+
+        this.homeTeam.setName(match.homeTeam.getName()); this.homeTeam.setPlayers(match.homeTeam.getPlayers()); // Discutir com o Pires a questão da team ser inicializada com ArrayList em vez de List
+        this.awayTeam.setName(match.awayTeam.getName()); this.awayTeam.setPlayers(match.awayTeam.getPlayers()); // Discutir com o Pires a questão da team ser inicializada com ArrayList em vez de List
+
+        this.homeGoals = match.homeGoals;
+        this.awayGoals = match.awayGoals;
+
+        this.ball_pos = match.ball_pos;
+
+        this.ball_tracker.setX(match.ball_tracker.getX());
+        this.ball_tracker.setY(match.ball_tracker.getY());
+    }
+
+    public Match game_play (Team homeTeam, Team awayTeam) {
+
+        Match game = new Match(homeTeam,awayTeam); // Criar o jogo com os estados base.
+        boolean swap_side = game.ball_pos; // Variável para o intervalo, é precisa para saber o state drive.
+        float time; // Iniciar o contador.
+
+        for (time = 0; time <= 45; time+= 0.25) confrontation(game); // Primeira metade do jogo.
+
+        game.ball_pos = !swap_side;
+        game.ball_tracker.setX(0);
+        game.ball_tracker.setY(0);
+
+        for (time = 45; time <= 90; time += 0.25) confrontation(game); // Segunda metade do jogo.
+
+        return game;
+
+    }
+
+    public Match confrontation (Match jogo) {
+
+
+
+        return jogo;
+    }
+
 }
-
-

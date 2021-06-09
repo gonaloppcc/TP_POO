@@ -27,6 +27,10 @@ public class PlayersField {
                 collect(Collectors.toList());
     }
 
+    public List<PlayerField> getBenched() {
+        return playersBench;
+    }
+
     public void setBenched(List<PlayerField> benched) {
         this.playersBench = benched;
     }
