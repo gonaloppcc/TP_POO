@@ -44,6 +44,10 @@ public class Main {
             System.out.println("Tenho ficheiro");
             Status fromFile = new Status();
             fromFile.loadPath(maybePath); //Carrega o status
+
+            StatusController interacts = new StatusController(fromFile, new StatusView());
+            //A partir daqui é o controller do status que faz coisas
+            interacts.interactions();
         }
         else System.out.printf("Não tenho ficheiro"); //Gerar um status aleatório?
 
