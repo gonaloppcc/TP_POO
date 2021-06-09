@@ -5,6 +5,7 @@ import Model.Player.*;
 
 import java.io.*;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Status implements Serializable {
@@ -156,7 +157,7 @@ public class Status implements Serializable {
 
     public Set<List<Match>> getGames() {
         return games.stream().
-                map(list -> list.stream().map(Match::clone).collect(Collectors.toList())).
+                map(list -> list.stream().map(Function.identity() /*Match::clone*/).collect(Collectors.toList())).
                 collect(Collectors.toSet());
     }
 

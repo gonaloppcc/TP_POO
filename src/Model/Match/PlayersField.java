@@ -12,8 +12,6 @@ public class PlayersField {
     private List<PlayerField> playersPlaying;
     private List<PlayerField> playersBench;
 
-
-
     private static final double radius = 5;
 
     // Construtores
@@ -72,8 +70,8 @@ public class PlayersField {
     }
 
     // Function that moves players in the field
-    public void movePlayers(PlayerField startP, Point pos_ball) {
-
+    public void movePlayers(Point pos_ball, boolean homeHasBall) {
+        this.playersPlaying.forEach(playerField -> playerField.movePlayer(pos_ball, homeHasBall));
 
 
 
