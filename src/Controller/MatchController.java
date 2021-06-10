@@ -12,10 +12,10 @@ import java.util.*;
  * Match is the simulation of one game, and can ask the user to replace players in the middle of the game.
  */
 public class MatchController {
-    private Match game;
-    private Integer numberOnField;
-    private Scanner terminal;
-    private MatchView view;
+    private final Match game;
+    private final Integer numberOnField;
+    private final Scanner terminal;
+    private final MatchView view;
 
     /**
      * Main function, that controls the interaction between differents class.
@@ -29,7 +29,6 @@ public class MatchController {
         view = new MatchView();
         if(simulatioOrNot()){
             this.game = new Match(home, away, new Integer[]{1, 3,3,3,1},getStrategy());
-
             view.CampoTodo(game.getPlayersPositions(true), game.getPlayersPositions(false) );
             //game.run();
 
@@ -91,7 +90,7 @@ public class MatchController {
             view.toZone(convertPositionfromNumber(i), numberOnField-total);
             while (true) {
                 temp = terminal.nextInt();
-                if (temp+total > numberOnField) StatusView.InvalidLine();
+                if (temp + total > numberOnField) StatusView.InvalidLine();
                 else {
                     res[i] = temp;
                     total += temp;
@@ -105,5 +104,10 @@ public class MatchController {
         for (int i = 0; i < res.length; i++) if (res[i] == null) res[i] = 0;
         return res;
     }
+    
+    //public void inicializeHome(){
+    //    Integer[] strategy = getStrategy();
+    //    game.setHomePl(game.getHomeTeam(), strategy);
+    //}
 
 }

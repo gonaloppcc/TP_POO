@@ -1,6 +1,7 @@
 package Model.Match;
 
 import Model.Team;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -9,13 +10,11 @@ import java.util.Random;
 
 public class Match extends MatchRegister implements Serializable {
 
+    private static Point dimensionField;
     private PlayersField homePl;
-    private PlayersField awayPl;
 
     // Tamanho do campo. (Tenho de perguntar ao Pires se a variável pode ser final ou static dado que é um valor constante.)
-
-    private static Point dimensionField;
-
+    private PlayersField awayPl;
     // Variável que controla quem possui a bola neste momento. True representa homeTeam e False representa awayTeam.
     private boolean ball_pos;
 
@@ -23,42 +22,24 @@ public class Match extends MatchRegister implements Serializable {
 
     private Point ball_tracker;
 
-    public Match clone () {
 
-        //Perguntar ao Gonçalo.
+    /*------------------------------------------------Constructors----------------------------------------------------*/
 
-        return this;
-    }
-
-   public Match (Team homeTeam,Team awayTeam) {
-        super();
-   }
-
-    /**
-     * Get the positions of one team. It's necessary to print the match
-     * @param home
-     * @return
-     */
-    public List<Point> getPlayersPositions(boolean home){
-        if (home) return homePl.playersPosition();
-        else return awayPl.playersPosition();
-    }
-//Tenho de fazer este
-    public Match (Team homeTeam, Team awayTeam, Integer[] defaultBot, Integer[] strategyPlayer) {
     //Tenho de fazer este
+    public Match(Team homeTeam, Team awayTeam, Integer[] defaultBot, Integer[] strategyPlayer) {
+        //Tenho de fazer este
 
         super(LocalDate.now(), homeTeam, awayTeam, 0, 0, new ArrayList<>(), new ArrayList<>());
 
         Random rand = new Random();
         this.ball_pos = rand.nextBoolean();
-        awayPl = new PlayersField(awayTeam, defaultBot);
-        homePl = new PlayersField(homeTeam, strategyPlayer);
+        this.awayPl = new PlayersField(awayTeam, defaultBot);
+        this.homePl = new PlayersField(homeTeam, strategyPlayer);
         this.ball_tracker = new Point(0, 0);
 
     }
 
-    public Match (LocalDate gameDate, Team homeTeam, Team awayTeam, int homeGoals, int awayGoals, boolean ball_pos, Point ball_tracker) {
-        this(homeTeam, awayTeam);
+    public Match(LocalDate gameDate, Team homeTeam, Team awayTeam, int homeGoals, int awayGoals, boolean ball_pos, Point ball_tracker) {
 
         super.setScoreHome(homeGoals);
         super.setScoreAway(awayGoals);
@@ -73,10 +54,10 @@ public class Match extends MatchRegister implements Serializable {
         this(match.getDate(), match.getHomeTeam(), match.getAwayTeam(), match.getScoreHome(), match.getScoreAway(), match.ball_pos, match.ball_tracker);
     }
 
-    public static Match game_play(Team homeTeam, Team awayTeam) {
+    public static Match game_play(Team homeTeam, Team awayTeam, Integer[] defaultBot, Integer[] strategyPlayer) {
 
-        Match game = new Match(homeTeam, awayTeam); // Criar o jogo com os estados base.
-        boolean swap_side = game.ball_pos; // Variável para o intervalo, é precisa para saber o state drive.
+        Match game = new Match(homeTeam, awayTeam, defaultBot, strategyPlayer); // Criar o jogo com os estados base.
+        boolean swap_side = game.isBall_pos(); // Variável para o intervalo, é precisa para saber o state drive.
         float time; // Iniciar o contador.
 
         for (time = 0; time <= 45; time += 0.25) game.confrontation(); // Primeira metade do jogo.
@@ -91,7 +72,58 @@ public class Match extends MatchRegister implements Serializable {
 
     }
 
-    public void confrontation () {
+    /*------------------------------------------ Getters e Setters ---------------------------------------------------*/
+
+    public static Point getDimensionField() {
+        return dimensionField;
+    }
+
+    public static void setDimensionField(Point dimensionField) {
+        Match.dimensionField = dimensionField;
+    }
+
+    public PlayersField getHomePl() {
+        return homePl;
+    }
+
+    public void setHomePl(PlayersField homePl) {
+        this.homePl = homePl;
+    }
+
+    public void setHomePl(Team homePl, Integer[] integers) {
+        this.homePl = new PlayersField(homePl, integers);
+    }
+
+    public PlayersField getAwayPl() {
+        return awayPl;
+    }
+
+    public void setAwayPl(PlayersField awayPl) {
+        this.awayPl = awayPl;
+    }
+
+    public void setAwayPl(Team awayPl, Integer[] integers) {
+        this.awayPl = new PlayersField(awayPl, integers);
+    }
+
+    public boolean isBall_pos() {
+        return ball_pos;
+    }
+
+    public void setBall_pos(boolean ball_pos) {
+        this.ball_pos = ball_pos;
+    }
+
+    public Point getBall_tracker() {
+        return ball_tracker;
+    }
+
+    public void setBall_tracker(Point ball_tracker) {
+        this.ball_tracker = ball_tracker;
+    }
+
+    /* ------------------------------------- Other methods ---------------------------------------------------------- */
+    public void confrontation() {
 
         Random rand = new Random();
 
@@ -112,11 +144,13 @@ public class Match extends MatchRegister implements Serializable {
 
         // O cálculo da probabilidade funciona numa escala de 0-1. Dependendo de quem tem a vantagem, a probabilidade muda para que seja mais provável uma equipa ganhar do que outra, mas não torna imo«possível uma vitória contra a probabilidade.
 
-        double probHomeWin = prob(homeSquadSkill,awaySquadSkill); // Função que dá a probabilidade da home Team ganhar range = [0, 1]
+        double probHomeWin = prob(homeSquadSkill, awaySquadSkill); // Função que dá a probabilidade da home Team ganhar range = [0, 1]
 
         // Dá o sucesso do confronto à equipa de fora.
         advantage = probResult < probHomeWin; // Dá o sucesso do confronto à equipa de casa.
 
+        if (advantage) setScoreHome(getScoreHome() + 1);
+        else setScoreAway(getScoreAway() + 1);
     }
 
     public double prob(double homeSquadSkill, double awaySquadSkill) {
@@ -124,13 +158,21 @@ public class Match extends MatchRegister implements Serializable {
         double probability = 0;
 
         if (homeSquadSkill > awaySquadSkill) {
-            if (awaySquadSkill < (homeSquadSkill/2)) {probability = 1 - (awaySquadSkill / homeSquadSkill);}
-            else if (awaySquadSkill > (homeSquadSkill/2)) {probability = (awaySquadSkill / homeSquadSkill);}
-            else {probability = 0.75;};
+            if (awaySquadSkill < (homeSquadSkill / 2)) {
+                probability = 1 - (awaySquadSkill / homeSquadSkill);
+            } else if (awaySquadSkill > (homeSquadSkill / 2)) {
+                probability = (awaySquadSkill / homeSquadSkill);
+            } else {
+                probability = 0.75;
+            }
         } else if (homeSquadSkill < awaySquadSkill) {
-            if (homeSquadSkill < (awaySquadSkill/2)) {probability = (homeSquadSkill / awaySquadSkill);}
-            else if (homeSquadSkill > (awaySquadSkill/2)) {probability = 1 - (homeSquadSkill / awaySquadSkill);}
-            else {probability = 0.25;}
+            if (homeSquadSkill < (awaySquadSkill / 2)) {
+                probability = (homeSquadSkill / awaySquadSkill);
+            } else if (homeSquadSkill > (awaySquadSkill / 2)) {
+                probability = 1 - (homeSquadSkill / awaySquadSkill);
+            } else {
+                probability = 0.25;
+            }
         } else {
             probability = 0.5;
         }
@@ -141,11 +183,15 @@ public class Match extends MatchRegister implements Serializable {
     public void aftermath(boolean vantage) {
 
 
-
     }
 
-    public void run(){
+    public void run() {
         //Simulação com refresh's
+    }
+
+    public List<Point> getPlayersPositions(boolean home){
+        if (home) return homePl.playersPosition();
+        else return awayPl.playersPosition();
     }
 
     public void setStrategy(Integer[] strategy, boolean home) {
@@ -153,23 +199,4 @@ public class Match extends MatchRegister implements Serializable {
         else awayPl.setStrategy(strategy);
     }
 
-    public PlayersField getHomePl() {
-        return homePl;
-    }
-
-    public void setHomePl(Team homePl, Integer[] integers) {
-        this.homePl = new PlayersField(homePl, integers);
-    }
-
-    public void setHomePl(PlayersField homePl) {
-        this.homePl = homePl;
-    }
-
-    public PlayersField getAwayPl() {
-        return awayPl;
-    }
-
-    public void setAwayPl(Team awayPl, Integer[] integers) {
-        this.awayPl = new PlayersField(awayPl, integers);
-    }
 }
