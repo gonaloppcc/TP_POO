@@ -1,18 +1,24 @@
 package Model.Match;
 
+import Model.Player.Player;
 import Model.Team;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Match extends MatchRegister implements Serializable {
 
     private PlayersField homePl;
     private PlayersField awayPl;
 
-    private Point dimensionField;
+    // Tamanho do campo. (Tenho de perguntar ao Pires se a variável pode ser final ou static dado que é um valor constante.)
+
+    private static Point dimensionField;
 
     // Variável que controla quem possui a bola neste momento. True representa homeTeam e False representa awayTeam.
 
@@ -76,11 +82,53 @@ public class Match extends MatchRegister implements Serializable {
     }
 
     public Match confrontation (Match jogo) {
+
+        Random rand = new Random();
+
+        // Obtém todos os jogadores perto da bola.
+
+        List<PlayerField> closeByPlayers = getPlayersCloseToTheBall(jogo.ball_tracker);
+
+        // Obtém todos os jogadores perto da bola, por equipa.
+
+        List<PlayerField> homeSquad = closeByPlayers.stream().filter(PlayerField -> homePl.getPlayersPlaying().contains(PlayerField)).collect(Collectors.toList());
+        List<PlayerField> awaySquad = closeByPlayers.stream().filter(PlayerField -> awayPl.getPlayersPlaying().contains(PlayerField)).collect(Collectors.toList());
+
+        // Cálculo de probabilidade(utiliza o Random)
+
+        double homeSquadSkill = 0;
+        for (PlayerField p : homeSquad) {
+            homeSquadSkill += p.skill();
+            p.getEnergy().decrease();
+        }
+
+        double awaySquadSkill = 0;
+        for (PlayerField p : awaySquad) {
+            awaySquadSkill += p.skill();
+            p.getEnergy().decrease();
+        }
+
+        int probResult = rand.nextInt(10); // Número que vai servir como o nosso potencial confronto
+        boolean advantage; // Quem ganha o confronto.
+
+        // O cálculo da probabilidade funciona numa escala de 0-9. Dependendo de quem tem a vantagem, a probabilidade muda para que seja mais provável uma equipa ganhar do que outra, mas não torna imo«possível uma vitória contra a probabilidade.
+
+        if (homeSquadSkill < awaySquadSkill) {
+
+        } else if (homeSquadSkill > awaySquadSkill) {
+
+        } else {
+
+        }
+
+
         return jogo;
     }
+
     public void run(){
         //Simulação com refresh's
     }
+
     public void setStrategy(Integer[] strategy, boolean home){
         if (home) homePl.setStrategy(strategy);
         else awayPl.setStrategy(strategy);
