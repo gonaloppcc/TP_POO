@@ -5,53 +5,39 @@ import Model.Team;
 import View.MatchView;
 import View.StatusView;
 
-import java.util.Scanner;
+import java.util.*;
 
+/**
+ * This class controls the Match, and interacts with the user.
+ * Match is the simulation of one game, and can ask the user to replace players in the middle of the game.
+ */
 public class MatchController {
     private Match game;
     private Integer numberOnField;
     private Scanner terminal;
     private MatchView view;
 
+    /**
+     * Main function, that controls the interaction between differents class.
+     * @param home
+     * @param away
+     * @param playerPerTeam Number of players each team has
+     */
     public MatchController(Team home, Team away, int playerPerTeam) {
         terminal = new Scanner(System.in);
         numberOnField = playerPerTeam;
         view = new MatchView();
-        this.game = new Match(home, away, new Integer[]{1, 3,3,3,1},getStrategy());
+        if(simulatioOrNot()){
+            this.game = new Match(home, away, new Integer[]{1, 3,3,3,1},getStrategy());
 
-        view.CampoTodo(game.getPlayersPositions(true), game.getPlayersPositions(false) );
-        //game.run();
+            view.CampoTodo(game.getPlayersPositions(true), game.getPlayersPositions(false) );
+            //game.run();
 
-    }
-    private String convertPositionfromNumber(Integer pos){
-        switch (pos){
-            case 1: return "Defender";
-            case 2: return "Midfield";
-            case 3: return "Striker";
-            default: return "BackWing";
         }
-
-    }
-    private Integer[] getStrategy(){
-        int total = 1;
-        int temp;
-        Integer[] res = new Integer[5];
-        for (int i = 1; i < res.length && total < numberOnField; i++){
-            view.toZone(convertPositionfromNumber(i), numberOnField-total);
-            while (true) {
-                temp = terminal.nextInt();
-                if (temp+total > numberOnField) StatusView.InvalidLine();
-                else {
-                    res[i] = temp;
-                    total += temp;
-                    break;
-                }
-            }
+        else {
+            this.game = Match.game_play(home, away, new Integer[]{1, 3, 3, 3, 1}, getStrategy());
+            System.out.println("Game score: " + game.getScoreHome() + "-" + game.getScoreAway());
         }
-        //Guarda redes
-        res[0] = 1;
-        for (int i = 0; i < res.length; i++) if (res[i] == null) res[i] = 0;
-        return res;
     }
     public void inicializeAway (){
         game.setStrategy(new Integer[]{ 1, 3,3,3,1}, false);
@@ -66,4 +52,58 @@ public class MatchController {
     public Match getGame() {
         return game;
     }
+
+    /*---------------------------- Private Functions ----------------------*/
+
+    private boolean simulatioOrNot() {
+        while (true) {
+            MatchView.simulateOrNot();
+            String option = terminal.nextLine();
+            if (option.trim().toLowerCase(Locale.ROOT).equals("s"))
+                return true;
+            if (option.trim().toLowerCase(Locale.ROOT).equals("n"))
+                return false;
+            StatusView.InvalidOption();
+
+        }
+    }
+
+    private String convertPositionfromNumber(Integer pos){
+        switch (pos){
+            case 1: return "Defender";
+            case 2: return "Midfield";
+            case 3: return "Striker";
+            default: return "BackWing";
+        }
+    }
+
+    /**
+     * Asks the user to insert a valid strategy, where the total of players choosen is equal to the possible players on field.
+     * The last position gets the remaing players. In this case, the last position are the "Backwing".
+     * We only got 5 different positions in game
+     * @return
+     */
+    private Integer[] getStrategy(){
+        int total = 1;
+        int temp;
+        Integer[] res = new Integer[5];
+        for (int i = 1; i < res.length -1&& total < numberOnField; i++){
+            view.toZone(convertPositionfromNumber(i), numberOnField-total);
+            while (true) {
+                temp = terminal.nextInt();
+                if (temp+total > numberOnField) StatusView.InvalidLine();
+                else {
+                    res[i] = temp;
+                    total += temp;
+                    break;
+                }
+            }
+        }
+        res[4] = numberOnField-total;
+        //Guarda redes
+        res[0] = 1;
+        for (int i = 0; i < res.length; i++) if (res[i] == null) res[i] = 0;
+        return res;
+    }
+
 }

@@ -5,7 +5,12 @@ import View.PreStatus;
 import java.io.File;
 import java.util.Scanner;
 
+/**
+ * This class is user to load a correct path to a file.
+ * It checks if the file exist.
+ */
 public class CtrlPreStatus {
+
     public String readStatus() {
         Scanner in = new Scanner(System.in);
         PreStatus errors = new PreStatus();

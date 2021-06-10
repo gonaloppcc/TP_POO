@@ -10,9 +10,16 @@ import View.StatusView;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Class used in the first option of the menu "1) Check current game, manage teams and players?"
+ * The program only exits this class when the user press buttom 5.
+ */
+
 public class StatusCheckGame {
     private Status status;
     private final Scanner terminal;
+
+    /*------------------------Constructors --------------------------------*/
 
     public StatusCheckGame() {
         this.status = null;
@@ -22,6 +29,14 @@ public class StatusCheckGame {
         this.status = status;
         terminal = new Scanner(System.in);
     }
+    /*------------------------ Public functions ---------------------------*/
+
+    /**
+     * Runs the main program
+     * Prints Options and wait for a valid input
+     * @param toStore
+     * @return
+     */
     public Status run(Status toStore){
         status = toStore;
 //        CheckGameView prints = new CheckGameView();
@@ -57,6 +72,21 @@ public class StatusCheckGame {
         return toStore;
     }
 
+    /**
+     * Print teams and gets a valid team
+     * @param message
+     * @return
+     */
+    public Team getTeam(String message){
+        while (true){
+            String possibleTeam = printTeamReturnName(message);
+            if (status.getTeams().containsKey(possibleTeam.trim())) return status.getTeam(possibleTeam.trim());
+            else StatusView.InvalidOption();
+        }
+    }
+    /*---------------------------- Private Functions ----------------------*/
+
+
     private void createTeam(){
         while (true){
             CheckGameView.CreateTeamInsertTeam();
@@ -68,6 +98,7 @@ public class StatusCheckGame {
             }
         }
     }
+
     private void createPlayer(){
         Team toAdd = getTeam("insert player");
         while (true){
@@ -84,7 +115,7 @@ public class StatusCheckGame {
     }
 
     /**
-     * Prints all teams with a phrase, and returns what the user wants
+     * Prints all teams with a phrase, and returns what the user inserted
      * @param message
      * @return
      */
@@ -102,18 +133,7 @@ public class StatusCheckGame {
             CheckGameView.printTeam(getTeam("to check"));
     }
 
-    /**
-     * Print teams and gets a valid team
-     * @param message
-     * @return
-     */
-    public Team getTeam(String message){
-        while (true){
-            String possibleTeam = printTeamReturnName(message);
-            if (status.getTeams().containsKey(possibleTeam.trim())) return status.getTeam(possibleTeam.trim());
-            else StatusView.InvalidOption();
-        }
-    }
+
 
     /**
      * When a team has more than one player with the same name
@@ -150,7 +170,6 @@ public class StatusCheckGame {
            }
 
        }
-
 
     private void changePlayer(){
             Team origin = getTeam("from where it comes");
