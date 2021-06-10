@@ -150,7 +150,7 @@ public class Team implements Serializable {
     public String toString() {
         return name + ":\n\t " +
                 players.stream().map(Player :: toString).collect(Collectors.joining("\n")) +
-                "}\n";
+                "\n";
     }
 
     public Team clone() {
