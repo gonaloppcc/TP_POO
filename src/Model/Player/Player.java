@@ -1,29 +1,20 @@
 package Model.Player;
 
-import Model.Team;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 abstract public class Player implements Serializable {
     private String name;
     private LocalDate birthDate;
 
-    // v. i. que adicionei // Gonçalo
-    private String nationality;
-    private Team currentTeam;
-    //
-
     private int num, velocity, resistance, dexterity, impulsion, headGame, finish, passing;
     private List<String> historial;
 
-    // Construtores
-
+    /*------------------------------------------------Constructors----------------------------------------------------*/
 
     public Player(String name, LocalDate birthDate, int num, int velocity, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, List<String> historial) {
         this.name = name;
@@ -39,8 +30,7 @@ abstract public class Player implements Serializable {
         this.historial = historial;
     }
 
-
-    public Player(String name, LocalDate birthDate, int num, int velocity,int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, String historial) {
+    public Player(String name, LocalDate birthDate, int num, int velocity, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, String historial) {
         this.name = name;
         this.birthDate = birthDate;
         this.num = num;
@@ -68,22 +58,9 @@ abstract public class Player implements Serializable {
         this.finish = Integer.parseInt(data[7]);
         this.passing = Integer.parseInt(data[8]);
         this.historial = new ArrayList<>();
-        //this.historial.add("");
     }
 
-    public abstract int globalSkill();
-
-        @Override
-        public abstract String toString();
-
-//    @Override
-//    public String toString() {
-//        return "Player " + name + ": "
-//                        + this.globalSkill();
-//    }
-
-
-    /*------------------------------------------ Getters e Setters -----------------------------------------*/
+    /*------------------------------------------ Getters e Setters ---------------------------------------------------*/
 
     public String getName() {
         return name;
@@ -149,11 +126,13 @@ abstract public class Player implements Serializable {
         this.passing = passing;
     }
 
-    public String getHistorial() {
-        return this.historial.stream().collect(Collectors.joining());
+    public List<String> getHistorial() {
+        return new ArrayList<>(historial);
     }
 
-    public void setHistorial(List<String> historial) {this.historial = historial;}
+    public void setHistorial(List<String> historial) {
+        this.historial = new ArrayList<>(historial);
+    }
 
     public int getNum() {
         return num;
@@ -170,16 +149,32 @@ abstract public class Player implements Serializable {
     public void setVelocity(int velocity) {
         this.velocity = velocity;
     }
+
     /* ------------------------------------- Other methods ---------------------------------------------------------- */
 
-    public int getIdade() {
-        // Idade do jogador relativa a agora
+    @Override
+    public abstract String toString();
+
+    abstract public Player clone();
+
+    /**
+     * @return the global skill of the player
+     */
+    public abstract int globalSkill();
+
+    /**
+     * @return the of age of the player
+     */
+    public int getAge() {
         return Period.between(birthDate, LocalDate.now()).getYears();
     }
 
-    public void addHistorial(String team) {
-        this.historial.add(team);
+    /**
+     * Adds a historial to a player
+     * @param teamName the name of the team
+     */
+    public void addHistorial(String teamName) {
+        this.historial.add(teamName);
     }
 
-    abstract public Player clone();
 }

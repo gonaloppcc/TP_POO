@@ -2,11 +2,12 @@ package Model.Player;
 
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GoalKeeper extends Player {
     private int elasticity;
+
+    /*------------------------------------------------Constructors----------------------------------------------------*/
 
     public GoalKeeper(String name, LocalDate birthDate, int num, int velocity, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, List<String> historial, int elasticity) {
         super(name, birthDate, num, velocity, resistance, dexterity, impulsion, headGame, finish, passing, historial);
@@ -19,8 +20,7 @@ public class GoalKeeper extends Player {
     }
 
     public GoalKeeper(GoalKeeper g) {
-        super(g.getName(), g.getBirthDate(), g.getNum(),g.getVelocity(),g.getResistance(), g.getDexterity(), g.getImpulsion(), g.getHeadGame(), g.getFinish(), g.getPassing(), g.getHistorial());
-        this.elasticity = g.getElasticity();
+        this(g.getName(), g.getBirthDate(), g.getNum(), g.getVelocity(), g.getResistance(), g.getDexterity(), g.getImpulsion(), g.getHeadGame(), g.getFinish(), g.getPassing(), g.getHistorial(), g.getElasticity());
     }
 
     public GoalKeeper(String[] data) {
@@ -28,11 +28,23 @@ public class GoalKeeper extends Player {
         elasticity = Integer.parseInt(data[9]);
     }
 
+    /*------------------------------------------ Getters e Setters ---------------------------------------------------*/
+
+    public int getElasticity() {
+        return elasticity;
+    }
+
+    public void setElasticity(int elasticity) {
+        this.elasticity = elasticity;
+    }
+
+    /* ------------------------------------- Other methods ---------------------------------------------------------- */
+
     @Override
     public String toString() {
         return "G " +
-                   getName() +
-                " numero " +                getNum() +
+                getName() +
+                " numero " + getNum() +
                 " vel " + super.getVelocity() +
                 " res " + super.getResistance() +
                 " dex " + super.getDexterity() +
@@ -49,18 +61,8 @@ public class GoalKeeper extends Player {
         return new GoalKeeper(this);
     }
 
-    public int getElasticity() {
-        return elasticity;
-    }
-
-    public void setElasticity(int elasticity) {
-        this.elasticity = elasticity;
-    }
-
 
     public int globalSkill() {
-
         return (int) (0.2 * (super.getResistance()) + 0.2 * (super.getDexterity()) + 0.15 * super.getImpulsion() + 0.1 * super.getHeadGame() + 0.1 * super.getFinish() + 0.1 * super.getPassing() + 0.15 * getElasticity());
     }
-
 }

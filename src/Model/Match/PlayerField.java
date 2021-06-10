@@ -41,7 +41,7 @@ class PlayerField {
         energy = new Energy(100);
         yellowCards = 0;
         redCard = false;
-        position = new Point(where, lateral, mainPosition);
+        position = Point.createInitialPosition(where, lateral, mainPosition);
     }
     // Falta encapsular
 

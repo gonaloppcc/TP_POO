@@ -6,13 +6,10 @@ import java.util.List;
 public class BackWing extends Player {
     private int crossing;
 
+    /*------------------------------------------------Constructors----------------------------------------------------*/
+
     public BackWing(String name, LocalDate birthDate, int num, int velocity,  int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, List<String> historial, int crossing) {
         super(name, birthDate, num, velocity,  resistance, dexterity, impulsion, headGame, finish, passing, historial);
-        this.crossing = crossing;
-    }
-
-    public BackWing(String name, LocalDate birthDate, int num, int velocity , int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, String historial, int crossing) {
-        super(name, birthDate, num, velocity, resistance, dexterity, impulsion, headGame, finish, passing, historial);
         this.crossing = crossing;
     }
 
@@ -22,9 +19,20 @@ public class BackWing extends Player {
     }
 
     public BackWing(BackWing b) {
-        super(b.getName(), b.getBirthDate(), b.getNum(), b.getVelocity(), b.getResistance(), b.getDexterity(), b.getImpulsion(), b.getHeadGame(), b.getFinish(), b.getPassing(), b.getHistorial());
-        this.crossing = b.crossing;
+        this(b.getName(), b.getBirthDate(), b.getNum(), b.getVelocity(), b.getResistance(), b.getDexterity(), b.getImpulsion(), b.getHeadGame(), b.getFinish(), b.getPassing(), b.getHistorial(), b.crossing);
     }
+
+    /*------------------------------------------ Getters e Setters ---------------------------------------------------*/
+
+    public int getCrossing() {
+        return crossing;
+    }
+
+    public void setCrossing(int crossing) {
+        this.crossing = crossing;
+    }
+
+    /* ------------------------------------- Other methods ---------------------------------------------------------- */
 
     @Override
     public String toString() {
@@ -39,8 +47,6 @@ public class BackWing extends Player {
                 " fin " + super.getFinish() +
                 " pass " + super.getPassing() +
                 " cross " + crossing;
-        //", historial=" + super.getHistorial() +
-
     }
 
     @Override
@@ -48,10 +54,8 @@ public class BackWing extends Player {
         return new BackWing(this);
     }
 
-
     @Override
     public int globalSkill() {
-
         return (int) (0.2 * (super.getResistance()) + 0.2 * (super.getDexterity()) + 0.15 * super.getImpulsion() + 0.1 * super.getHeadGame() + 0.1 * super.getFinish() + 0.1 * super.getPassing());
     }
 

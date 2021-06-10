@@ -42,9 +42,7 @@ public class Match extends MatchRegister implements Serializable {
         Random rand = new Random();
         this.ball_pos = rand.nextBoolean();
         awayPl = new PlayersField(awayTeam, new Integer[]{4,3,3,0});
-        this.ball_tracker.setX(0);
-        this.ball_tracker.setY(0);
-
+        this.ball_tracker = new Point(0, 0);
     }
 
     public Match (LocalDate gameDate, Team homeTeam, Team awayTeam, int homeGoals, int awayGoals, boolean ball_pos, Point ball_tracker) {
@@ -85,14 +83,10 @@ public class Match extends MatchRegister implements Serializable {
 
         Random rand = new Random();
 
-        // Obtém todos os jogadores perto da bola.
-
-        List<PlayerField> closeByPlayers = getPlayersCloseToTheBall(jogo.ball_tracker);
-
         // Obtém todos os jogadores perto da bola, por equipa.
 
-        List<PlayerField> homeSquad = closeByPlayers.stream().filter(PlayerField -> homePl.getPlayersPlaying().contains(PlayerField)).collect(Collectors.toList());
-        List<PlayerField> awaySquad = closeByPlayers.stream().filter(PlayerField -> awayPl.getPlayersPlaying().contains(PlayerField)).collect(Collectors.toList());
+        List<PlayerField> homeSquad = homePl.getPlayersCloseToTheBall(ball_tracker);
+        List<PlayerField> awaySquad = awayPl.getPlayersCloseToTheBall(ball_tracker);
 
         // Cálculo de probabilidade(utiliza o Random)
 
@@ -108,21 +102,29 @@ public class Match extends MatchRegister implements Serializable {
             p.getEnergy().decrease();
         }
 
-        int probResult = rand.nextInt(10); // Número que vai servir como o nosso potencial confronto
+        double x = rand.nextDouble(); // Random number
         boolean advantage; // Quem ganha o confronto.
 
-        // O cálculo da probabilidade funciona numa escala de 0-9. Dependendo de quem tem a vantagem, a probabilidade muda para que seja mais provável uma equipa ganhar do que outra, mas não torna imo«possível uma vitória contra a probabilidade.
+        // O cálculo da probabilidade funciona numa escala de 0-1. Dependendo de quem tem a vantagem, a probabilidade muda para que seja mais provável uma equipa ganhar do que outra, mas não torna imo«possível uma vitória contra a probabilidade.
 
-        if (homeSquadSkill < awaySquadSkill) {
+        double probHomeWin = prob(homeSquadSkill, awaySquadSkill);
 
-        } else if (homeSquadSkill > awaySquadSkill) {
+
+        if (x < probHomeWin) {
+            // Home wins
+            //...
 
         } else {
-
+            // Away wins
+            //...
         }
 
 
         return jogo;
+    }
+
+    private double prob(double homeSquadSkill, double awaySquadSkill) {
+        return 0.5;
     }
 
     public void run(){
