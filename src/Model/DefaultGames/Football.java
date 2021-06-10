@@ -115,12 +115,12 @@ public class Football {
         try {
 
             if (pType == GoalKeeper.class)
-                player = new GoalKeeper(name, birthdate, playerAttribuite(ratingMin, ratingMax), playerAttribuite(ratingMin, ratingMax),
+                player = new GoalKeeper(name, birthdate,playerAttribuite(ratingMin, ratingMax), playerAttribuite(ratingMin, ratingMax) , playerAttribuite(ratingMin, ratingMax), playerAttribuite(ratingMin, ratingMax),
                         playerAttribuite(ratingMin, ratingMax), playerAttribuite(ratingMin, ratingMax), playerAttribuite(ratingMin, ratingMax),
                         playerAttribuite(ratingMin, ratingMax), "", playerAttribuite(ratingMin, ratingMax));
             else {
-                Class <?>[] argv = {String.class, LocalDate.class, int.class, int.class, int.class, int.class, int.class, int.class, String.class};
-                player = (Player) pType.getDeclaredConstructor(argv).newInstance(name, birthdate, playerAttribuite(ratingMin, ratingMax), playerAttribuite(ratingMin, ratingMax),
+                Class <?>[] argv = {String.class, LocalDate.class, int.class, int.class, int.class, int.class, int.class, int.class, int.class, String.class};
+                player = (Player) pType.getDeclaredConstructor(argv).newInstance(name, birthdate, playerAttribuite(ratingMin, ratingMax), playerAttribuite(ratingMin, ratingMax), playerAttribuite(ratingMin, ratingMax),
                         playerAttribuite(ratingMin, ratingMax), playerAttribuite(ratingMin, ratingMax), playerAttribuite(ratingMin, ratingMax), playerAttribuite(ratingMin, ratingMax), "");
             }
         } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {

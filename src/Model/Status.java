@@ -5,50 +5,76 @@ import Model.Player.*;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import Model.Match.*;
+import View.StatusView;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Status implements Serializable {
     private String gameName;
     private int playersPerTeam;
+ /*
+         <<<<<<< HEAD
     private List<Team> teams; // Informações sobre o save atual
     private Map<LocalDate, List<Match>> games; // Ainda falta desenvolver!!!!!!!!! A forma de ordenar seria a data do jogo
     // A lista seria os jogos que tinhamos ocorrido naquele dia
+=======
+*/
+    private Map<String, Team> teams; // Informações sobre o save atual
+    private Map<LocalDate, List<MatchRegister>> games;    // A lista seria os jogos que tinhamos ocorrido naquele dia
+    private String playerTeam;
 
-/*
+
+    /*
     This class is use to contenting all data regarding the game
     It's here where we comand basically everything (Create a team, transfer a player)
     It has methods for saving and loading game purposes
     */
-    private void addgame(Match toInsert){
+    private void addgame(MatchRegister toInsert){
         if (games.containsKey(toInsert.getDate()))
         {
-            List<Match> one = games.get(toInsert.getDate());
+            List<MatchRegister> one = games.get(toInsert.getDate());
             one.add(toInsert);
             games.put(toInsert.getDate(), one);
 
         }
         else {
-            List <Match> newList = new ArrayList();
+            List <MatchRegister> newList = new ArrayList();
             newList.add(toInsert);
             games.put(toInsert.getDate(),newList);
         }
     }
     public Status() { // Construtor básico, cria com o jogo "Futebol"
         this.gameName = "Futebol";
-        this.teams = new ArrayList<>();
+        this.teams = new HashMap<>();
         this.playersPerTeam = 11;
         this.games = new TreeMap<>();
     }
 
-    public Status(String gameName, int playersPerTeam, List<Team> teams) {
+
+    private void addgame(Match toInsert){
+        if (games.containsKey(toInsert.getDate()))
+        {
+            List<MatchRegister> one = games.get(toInsert.getDate());
+            one.add(toInsert);
+            games.put(toInsert.getDate(), one);
+
+        }
+        else {
+            List<MatchRegister> newList = new ArrayList<>();
+            newList.add(toInsert);
+            games.put(toInsert.getDate(),newList);
+        }
+    }
+    public Status(String gameName, int playersPerTeam, Map<String, Team> teams) {
         this.gameName = gameName;
         this.playersPerTeam = playersPerTeam;
-        this.teams = teams;
+        this.teams = new HashMap<>(teams);
     }
 
     public void save(String filePath) throws IOException {
+        System.out.println("Gonçalo?");
         FileOutputStream fos = new FileOutputStream(filePath);
         ObjectOutputStream out = new ObjectOutputStream(fos);
         out.writeObject(this);
@@ -69,74 +95,96 @@ public class Status implements Serializable {
 
         return status;
     }
+//Quando o ficheiro original é .txt
+    public void loadText(String filePath) throws NotValidException {
+        try{
+            File fd = new File(filePath);
+            Scanner file = new Scanner(fd);
+            String line ;//= file.nextLine();
+            //boolean NotlastLine = true;
+            line = file.nextLine();
 
-    public void loadText(String filePath) {
-        try {
-            //Team atual a ser preenchida
-            int equipa_atual = 0;
-            File f = new File(filePath);
-            Scanner scan = new Scanner(f);
-            // GameName
-            String data = scan.nextLine();
-            this.setGameName(data);
-            // PlayerPerTeam
-            data = scan.nextLine();
-            this.setPlayersPerTeam(Integer.parseInt(data));
-            // Teams
-            while (scan.hasNextLine()) {
-                data = scan.nextLine();
-                //  System.out.println("Meu: "+data.equals("."));
-                if (data.equals(".")) {
-                    //Define nome equipa
-                    data = scan.nextLine();
-                    Team nova = new Team(data);
-                    this.teams.add(nova);
-                    while (!data.equals(".") && scan.hasNextLine()) {
-                        data = scan.nextLine();
-                        String[] gAux = data.split(";");
+            while (file.hasNext() ) {
 
-                        //Player.GoalKeeper g = new Player.GoalKeeper(gAux);
-                        //this.Teams[equipa_atual].addJogador(new Player.GoalKeeper(gAux));
-                        switch (data.charAt(0)) {
-                            case 'G' -> {
-                                GoalKeeper g = new GoalKeeper(gAux);
-                                this.teams.get(equipa_atual).addPlayer(g);
-                            }
-                            case 'A' -> this.teams.get(equipa_atual).addPlayer(new Striker(gAux));
-                            case 'L' -> this.teams.get(equipa_atual).addPlayer(new BackWing(gAux));
-                            case 'M' -> this.teams.get(equipa_atual).addPlayer(new Midfield(gAux));
-                            case 'D' -> this.teams.get(equipa_atual).addPlayer(new Defender(gAux));
-                            default -> System.out.println("Quem?");
-                        }
+                // System.out.println("lin " + line);
+                if (line.startsWith("Jogo:")) {
+                    addMatch(line);
+                    line = file.nextLine();
+                }
+                else {
+                    if (line.startsWith("Equipa:")) {
+                        line = addTeam(line, file);
 
-
+                    } else {
+                        //Linha inválida
+                        //Para fazer debugging
+                        System.out.println("Inválida . -> "+ line);
+                        line = file.nextLine();
                     }
                 }
-                equipa_atual++;
-                        /*    //Nova equipa
-                    // System.out.println(data);
-                    if (data.charAt(1) != ';') {
-                    // Team name(//)
-                    // this.Teams[0].setNome(data);
-                } else {
-                    if (data.charAt(0) == 'G') {
-                        ArrayList<String> gAux = data.split(";");
-                        Player.GoalKeeper g = new Player.GoalKeeper(Integer.parseInt(gAux[0]), Integer.parseInt(gAux[1]),
-                                Integer.parseInt(gAux[2]), Integer.parseInt(gAux[3]), Integer.parseInt(gAux[4]),
-                                Integer.parseInt(gAux[5]), gAux[7], Integer.parseInt(gAux[8]));
-                        this.Teams[0].addJogador(g);
-                    }
-                }
-
-*/  //this.toString();
             }
-
-        } catch (
-                FileNotFoundException e) {
+            file.close();
+            if (line.startsWith("Jogo:")) {
+                  addMatch(line);
+            }
+            else if (line.startsWith("Equipa:")) {
+                line = addTeam(line, file);
+            }
+        } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
 
+    }
+    public void addTeam(String name){
+        Team byPlayer = new Team();
+        byPlayer.setName(name);
+        teams.put(name, byPlayer);
+    }
+    private String addTeam(String line, Scanner file ) throws NotValidException {
+        StringBuilder team = new StringBuilder(line.substring(7)+"###");
+        line = file.nextLine();
+        while (isTeam(line)) {
+            team.append(line + "\n");
+            line = file.nextLine();
+        }
+        //System.out.println("Equipa: "+team.toString());
+        Team toInsert = new Team(team.toString());
+        teams.put(toInsert.getName(), toInsert);
+        return line;
+    }
+    private void addMatch(String match){
+        String[] info = match.substring(5).split(",");
+        Team home  = null;
+        Team away= null;
+        if (teams.containsKey(info[0])) home = new Team(teams.get(info[0]));
+        if (teams.containsKey(info[1])) away = new Team(teams.get(info[1]));
+
+        if (home != null && away != null)
+        {
+            MatchRegister one = new MatchRegister(info, home, away);
+            if (games.containsKey(one.getDate())) games.get(one.getDate()).add(one);
+            else games.put(one.getDate(), new ArrayList<MatchRegister>(List.of(one)));
+        }
+    }
+    private boolean isTeam(String lineFile){
+        if (!lineFile.startsWith("Equipa:") &&
+                !lineFile.startsWith("Jogo:")
+        ) return true;
+        else return false;
+    }
+
+    public void loadPath(String path)  {
+        try{
+            load(path);
+
+        } catch (Exception e) {
+            try {
+                loadText(path);
+            } catch (NotValidException notValidException) {
+                StatusView.InvalidLine();
+            }
+        }
     }
 
     /*------------------------------------------ Getters e Setters ---------------------------------------------------*/
@@ -157,26 +205,34 @@ public class Status implements Serializable {
         this.playersPerTeam = playersPerTeam;
     }
 
-    public List<Team> getTeams() {
-        return teams /*.stream().map(Team::clone).collect(Collectors.toList())*/;
+    public Map<String, Team> getTeams() {
+        return new HashMap<>(teams);
     }
 
-    public void setTeams(ArrayList<Team> teams) {
+    public Team getTeam(String name) {
+        return teams.get(name);
+    }
+
+
+    public void setTeams(Map<String, Team> teams) {
         this.teams = teams;
     }
 
-    public void setTeams(List<Team> teams) {
-        this.teams = teams;
-    }
-
-    public Map<LocalDate, List<Match>> getGames() {
+    public Map<LocalDate, List<MatchRegister>> getGames() {
         return games.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    public void setGames(Map <LocalDate, List<Match>> games) {
-        this.games = new HashMap<>(games) ;
+    public void setGames(Map <LocalDate, List<MatchRegister>> games) {
+        this.games = new HashMap<LocalDate, List<MatchRegister>>(games) ;
     }
 
+    public String getPlayerTeam() {
+        return playerTeam;
+    }
+
+    public void setPlayerTeam(String playerTeam) {
+        this.playerTeam = playerTeam;
+    }
 
     @Override
     public String toString() {
@@ -186,5 +242,13 @@ public class Status implements Serializable {
                 "\n\tTeams= " + teams +
                 "\n\t}";
     }
+
+    public Status clone() {
+        Status res = new Status(gameName, playersPerTeam, teams);
+        res.games = new HashMap<>(games);
+        res.playerTeam = playerTeam;
+        return res;
+    }
+
 
 }

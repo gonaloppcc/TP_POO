@@ -6,16 +6,16 @@ import java.util.ArrayList;
 
 public class Defender extends Player {
 
-    public Defender(String name, LocalDate birthDate, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, ArrayList<String> historial) {
-        super(name, birthDate, resistance, dexterity, impulsion, headGame, finish, passing, historial);
+    public Defender(String name, LocalDate birthDate, int num, int velocity, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, ArrayList<String> historial) {
+        super(name, birthDate, num, velocity, resistance, dexterity, impulsion, headGame, finish, passing, historial);
     }
 
-    public Defender(String name, LocalDate birthDate, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, String historial) {
-        super(name, birthDate, resistance, dexterity, impulsion, headGame, finish, passing, historial);
+    public Defender(String name, LocalDate birthDate, int num, int velocity,  int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, String historial) {
+        super(name, birthDate, num, velocity, resistance, dexterity, impulsion, headGame, finish, passing, historial);
     }
 
     public Defender(Defender d) {
-        super(d.getName(), d.getBirthDate(), d.getResistance(), d.getDexterity(), d.getImpulsion(), d.getHeadGame(), d.getFinish(), d.getPassing(), d.getHistorial());
+        super(d.getName(), d.getBirthDate(),d.getNum(),d.getVelocity(), d.getResistance(), d.getDexterity(), d.getImpulsion(), d.getHeadGame(), d.getFinish(), d.getPassing(), d.getHistorial());
     }
 
     public Defender(String[] data) {
@@ -26,6 +26,8 @@ public class Defender extends Player {
     public String toString() {
         return "D " +
                 getName() +
+                " num " + super.getNum() +
+                " vel " + super.getVelocity() +
                 " res " + super.getResistance() +
                 " dex " + super.getDexterity() +
                 " imp " + super.getImpulsion() +

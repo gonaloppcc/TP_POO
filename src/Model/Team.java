@@ -2,10 +2,10 @@ package Model;
 
 import Model.Player.*;
 
-import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class Team implements Serializable {
@@ -22,10 +22,61 @@ public class Team implements Serializable {
         this.name = "Default";
         this.players = new ArrayList<>();
     }
-
-    public Team(String name) {
-        this.name = name;
+//Diogo Fazer esta
+    public Team(String fromFile) throws NotValidException {
+        String [] divisoes = fromFile.split("###");
+        this.name = divisoes[0];
+        //for (String x : divisoes) System.out.println("Jogador: "+x);
+        Scanner jogadores = new Scanner(divisoes[1]);
         this.players = new ArrayList<>();
+
+        while (jogadores.hasNextLine())
+        {
+            String line = jogadores.nextLine();
+            addPlayer(line);
+        }
+    }
+
+    public void addPlayer(String line) throws NotValidException {
+        if (!line.contains(":") || !line.contains(",")) throw new NotValidException(line);
+        String[] info = line.split(":");
+        String[] atributes =  info[1].split(",");
+        for (String x : atributes) x =  x.trim();
+        if (line.startsWith("Guarda-Redes")) {
+            if (atributes.length != 10) {
+                System.out.println("Inválido");
+                throw new NotValidException(atributes.toString());
+            }
+            players.add(new GoalKeeper(atributes));
+        }
+        if (line.startsWith("Lateral")) {
+            if (atributes.length != 10) {
+                System.out.println("Inválido");
+                throw new NotValidException(atributes.toString());
+            }
+            players.add(new BackWing(atributes));
+        }
+        if (line.startsWith("Defesa")) {
+            if (atributes.length != 9) {
+                System.out.println("Inválido");
+                throw new NotValidException(atributes.toString());
+            }
+            players.add(new Defender(atributes));
+        }
+        if (line.startsWith("Medio")) {
+            if (atributes.length != 10) {
+                System.out.println("Inválido");
+                throw new NotValidException(atributes.toString());
+            }
+            players.add(new Midfield(atributes));
+        }
+        if (line.startsWith("Avancado")) {
+            if (atributes.length != 9) {
+                System.out.println("Inválido");
+                throw new NotValidException(atributes.toString());
+            }
+            players.add(new Striker(info[1].split(",")));
+        }
     }
 
     public Team(int numJogadores) {
@@ -40,9 +91,9 @@ public class Team implements Serializable {
 
     public Team(String name, ArrayList<Player> players, int numberOfPlayers) {
         this.name = name;
-        this.players = new ArrayList<>();
+        this.players = new ArrayList<>(players);
         //this.players = (ArrayList) players.clone();
-        this.players = players;
+        //this.players = players;
     }
 
     public Team(Team team) {
@@ -59,6 +110,7 @@ public class Team implements Serializable {
         this.name = name;
         this.players = players;
     }
+
 
     // Metodos
 
@@ -86,7 +138,9 @@ public class Team implements Serializable {
     public Player getPlayer(int pos) {
         return players.get(pos);
     }
-
+    public List<Player> getPlayer(String name){
+        return players.stream().filter(x -> x.getName().equals(name)).collect(Collectors.toList());
+    }
     public void addPlayer(Player player) {
         this.players.add(player);
     }
@@ -94,7 +148,7 @@ public class Team implements Serializable {
     @Override
     public String toString() {
         return name + ":\n\t " +
-                players +
+                players.stream().map(Player :: toString).collect(Collectors.joining("\n")) +
                 "}\n";
     }
 

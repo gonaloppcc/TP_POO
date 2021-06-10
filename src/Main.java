@@ -1,7 +1,9 @@
+import Controller.CtrlPreStatus;
 import Controller.StatusController;
 import Model.*;
 import Model.DefaultGames.Football;
 import Model.Player.GoalKeeper;
+import View.PreStatus;
 import View.StatusView;
 
 import java.io.IOException;
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
+       /*
         Football footballGame = new Football();
         Status model = new Status("Football", 11, footballGame.generateTeams());
         StatusView view = new StatusView();
@@ -32,18 +35,32 @@ public class Main {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+        */
+        PreStatus novo = new PreStatus();
+        novo.welcomeAndLoad();
+        CtrlPreStatus maybeFilePath = new CtrlPreStatus();
+        String maybePath = maybeFilePath.readStatus();
+        if (maybePath != null) {
+            System.out.println("Tenho ficheiro");
+            Status fromFile = new Status();
+            fromFile.loadPath(maybePath); //Carrega o status
+
+            StatusController interacts = new StatusController(fromFile, new StatusView());
+            //A partir daqui é o controller do status que faz coisas
+            interacts.interactions();
+        }
+        else System.out.printf("Não tenho ficheiro"); //Gerar um status aleatório?
 
 
-        //Match test = new Match("/home/banderitas/Desktop/2_ano_2_sem/POO/TP_POO/src/Files/profFicheiro");
 
     }
-
     private static void createGoalKeeper() {
         String name = "Manuel Neuer";
         LocalDate birth = LocalDate.of(1986, 3, 27);
         ArrayList<String> neuerHistorial = new ArrayList<>();
         neuerHistorial.add("Bayern");
-        GoalKeeper neuer = new GoalKeeper(name, birth, 96, 87, 87, 88, 95, 96, neuerHistorial, 97);
+        GoalKeeper neuer = new GoalKeeper(name, birth, 30, 30, 96, 87, 87, 88, 95, 96, neuerHistorial, 97);
         System.out.println(neuer.globalSkill());
     }
+
 }

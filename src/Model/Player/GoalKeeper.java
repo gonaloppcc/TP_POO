@@ -2,34 +2,38 @@ package Model.Player;
 
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GoalKeeper extends Player {
     private int elasticity;
 
-    public GoalKeeper(String name, LocalDate birthDate, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, List<String> historial, int elasticity) {
-        super(name, birthDate, resistance, dexterity, impulsion, headGame, finish, passing, historial);
+    public GoalKeeper(String name, LocalDate birthDate, int num, int velocity, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, List<String> historial, int elasticity) {
+        super(name, birthDate, num, velocity, resistance, dexterity, impulsion, headGame, finish, passing, historial);
         this.elasticity = elasticity;
     }
 
-    public GoalKeeper(String name, LocalDate birthDate, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, String historial, int elasticity) {
-        super(name, birthDate, resistance, dexterity, impulsion, headGame, finish, passing, historial);
+    public GoalKeeper(String name, LocalDate birthDate, int num, int velocity, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, String historial, int elasticity) {
+        super(name, birthDate, num, velocity, resistance, dexterity, impulsion, headGame, finish, passing, historial);
         this.elasticity = elasticity;
     }
 
     public GoalKeeper(GoalKeeper g) {
-        super(g.getName(), g.getBirthDate(), g.getResistance(), g.getDexterity(), g.getImpulsion(), g.getHeadGame(), g.getFinish(), g.getPassing(), g.getHistorial());
+        super(g.getName(), g.getBirthDate(), g.getNum(),g.getVelocity(),g.getResistance(), g.getDexterity(), g.getImpulsion(), g.getHeadGame(), g.getFinish(), g.getPassing(), g.getHistorial());
         this.elasticity = g.getElasticity();
     }
 
     public GoalKeeper(String[] data) {
         super(data);
+        elasticity = Integer.parseInt(data[9]);
     }
 
     @Override
     public String toString() {
         return "G " +
-                getName() +
+                   getName() +
+                " numero " +                getNum() +
+                " vel " + super.getVelocity() +
                 " res " + super.getResistance() +
                 " dex " + super.getDexterity() +
                 " imp " + super.getImpulsion() +

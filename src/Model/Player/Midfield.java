@@ -4,37 +4,39 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class Midfield extends Player {
+    private int recovery;
 
-    public Midfield(String name, LocalDate birthDate, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, List<String> historial) {
-        super(name, birthDate, resistance, dexterity, impulsion, headGame, finish, passing, historial);
+    public Midfield(String name, LocalDate birthDate, int num, int velocity, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, List<String> historial, int recovery) {
+        super(name, birthDate, num, velocity, resistance, dexterity, impulsion, headGame, finish, passing, historial);
+        this.recovery = recovery;
     }
 
-    public Midfield(String name, LocalDate birthDate, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, String historial) {
-        super(name, birthDate, resistance, dexterity, impulsion, headGame, finish, passing, historial);
-    }
-
-    public Midfield(Midfield m) {
-        super(m.getName(), m.getBirthDate(), m.getResistance(), m.getDexterity(), m.getImpulsion(), m.getHeadGame(), m.getFinish(), m.getPassing(), m.getHistorial());
+    public Midfield(String name, LocalDate birthDate, int num, int velocity, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, String historial, int recovery) {
+        super(name, birthDate, num, velocity, resistance, dexterity, impulsion, headGame, finish, passing, historial);
+        this.recovery = recovery;
     }
 
     public Midfield(String[] data) {
         super(data);
+        this.recovery = Integer.parseInt(data[9]);
     }
-
-    public Midfield(Defender m) {
-        super(m.getName(), m.getBirthDate(), m.getResistance(), m.getDexterity(), m.getImpulsion(), m.getHeadGame(), m.getFinish(), m.getPassing(), m.getHistorial());
+    public Midfield(Midfield x) {
+        super(x.getName(),x.getBirthDate(),x.getNum(), x.getVelocity(), x.getResistance(),x.getDexterity(),x.getImpulsion(),x.getHeadGame(),x.getFinish(),x.getPassing(),x.getHistorial());
+        this.recovery = x.recovery;
     }
-
     @Override
     public String toString() {
         return "M " +
                 getName() +
+                " num " + super.getNum() +
+                " vel " + super.getVelocity() +
                 " res " + super.getResistance() +
                 " dex " + super.getDexterity() +
                 " imp " + super.getImpulsion() +
                 " head " + super.getHeadGame() +
                 " fin " + super.getFinish() +
-                " pass " + super.getPassing();
+                " pass " + super.getPassing() +
+                " recovery " + this.recovery;
         //", historial=" + super.getHistorial() +
     }
 

@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 public class PlayersField {
     private List<PlayerField> playersPlaying;
     private List<PlayerField> playersBench;
+    private Integer[] strategy;
 
 
 

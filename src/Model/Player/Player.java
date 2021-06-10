@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 abstract public class Player implements Serializable {
@@ -18,15 +19,17 @@ abstract public class Player implements Serializable {
     private Team currentTeam;
     //
 
-    private int resistance, dexterity, impulsion, headGame, finish, passing;
+    private int num, velocity, resistance, dexterity, impulsion, headGame, finish, passing;
     private List<String> historial;
 
     // Construtores
 
 
-    public Player(String name, LocalDate birthDate, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, List<String> historial) {
+    public Player(String name, LocalDate birthDate, int num, int velocity, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, List<String> historial) {
         this.name = name;
         this.birthDate = birthDate;
+        this.num = num;
+        this.velocity = velocity;
         this.resistance = resistance;
         this.dexterity = dexterity;
         this.impulsion = impulsion;
@@ -37,9 +40,11 @@ abstract public class Player implements Serializable {
     }
 
 
-    public Player(String name, LocalDate birthDate, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, String historial) {
+    public Player(String name, LocalDate birthDate, int num, int velocity,int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, String historial) {
         this.name = name;
         this.birthDate = birthDate;
+        this.num = num;
+        this.velocity = velocity;
         this.resistance = resistance;
         this.dexterity = dexterity;
         this.impulsion = impulsion;
@@ -52,28 +57,30 @@ abstract public class Player implements Serializable {
 
     public Player(String[] data) {
         LocalDate birth = LocalDate.of(2000, 1, 1);
-        this.name = "Default";
+        this.name = data[0];
         this.birthDate = birth;
-        this.resistance = Integer.parseInt(data[1]);
-        this.dexterity = Integer.parseInt(data[2]);
-        this.impulsion = Integer.parseInt(data[3]);
-        this.headGame = Integer.parseInt(data[4]);
-        this.finish = Integer.parseInt(data[5]);
-        this.passing = Integer.parseInt(data[6]);
+        this.num = Integer.parseInt(data[1]);
+        this.velocity = Integer.parseInt(data[2]);
+        this.resistance = Integer.parseInt(data[3]);
+        this.dexterity = Integer.parseInt(data[4]);
+        this.impulsion = Integer.parseInt(data[5]);
+        this.headGame = Integer.parseInt(data[6]);
+        this.finish = Integer.parseInt(data[7]);
+        this.passing = Integer.parseInt(data[8]);
         this.historial = new ArrayList<>();
-        this.historial.add(data[7]);
+        //this.historial.add("");
     }
 
     public abstract int globalSkill();
 
-    @Override
-    public abstract String toString();
+        @Override
+        public abstract String toString();
 
-
-    public String toStringAlter() {
-        return "Player " + name + ": "
-                        + this.globalSkill();
-    }
+//    @Override
+//    public String toString() {
+//        return "Player " + name + ": "
+//                        + this.globalSkill();
+//    }
 
 
     /*------------------------------------------ Getters e Setters -----------------------------------------*/
@@ -142,12 +149,27 @@ abstract public class Player implements Serializable {
         this.passing = passing;
     }
 
-    public List<String> getHistorial() {
-        return new ArrayList<>(this.historial);
+    public String getHistorial() {
+        return this.historial.stream().collect(Collectors.joining());
     }
 
     public void setHistorial(List<String> historial) {this.historial = historial;}
 
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
+    }
+
+    public int getVelocity() {
+        return velocity;
+    }
+
+    public void setVelocity(int velocity) {
+        this.velocity = velocity;
+    }
     /* ------------------------------------- Other methods ---------------------------------------------------------- */
 
     public int getIdade() {

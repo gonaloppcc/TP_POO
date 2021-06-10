@@ -11,22 +11,22 @@ class PlayerField {
 
     private Energy energy; // range [0, 100]
 
-    private int yellowCards;
-    private int redCards;
+    private int yellowCards;//0 não tem nenhum, 1 tem amarelo, 2 tem vermelho
+    private boolean redCard;
     // Manipular isto dps para que não ultrapasse certos valores
 
 
     // Falta encapsular
 
 
-    public PlayerField(Player player, Point position, Position mainPosition, boolean lateral, Energy energy, int yellowCards, int redCards) {
+    public PlayerField(Player player, Point position, Position mainPosition, boolean lateral, Energy energy, int yellowCards, boolean redCards) {
         this.player = player.clone();
         this.position = position;
         this.mainPosition = mainPosition;
         this.lateral = lateral;
         this.energy = energy.clone();
         this.yellowCards = yellowCards;
-        this.redCards = redCards;
+        this.redCard = redCards;
     }
 
     public Player getPlayer() {
@@ -77,16 +77,16 @@ class PlayerField {
         this.yellowCards = yellowCards;
     }
 
-    public int getRedCards() {
-        return redCards;
+    public boolean isRedCard() {
+        return redCard;
     }
 
-    public void setRedCards(int redCards) {
-        this.redCards = redCards;
+    public void setRedCard(boolean redCard) {
+        this.redCard = redCard;
     }
 
     public PlayerField clone() {
-        return new PlayerField(player, position, mainPosition, lateral, energy, yellowCards, redCards);
+        return new PlayerField(player, position, mainPosition, lateral, energy, yellowCards, redCard);
     }
 
     public double distance(Point point) {

@@ -15,7 +15,7 @@ public class ChosingPlayers {
         sb.append("Equipa: ").append(thing);
         int i = 0;
         for (Player atual : list) {
-            sb.append("\nJogador número ").append(i).append(": ").append(atual.toStringAlter());
+            sb.append("\nJogador número ").append(i).append(": ").append(atual.toString());
             i++;
         }
         sb.append("\nNow you choose the players you want by number.\n");
