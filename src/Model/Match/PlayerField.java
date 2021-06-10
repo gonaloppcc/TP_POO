@@ -4,42 +4,19 @@ import Model.Player.*;
 import com.sun.nio.sctp.PeerAddressChangeNotification;
 
 class PlayerField {
+    private static final double distance = 5;
     private Player player;
-
     private Point position; // current position on the field
     private Position mainPosition; // main position
     private boolean lateral;
-
     private Energy energy; // range [0, 100]
-
     private int yellowCards;//0 não tem nenhum, 1 tem amarelo, 2 tem vermelho
-    private boolean redCard;
 
     // Manipular isto dps para que não ultrapasse certos valores
+    private boolean redCard;
 
-    private static final double distance = 5;
+    /*------------------------------------------------Constructors----------------------------------------------------*/
 
-    private Position numberToPosition(Integer x) {
-        switch (x) {
-            case 0:
-                return Position.GOALKEEPER;
-            case 1:
-                return Position.DEFENDER;
-            case 2:
-                return Position.MIDFIELD;
-            case 3:
-                return Position.STRIKER;
-            default:
-                return Position.LATERAL;
-        }
-    }
-    private Position bestPosition(Player x){
-        if (x instanceof GoalKeeper) return Position.GOALKEEPER;
-        if (x instanceof Defender) return Position.DEFENDER;
-        if (x instanceof Midfield) return Position.MIDFIELD;
-        if (x instanceof Striker) return Position.STRIKER;
-        return Position.LATERAL;
-    }
     public PlayerField(Player playerToSet) {
         this.player = playerToSet;
         mainPosition = bestPosition(playerToSet);
@@ -49,6 +26,7 @@ class PlayerField {
         redCard = false;
         position = new Point(-1, -1);
     }
+
     public PlayerField(Player playerToSet, float where) {
         this.player = playerToSet;
         mainPosition = bestPosition(playerToSet);
@@ -62,6 +40,7 @@ class PlayerField {
     /**
      * Quando não existem jogadores suficientes numa dada posição
      * Metemos um jogador que não devia estar numa zona nessa zona
+     *
      * @param playerToSet
      * @param where
      * @param positionGiven
@@ -70,8 +49,7 @@ class PlayerField {
         Position notNatural = numberToPosition(positionGiven);
         this.player = playerToSet;
         mainPosition = notNatural;
-        if (notNatural.equals(Position.LATERAL)) lateral = true;
-        else lateral = false;
+        lateral = notNatural.equals(Position.LATERAL);
         energy = new Energy(100);
         yellowCards = 0;
         redCard = false;
@@ -88,7 +66,11 @@ class PlayerField {
         this.redCard = redCards;
     }
 
-    /*----------------------------------------------------------------------------------------------------------------*/
+    public PlayerField(PlayerField playerField) {
+        this(playerField.getPlayer(), playerField.getPosition(), playerField.getMainPosition(), playerField.isLateral(), playerField.getEnergy(), playerField.getYellowCards(), playerField.isRedCard());
+    }
+
+    /*------------------------------------------ Getters e Setters ---------------------------------------------------*/
 
     public Player getPlayer() {
         return player;
@@ -146,18 +128,37 @@ class PlayerField {
         this.redCard = redCard;
     }
 
-    public PlayerField clone() {
-        return new PlayerField(player, position, mainPosition, lateral, energy, yellowCards, redCard);
+    /* ------------------------------------- Other methods ---------------------------------------------------------- */
+
+    private Position numberToPosition(Integer x) {
+        switch (x) {
+            case 0:
+                return Position.GOALKEEPER;
+            case 1:
+                return Position.DEFENDER;
+            case 2:
+                return Position.MIDFIELD;
+            case 3:
+                return Position.STRIKER;
+            default:
+                return Position.LATERAL;
+        }
     }
 
-    /*----------------------------------------------------------------------------------------------------------------*/
-
+    private Position bestPosition(Player x) {
+        if (x instanceof GoalKeeper) return Position.GOALKEEPER;
+        if (x instanceof Defender) return Position.DEFENDER;
+        if (x instanceof Midfield) return Position.MIDFIELD;
+        if (x instanceof Striker) return Position.STRIKER;
+        return Position.LATERAL;
+    }
+    
     public double distance(Point point) {
         return this.position.distance(point);
     }
 
     public double skill() { // Skill formula
-        return player.globalSkill() * (energy.getEnergy()/ 100); // Falta ter em atenção o facto do jogador não estar na sua posição
+        return player.globalSkill() * (energy.getEnergy() / 100); // Falta ter em atenção o facto do jogador não estar na sua posição
     }
 
     // Combines the x and y arguments with the position of the player
@@ -180,14 +181,16 @@ class PlayerField {
         double m = getSlope(pos_ball);
         double b = getB(m);
 
-        double x = form(m, b, distance);
+        double x = form(m, b, distance, false);
         double y = m * x + b;
 
         this.position.addVector(x, y);
     }
 
-    private double form(double m, double b, double distance) {
-        return - ((Math.sqrt(-Math.pow(b,2)+ distance * (Math.pow(m, 2)) + distance)) - b * m) / (Math.pow(m, 2) + 1);
+    private double form(double m, double b, double distance, boolean forward) {
+        double sqrt = Math.sqrt(-Math.pow(b, 2) + distance * (Math.pow(m, 2)) + distance);
+        if (forward) return (sqrt - b * m) / (Math.pow(m, 2) + 1);
+        return (-sqrt - b * m) / (Math.pow(m, 2) + 1);
     }
 
     private void moveForward(Point pos_ball, double distance) {
@@ -195,7 +198,7 @@ class PlayerField {
         double m = getSlope(pos_ball);
         double b = getB(m);
 
-        double x = - form(m, b, distance);
+        double x = -form(m, b, distance, true);
         double y = m * x + b;
 
         this.position.addVector(x, y);
@@ -216,5 +219,9 @@ class PlayerField {
                 "joga a=" + mainPosition +
                 ", position=" + position +
                 '}';
+    }
+    
+    public PlayerField clone() {
+        return new PlayerField(this);
     }
 }

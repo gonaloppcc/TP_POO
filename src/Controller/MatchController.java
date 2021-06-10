@@ -8,37 +8,45 @@ import View.StatusView;
 import java.util.Scanner;
 
 public class MatchController {
-    private Match game;
-    private Integer numberOnField;
-    private Scanner terminal;
-    private MatchView view;
+    private final Match game;
+    private final Integer numberOnField;
+    private final Scanner terminal;
+    private final MatchView view;
 
     public MatchController(Team home, Team away, int playerPerTeam) {
         terminal = new Scanner(System.in);
         numberOnField = playerPerTeam;
         view = new MatchView();
-        this.game = new Match(home, away, new Integer[]{1, 3,3,3,1},getStrategy());
+        //this.game = new Match(home, away, new Integer[]{1, 3, 3, 3, 1}, getStrategy());
+        this.game = Match.game_play(home, away, new Integer[]{1, 3, 3, 3, 1}, getStrategy());
+        System.out.println("Game score: " + game.getScoreHome() + "-" + game.getScoreAway());
         game.run();
 
     }
-    private String convertPositionfromNumber(Integer pos){
-        switch (pos){
-            case 1: return "Defender";
-            case 2: return "Midfield";
-            case 3: return "Striker";
-            default: return "BackWing";
+
+    private String convertPositionfromNumber(Integer pos) {
+        switch (pos) {
+            case 1:
+                return "Defender";
+            case 2:
+                return "Midfield";
+            case 3:
+                return "Striker";
+            default:
+                return "BackWing";
         }
 
     }
-    private Integer[] getStrategy(){
+
+    private Integer[] getStrategy() {
         int total = 1;
         int temp;
         Integer[] res = new Integer[5];
-        for (int i = 1; i < res.length && total < numberOnField; i++){
-            view.toZone(convertPositionfromNumber(i), numberOnField-total);
+        for (int i = 1; i < res.length && total < numberOnField; i++) {
+            view.toZone(convertPositionfromNumber(i), numberOnField - total);
             while (true) {
                 temp = terminal.nextInt();
-                if (temp+total > numberOnField) StatusView.InvalidLine();
+                if (temp + total > numberOnField) StatusView.InvalidLine();
                 else {
                     res[i] = temp;
                     total += temp;
@@ -51,10 +59,11 @@ public class MatchController {
         for (int i = 0; i < res.length; i++) if (res[i] == null) res[i] = 0;
         return res;
     }
-    public void inicializeAway (){
-        game.setStrategy(new Integer[]{ 1, 3,3,3,1}, false);
+
+    public void inicializeAway() {
+        game.setStrategy(new Integer[]{1, 3, 3, 3, 1}, false);
         Team away = game.getAwayTeam();
-        game.setAwayPl(away, new Integer[]{1, 3,3,3,1});
+        game.setAwayPl(away, new Integer[]{1, 3, 3, 3, 1});
     }
     //public void inicializeHome(){
     //    Integer[] strategy = getStrategy();

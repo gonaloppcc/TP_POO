@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 
 public class StatusController {
     private Status model;
-    private StatusView view;
-    private Scanner terminal;
+    private final StatusView view;
+    private final Scanner terminal;
 
     public StatusController(Status model, StatusView view) {
         this.model = model;
@@ -30,10 +30,10 @@ public class StatusController {
         view.printStatus(model.getGameName(), model.getTeams());
     }
 
-    public void interactions (){
+    public void interactions() {
         chooseTeam();
         boolean exit = false;
-        while (!exit){
+        while (!exit) {
             view.printOptions();
             String num = terminal.nextLine();
             try {
@@ -60,39 +60,38 @@ public class StatusController {
                         //Depois não faz bem o exit
                         break;
                     default:
-                        view.InvalidOption();
+                        StatusView.InvalidOption();
                 }
-            }
-            catch  (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 StatusView.InvalidLine();
             }
             //if (Integer.parseInt(num) == 5)
         }
     }
-    private void chooseTeam(){
-           boolean validTeam = false;
-        while (!validTeam){
-         //   System.out.print("\033[H\033[2J");
-         //   System.out.flush();
-            view.chooseTeam(model.getTeams().keySet(), "Please choose your favourite team (write name):");
+
+    private void chooseTeam() {
+        boolean validTeam = false;
+        while (!validTeam) {
+            //   System.out.print("\033[H\033[2J");
+            //   System.out.flush();
+            StatusView.chooseTeam(model.getTeams().keySet(), "Please choose your favourite team (write name):");
             String teamChoosen = terminal.nextLine();
-            if (teamChoosen.equals("meh")){
+            if (teamChoosen.equals("meh")) {
                 List<String> valuesList = new ArrayList<String>(model.getTeams().keySet());
                 model.setPlayerTeam(valuesList.get(0));
                 return;
             }
-                if (model.getTeams().containsKey(teamChoosen.trim()))
-                {
-                    model.setPlayerTeam(teamChoosen);
-                    validTeam = !validTeam;
-                }
-                else view.InvalidOption();
+            if (model.getTeams().containsKey(teamChoosen.trim())) {
+                model.setPlayerTeam(teamChoosen);
+                validTeam = !validTeam;
+            } else StatusView.InvalidOption();
         }
     }
-    public void saveLoadOption(){
+
+    public void saveLoadOption() {
         view.SaveOrLoad();
         boolean validChoice = false;
-        while (!validChoice){
+        while (!validChoice) {
             String choice = terminal.nextLine();
             if (choice.trim().equals("Save")) {
                 view.Path();
@@ -107,7 +106,7 @@ public class StatusController {
                 try {
                     this.model = Status.load(terminal.nextLine());
                 } catch (IOException e) {
-                        view.IOerror();
+                    view.IOerror();
                 } catch (ClassNotFoundException e) {
                     view.wrongPath();
                 }
@@ -115,6 +114,7 @@ public class StatusController {
         }
 
     }
+
     private void playOption() {
         view.randomOrChoose();
         Team opposite;
@@ -132,7 +132,7 @@ public class StatusController {
                 //Só existe uma equipa, joga contra ele próprio
                 if (teams.size() == 1) opposite = teams.get(0);
                 else {
-                    int rand_num = rand.nextInt(teams.size()-1);
+                    int rand_num = rand.nextInt(teams.size() - 1);
                     teams.remove(model.getTeam(model.getPlayerTeam()));
                     opposite = teams.get(rand_num);
                 }
