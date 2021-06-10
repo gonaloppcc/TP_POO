@@ -18,9 +18,10 @@ public class MatchController {
         numberOnField = playerPerTeam;
         view = new MatchView();
 
-        this.game = new Match(home, away, new Integer[]{1, 3,3,3,1},getStrategy());
-
-        view.CampoTodo(game.getPlayersPositions(true), game.getPlayersPositions(false) );
+        //this.game = new Match(home, away, new Integer[]{1, 3,3,3,1},getStrategy());
+        this.game = Match.game_play(home, away, new Integer[]{1, 3, 3, 3, 1}, getStrategy());
+        System.out.println("Game score: " + game.getScoreHome() + "-" + game.getScoreAway());
+        //view.CampoTodo(game.getPlayersPositions(true), game.getPlayersPositions(false) );
         //game.run();
 
     }

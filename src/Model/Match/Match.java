@@ -149,8 +149,14 @@ public class Match extends MatchRegister implements Serializable {
         // Dá o sucesso do confronto à equipa de fora.
         advantage = probResult < probHomeWin; // Dá o sucesso do confronto à equipa de casa.
 
-        if (advantage) setScoreHome(getScoreHome() + 1);
-        else setScoreAway(getScoreAway() + 1);
+        if (advantage) {
+            setScoreHome(getScoreHome() + 1);
+            homePl.movePlayers(ball_tracker, ball_pos);
+        }
+        else {
+            setScoreAway(getScoreAway() + 1);
+            awayPl.movePlayers(ball_tracker, ball_pos);
+        }
     }
 
     public double prob(double homeSquadSkill, double awaySquadSkill) {
