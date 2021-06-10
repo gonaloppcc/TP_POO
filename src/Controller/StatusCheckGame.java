@@ -18,7 +18,10 @@ public class StatusCheckGame {
         this.status = null;
         terminal = new Scanner(System.in);
     }
-
+    public StatusCheckGame(Status status) {
+        this.status = status;
+        terminal = new Scanner(System.in);
+    }
     public Status run(Status toStore){
         status = toStore;
 //        CheckGameView prints = new CheckGameView();
@@ -104,7 +107,7 @@ public class StatusCheckGame {
      * @param message
      * @return
      */
-    private Team getTeam(String message){
+    public Team getTeam(String message){
         while (true){
             String possibleTeam = printTeamReturnName(message);
             if (status.getTeams().containsKey(possibleTeam.trim())) return status.getTeam(possibleTeam.trim());

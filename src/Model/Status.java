@@ -14,7 +14,6 @@ public class Status implements Serializable {
     private String gameName;
     private int playersPerTeam;
  /*
-         <<<<<<< HEAD
     private List<Team> teams; // Informações sobre o save atual
     private Map<LocalDate, List<Match>> games; // Ainda falta desenvolver!!!!!!!!! A forma de ordenar seria a data do jogo
     // A lista seria os jogos que tinhamos ocorrido naquele dia
@@ -166,6 +165,25 @@ public class Status implements Serializable {
             else games.put(one.getDate(), new ArrayList<MatchRegister>(List.of(one)));
         }
     }
+
+    /**
+     * Inserts a new game in the current register
+     * @param match
+     */
+    public void addMatch(Match match){
+        LocalDate dateGame = match.getDate();
+        if(games.containsKey(dateGame)){
+            List<MatchRegister> sameDate = games.get(dateGame);
+            sameDate.add(match);
+        }
+
+        else {
+            List<MatchRegister> toAdd = new ArrayList<>();
+            toAdd.add(match);
+            games.put(dateGame, toAdd);
+        }
+    }
+
     private boolean isTeam(String lineFile){
         if (!lineFile.startsWith("Equipa:") &&
                 !lineFile.startsWith("Jogo:")

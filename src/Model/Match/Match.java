@@ -9,13 +9,13 @@ import java.util.Random;
 
 public class Match extends MatchRegister implements Serializable {
 
-    // Variável para indicar o dia do jogo.
-
 
     // Variável para contador do jogo (AINDA POR DEFINIR).
 
 
-
+    private PlayersField homePl;
+    private PlayersField awayPl;
+    private Point dimensionField;
     // Equipas que vão jogar. Team possui uma string para o nome da equipa e uma List<Player> para a lista de jogadores.
 
 
@@ -37,18 +37,17 @@ public class Match extends MatchRegister implements Serializable {
 
         return this;
     }
-
+//Tenho de fazer este
     public Match (Team homeTeam, Team awayTeam) {
 
 
         super(LocalDate.now(), homeTeam, awayTeam, 0, 0, new ArrayList<>(), new ArrayList<>());
 
         Random rand = new Random();
-
         this.ball_pos = rand.nextBoolean();
-
-        this.ball_tracker.setX(0);
-        this.ball_tracker.setY(0);
+        awayPl = new PlayersField(awayTeam, new Integer[]{4,3,3,0});
+        //this.ball_tracker.setX(0);
+        //this.ball_tracker.setY(0);
     }
 
     public Match (LocalDate gameDate, Team homeTeam, Team awayTeam, int homeGoals, int awayGoals, boolean ball_pos, Point ball_tracker) {
@@ -89,5 +88,29 @@ public class Match extends MatchRegister implements Serializable {
     public Match confrontation (Match jogo) {
         return jogo;
     }
+    public void run(){
+        //Simulação com refresh's
+    }
+    public void setStrategy(Integer[] strategy, boolean home){
+        if (home) homePl.setStrategy(strategy);
+        else awayPl.setStrategy(strategy);
+    }
 
+    public PlayersField getHomePl() {
+        return homePl;
+    }
+
+    public void setHomePl(PlayersField homePl) {
+        this.homePl = homePl;
+    }
+
+    public PlayersField getAwayPl() {
+        return awayPl;
+    }
+    public void setAwayPl(Team awayPl, Integer[] integers) {
+        this.awayPl = new PlayersField(awayPl, integers);
+    }
+    public void setAwayPl(PlayersField awayPl) {
+        this.awayPl = awayPl;
+    }
 }

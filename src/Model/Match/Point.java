@@ -1,5 +1,7 @@
 package Model.Match;
 
+import java.util.Random;
+
 public class Point {
     private double x;
     private double y;
@@ -7,6 +9,39 @@ public class Point {
     public Point(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    /**
+     * Define em que posição um dado jogador vai estar em função da sua posição.
+     * Se for lateral, pode ser esquerdo ou direito.
+     * As áreas dividem-se da seguinte forma, com campo (250, 50):
+     * Centro: 10-40  Lateral 0-10, 40-50
+     * Defesa: 0-80
+     * Médio: 80-170
+     * Ataque: 170-250
+     * @param fraction
+     * @param lateral
+     * @param pos
+     */
+    public Point(float fraction, boolean lateral, Position pos){
+        Random rnd = new Random();
+
+        if (lateral){
+            boolean esq = rnd.nextBoolean();
+            if (esq) new Point(45, roundFloat(fraction, 250));
+            else new Point(5, roundFloat(fraction, 250));
+        }
+        else{      //No x ele pode
+            if (pos.equals(Position.DEFENDER)) new Point( roundFloat(fraction, 80),rnd.nextInt(30)+10 );
+            else {
+                if (pos.equals(Position.MIDFIELD))  new Point( roundFloat(fraction, 90)+80,rnd.nextInt(30)+10 );
+                else new Point( roundFloat(fraction, 80)+170,rnd.nextInt(30)+10 );
+            }
+
+        }
+    }
+    private int roundFloat(float x, int y) {
+        return (int) Math.round(x*y);
     }
 
     public double getX() {
@@ -34,4 +69,11 @@ public class Point {
         this.y += y;
     }
 
+    @Override
+    public String toString() {
+        return "Point{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }

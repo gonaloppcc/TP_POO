@@ -1,6 +1,6 @@
 package Model.Match;
 
-import Model.Player.Player;
+import Model.Player.*;
 
 class PlayerField {
     private Player player;
@@ -18,7 +18,33 @@ class PlayerField {
 
     private static final double distance = 5;
 
-
+    private Position bestPosition(Player x){
+        if (x instanceof GoalKeeper) return Position.GOALKEEPER;
+        if (x instanceof BackWing) return Position.DEFENDER;
+        if (x instanceof Midfield) return Position.MIDFIELD;
+        if (x instanceof Striker) return Position.STRIKER;
+        return Position.LATERAL;
+    }
+    public PlayerField(Player playerToSet) {
+        this.player = playerToSet;
+        mainPosition = bestPosition(playerToSet);
+        if (mainPosition.equals(Position.LATERAL)) lateral = true;
+        else lateral = false;
+        energy = new Energy(100);
+        yellowCards = 0;
+        redCard = false;
+            position = new Point(-1, -1);
+    }
+    public PlayerField(Player playerToSet, float where) {
+        this.player = playerToSet;
+        mainPosition = bestPosition(playerToSet);
+        if (mainPosition.equals(Position.LATERAL)) lateral = true;
+        else lateral = false;
+        energy = new Energy(100);
+        yellowCards = 0;
+        redCard = false;
+        position = new Point(where, lateral, mainPosition);
+    }
     // Falta encapsular
 
 
@@ -151,5 +177,13 @@ class PlayerField {
 
     private double getSlope(Point pos_ball) {
         return (this.position.getY() - pos_ball.getY()) / (this.position.getX() - pos_ball.getX());
+    }
+
+    @Override
+    public String toString() {
+        return "PlayerField{" +
+                "player=" + player +
+                ", position=" + position +
+                '}';
     }
 }

@@ -73,4 +73,8 @@ public class StatusView {
     public void EndGame(){
         System.out.println("Exiting....");
     }
+
+    public void randomOrChoose(){
+        System.out.println("Do you want to choose who you are going to play (s/n)?");
+    }
 }
