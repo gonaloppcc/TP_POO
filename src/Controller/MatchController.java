@@ -18,7 +18,9 @@ public class MatchController {
         numberOnField = playerPerTeam;
         view = new MatchView();
         this.game = new Match(home, away, new Integer[]{1, 3,3,3,1},getStrategy());
-        game.run();
+
+        view.CampoTodo(game.getPlayersPositions(true), game.getPlayersPositions(false) );
+        //game.run();
 
     }
     private String convertPositionfromNumber(Integer pos){

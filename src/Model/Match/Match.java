@@ -23,6 +23,15 @@ public class Match extends MatchRegister implements Serializable {
 
     private final Point ball_tracker;
 
+    /**
+     * Get the positions of one team. It's necessary to print the match
+     * @param home
+     * @return
+     */
+    public List<Point> getPlayersPositions(boolean home){
+        if (home) return homePl.playersPosition();
+        else return awayPl.playersPosition();
+    }
 //Tenho de fazer este
     public Match (Team homeTeam, Team awayTeam, Integer[] defaultBot, Integer[] strategyPlayer) {
     //Tenho de fazer este

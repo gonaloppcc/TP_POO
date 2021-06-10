@@ -3,6 +3,8 @@ package Model.Match;
 import Model.Player.*;
 import com.sun.nio.sctp.PeerAddressChangeNotification;
 
+import java.util.List;
+
 class PlayerField {
     private Player player;
 
@@ -18,6 +20,7 @@ class PlayerField {
     // Manipular isto dps para que não ultrapasse certos valores
 
     private static final double distance = 5;
+
 
     private Position numberToPosition(Integer x) {
         switch (x) {
