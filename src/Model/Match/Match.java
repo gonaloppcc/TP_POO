@@ -1,7 +1,6 @@
 package Model.Match;
 
 import Model.Team;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -30,6 +29,11 @@ public class Match extends MatchRegister implements Serializable {
 
         return this;
     }
+
+   public Match (Team homeTeam,Team awayTeam) {
+        super();
+   }
+
 //Tenho de fazer este
     public Match (Team homeTeam, Team awayTeam, Integer[] defaultBot, Integer[] strategyPlayer) {
     //Tenho de fazer este
@@ -62,7 +66,7 @@ public class Match extends MatchRegister implements Serializable {
 
     public static Match game_play(Team homeTeam, Team awayTeam) {
 
-        Match game = Match.game_play(homeTeam, awayTeam); // Criar o jogo com os estados base.
+        Match game = new Match(homeTeam, awayTeam); // Criar o jogo com os estados base.
         boolean swap_side = game.ball_pos; // Variável para o intervalo, é precisa para saber o state drive.
         float time; // Iniciar o contador.
 
@@ -101,11 +105,8 @@ public class Match extends MatchRegister implements Serializable {
 
         double probHomeWin = prob(homeSquadSkill,awaySquadSkill); // Função que dá a probabilidade da home Team ganhar range = [0, 1]
 
-        if (probResult < probHomeWin) {
-            advantage = true; // Dá o sucesso do confronto à equipa de casa.
-        } else {
-            advantage = false; // Dá o sucesso do confronto à equipa de fora.
-        }
+        // Dá o sucesso do confronto à equipa de fora.
+        advantage = probResult < probHomeWin; // Dá o sucesso do confronto à equipa de casa.
 
     }
 
@@ -120,7 +121,7 @@ public class Match extends MatchRegister implements Serializable {
         } else if (homeSquadSkill < awaySquadSkill) {
             if (homeSquadSkill < (awaySquadSkill/2)) {probability = (homeSquadSkill / awaySquadSkill);}
             else if (homeSquadSkill > (awaySquadSkill/2)) {probability = 1 - (homeSquadSkill / awaySquadSkill);}
-            else {probability = 0.25;};
+            else {probability = 0.25;}
         } else {
             probability = 0.5;
         }
