@@ -4,6 +4,7 @@ import Model.Player.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -128,10 +129,10 @@ public class Team implements Serializable {
     }
 
     public List<Player> getPlayers() {
-        return players;
+        return players.stream().map(Player::clone).collect(Collectors.toList());
     }
 
-    public void setPlayers(ArrayList<Player> players) {
+    public void setPlayers(List<Player> players) {
         this.players = players;
     }
 

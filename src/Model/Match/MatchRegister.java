@@ -32,6 +32,16 @@ public class MatchRegister {
         awayTeam = null;
     }
 
+    public MatchRegister(LocalDate date, Team homeTeam, Team awayTeam, int scoreHome, int scoreAway, List<Replaces> homeRepl, List<Replaces> awayRepl) {
+        this.date = date;
+        this.homeTeam = homeTeam;
+        this.awayTeam = awayTeam;
+        this.scoreHome = scoreHome;
+        this.scoreAway = scoreAway;
+        this.homeRepl = homeRepl;
+        this.awayRepl = awayRepl;
+    }
+
     public MatchRegister(String[] line, Team home, Team awayTeam) {
 
         homeTeam = home;

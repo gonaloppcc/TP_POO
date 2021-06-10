@@ -13,8 +13,6 @@ public class PlayersField {
     private List<PlayerField> playersBench;
     private Integer[] strategy;
 
-
-
     private static final double radius = 5;
 
     // Construtores
@@ -28,6 +26,10 @@ public class PlayersField {
                 filter(player -> player.distance(ballPosition) > radius).
                 map(PlayerField::clone).
                 collect(Collectors.toList());
+    }
+
+    public List<PlayerField> getBenched() {
+        return playersBench;
     }
 
     public void setBenched(List<PlayerField> benched) {
@@ -73,8 +75,8 @@ public class PlayersField {
     }
 
     // Function that moves players in the field
-    public void movePlayers(PlayerField startP, Point pos_ball) {
-
+    public void movePlayers(Point pos_ball, boolean homeHasBall) {
+        this.playersPlaying.forEach(playerField -> playerField.movePlayer(pos_ball, homeHasBall));
 
 
 
