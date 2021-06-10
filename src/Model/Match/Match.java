@@ -9,19 +9,10 @@ import java.util.Random;
 
 public class Match extends MatchRegister implements Serializable {
 
-
-    // Variável para contador do jogo (AINDA POR DEFINIR).
-
-
     private PlayersField homePl;
     private PlayersField awayPl;
+
     private Point dimensionField;
-    // Equipas que vão jogar. Team possui uma string para o nome da equipa e uma List<Player> para a lista de jogadores.
-
-
-    //
-
-    // Variáveis para manter registos dos resultados em termos de golos.
 
     // Variável que controla quem possui a bola neste momento. True representa homeTeam e False representa awayTeam.
 
@@ -40,19 +31,18 @@ public class Match extends MatchRegister implements Serializable {
 //Tenho de fazer este
     public Match (Team homeTeam, Team awayTeam) {
 
-
         super(LocalDate.now(), homeTeam, awayTeam, 0, 0, new ArrayList<>(), new ArrayList<>());
 
         Random rand = new Random();
         this.ball_pos = rand.nextBoolean();
         awayPl = new PlayersField(awayTeam, new Integer[]{4,3,3,0});
-        //this.ball_tracker.setX(0);
-        //this.ball_tracker.setY(0);
+        this.ball_tracker.setX(0);
+        this.ball_tracker.setY(0);
+
     }
 
     public Match (LocalDate gameDate, Team homeTeam, Team awayTeam, int homeGoals, int awayGoals, boolean ball_pos, Point ball_tracker) {
         this(homeTeam, awayTeam);
-
 
         super.setScoreHome(homeGoals);
         super.setScoreAway(awayGoals);
@@ -100,6 +90,10 @@ public class Match extends MatchRegister implements Serializable {
         return homePl;
     }
 
+    public void setHomePl(Team homePl, Integer[] integers) {
+        this.homePl = new PlayersField(homePl, integers);
+    }
+
     public void setHomePl(PlayersField homePl) {
         this.homePl = homePl;
     }
@@ -107,9 +101,11 @@ public class Match extends MatchRegister implements Serializable {
     public PlayersField getAwayPl() {
         return awayPl;
     }
+
     public void setAwayPl(Team awayPl, Integer[] integers) {
         this.awayPl = new PlayersField(awayPl, integers);
     }
+
     public void setAwayPl(PlayersField awayPl) {
         this.awayPl = awayPl;
     }

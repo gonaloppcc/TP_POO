@@ -32,7 +32,7 @@ public class MatchController {
         }
 
     }
-    private Integer[] getStartegy(){
+    private Integer[] getStrategy(){
         int total = 0;
         int temp;
         Integer[] res = new Integer[5];
@@ -56,8 +56,8 @@ public class MatchController {
         game.setAwayPl(away, new Integer[]{4,3,3,0});
     }
     public void inicializeHome(){
-        Integer[] strategy = getStartegy();
-        game.setAwayPl(game.getHomeTeam(), new Integer[]{4,3,3,0});
+        Integer[] strategy = getStrategy();
+        game.setHomePl(game.getHomeTeam(), new Integer[]{4,3,3,0});
     }
 
     public Match getGame() {
