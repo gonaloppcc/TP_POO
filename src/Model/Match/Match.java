@@ -9,19 +9,6 @@ import java.util.Random;
 
 public class Match extends MatchRegister implements Serializable {
 
-    // Variável para indicar o dia do jogo.
-
-
-    // Variável para contador do jogo (AINDA POR DEFINIR).
-
-
-
-    // Equipas que vão jogar. Team possui uma string para o nome da equipa e uma List<Player> para a lista de jogadores.
-
-
-    //
-
-    // Variáveis para manter registos dos resultados em termos de golos.
 
     // Variável que controla quem possui a bola neste momento. True representa homeTeam e False representa awayTeam.
 
@@ -40,7 +27,6 @@ public class Match extends MatchRegister implements Serializable {
 
     public Match (Team homeTeam, Team awayTeam) {
 
-
         super(LocalDate.now(), homeTeam, awayTeam, 0, 0, new ArrayList<>(), new ArrayList<>());
 
         Random rand = new Random();
@@ -53,7 +39,6 @@ public class Match extends MatchRegister implements Serializable {
 
     public Match (LocalDate gameDate, Team homeTeam, Team awayTeam, int homeGoals, int awayGoals, boolean ball_pos, Point ball_tracker) {
         this(homeTeam, awayTeam);
-
 
         super.setScoreHome(homeGoals);
         super.setScoreAway(awayGoals);
