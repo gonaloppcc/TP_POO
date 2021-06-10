@@ -17,24 +17,21 @@ public class MatchController {
         terminal = new Scanner(System.in);
         numberOnField = playerPerTeam;
         view = new MatchView();
-        //this.game = new Match(home, away, new Integer[]{1, 3, 3, 3, 1}, getStrategy());
-        this.game = Match.game_play(home, away, new Integer[]{1, 3, 3, 3, 1}, getStrategy());
-        System.out.println("Game score: " + game.getScoreHome() + "-" + game.getScoreAway());
-        game.run();
+
+        this.game = new Match(home, away, new Integer[]{1, 3,3,3,1},getStrategy());
+
+        view.CampoTodo(game.getPlayersPositions(true), game.getPlayersPositions(false) );
+        //game.run();
 
     }
 
     private String convertPositionfromNumber(Integer pos) {
-        switch (pos) {
-            case 1:
-                return "Defender";
-            case 2:
-                return "Midfield";
-            case 3:
-                return "Striker";
-            default:
-                return "BackWing";
-        }
+        return switch (pos) {
+            case 1 -> "Defender";
+            case 2 -> "Midfield";
+            case 3 -> "Striker";
+            default -> "BackWing";
+        };
 
     }
 

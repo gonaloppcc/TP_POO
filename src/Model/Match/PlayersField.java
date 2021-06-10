@@ -24,6 +24,10 @@ public class PlayersField {
 //        return p1.globalS
 //}
 
+        public List<Point> playersPosition(){
+            return playersPlaying.stream().map(PlayerField::getPosition).collect(Collectors.toList());
+        }
+
     /**
      * Get the players in a given position, position 0 is the GoalKeeper.
      * A lista é ordenada
@@ -31,6 +35,7 @@ public class PlayersField {
      * @param position
      * @return
      */
+
     public static List<Player> getHowManyInThatPosition(List<Player> team, int position){
     Comparator<Player> cmpPlayer = new Comparator<Player>() {
         public int compare(Player p1, Player p2) {

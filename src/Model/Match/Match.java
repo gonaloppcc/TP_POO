@@ -24,7 +24,7 @@ public class Match extends MatchRegister implements Serializable {
 
 
     /*------------------------------------------------Constructors----------------------------------------------------*/
-    
+
     //Tenho de fazer este
     public Match(Team homeTeam, Team awayTeam, Integer[] defaultBot, Integer[] strategyPlayer) {
         //Tenho de fazer este
@@ -187,6 +187,11 @@ public class Match extends MatchRegister implements Serializable {
 
     public void run() {
         //Simulação com refresh's
+    }
+
+    public List<Point> getPlayersPositions(boolean home){
+        if (home) return homePl.playersPosition();
+        else return awayPl.playersPosition();
     }
 
     public void setStrategy(Integer[] strategy, boolean home) {
