@@ -170,15 +170,19 @@ class PlayerField {
 
     /**
      * Moves the player accordingly with the position of the ball.
+     * @param pos_ball
+     * @param homeHasBall
      */
     public void movePlayer(Point pos_ball, boolean homeHasBall) {
-        double distance = this.energy.getEnergy() * PlayerField.distance;
+        double distance = (this.energy.getEnergy() / 100) * PlayerField.distance;
         if (homeHasBall) this.moveForward(pos_ball, distance);
         else this.moveBack(pos_ball, distance);
         this.energy.decrease();
     }
 
     private void moveBack(Point pos_ball, double distance) {
+        this.position.addVector(getPosition().getX() - pos_ball.getX(), getPosition().getY() - pos_ball.getY());
+        /*
         // y = m*x + b
         double m = getSlope(pos_ball);
         double b = getB(m);
@@ -187,16 +191,21 @@ class PlayerField {
         double y = m * x + b;
 
         this.position.addVector(x, y);
+
+         */
     }
 
     private double form(double m, double b, double distance, boolean forward) {
-        double sqrt = Math.sqrt(-Math.pow(b, 2) + distance * (Math.pow(m, 2)) + distance);
+        double sqrt = Math.min(Math.sqrt(-Math.pow(b, 2) + distance * (Math.pow(m, 2)) + distance), 0);
         if (forward) return (sqrt - b * m) / (Math.pow(m, 2) + 1);
         return (-sqrt - b * m) / (Math.pow(m, 2) + 1);
     }
 
     private void moveForward(Point pos_ball, double distance) {
+        this.position.addVector(pos_ball.getX() - getPosition().getX(), pos_ball.getY() - getPosition().getY());
+
         // y = m*x + b
+        /*
         double m = getSlope(pos_ball);
         double b = getB(m);
 
@@ -204,6 +213,8 @@ class PlayerField {
         double y = m * x + b;
 
         this.position.addVector(x, y);
+
+         */
     }
 
     private double getB(double m) {
@@ -211,7 +222,10 @@ class PlayerField {
     }
 
     private double getSlope(Point pos_ball) {
-        return (this.position.getY() - pos_ball.getY()) / (this.position.getX() - pos_ball.getX());
+        double mY = this.position.getY() - pos_ball.getY();
+        double mX = this.position.getX() - pos_ball.getX();
+        if (mY == 0 && mX == 0) return 0;
+        return (mY/mX);
     }
 
     @Override

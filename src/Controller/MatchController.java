@@ -31,7 +31,6 @@ public class MatchController {
             this.game = new Match(home, away, new Integer[]{1, 3,3,3,1},getStrategy());
             view.CampoTodo(game.getPlayersPositions(true), game.getPlayersPositions(false) );
             //game.run();
-
         }
         else {
             this.game = Match.game_play(home, away, new Integer[]{1, 3, 3, 3, 1}, getStrategy());
@@ -47,6 +46,7 @@ public class MatchController {
     //    Integer[] strategy = getStrategy();
     //    game.setHomePl(game.getHomeTeam(), strategy);
     //}
+
 
     public Match getGame() {
         return game;

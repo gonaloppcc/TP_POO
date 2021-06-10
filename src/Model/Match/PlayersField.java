@@ -18,7 +18,7 @@ public class PlayersField {
     private List<PlayerField> playersBench;
     private Integer[] strategy;
     private Point dimensionField;
-    private static final double radius = 5;
+    private static final double radius = 25;
 
 //static class PlayerComparator (Player p1, Player p2){
 //        return p1.globalS
@@ -109,7 +109,7 @@ public class PlayersField {
 
     public List<PlayerField> getPlayersCloseToTheBall(Point ballPosition) {
         return this.playersPlaying.stream().
-                filter(player -> player.distance(ballPosition) > radius).
+                filter(player -> player.distance(ballPosition) <= radius).
                 map(PlayerField::clone).
                 collect(Collectors.toList());
     }

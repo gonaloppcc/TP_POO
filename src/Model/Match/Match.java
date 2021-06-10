@@ -60,13 +60,19 @@ public class Match extends MatchRegister implements Serializable {
         boolean swap_side = game.isBall_pos(); // Variável para o intervalo, é precisa para saber o state drive.
         float time; // Iniciar o contador.
 
-        for (time = 0; time <= 45; time += 0.25) game.confrontation(); // Primeira metade do jogo.
+        for (time = 0; time <= 45; time += 0.25) {
+            game.confrontation();
+            System.out.println(game.getBall_tracker());
+        } // Primeira metade do jogo.
 
         game.ball_pos = !swap_side;
         game.ball_tracker.setX(0);
         game.ball_tracker.setY(0);
 
-        for (time = 45; time <= 90; time += 0.25) game.confrontation(); // Segunda metade do jogo.
+        for (time = 45; time <= 90; time += 0.25) {
+            game.confrontation(); // Segunda metade do jogo.
+            System.out.println(game.getBall_tracker());
+        }
 
         return game;
 
@@ -149,10 +155,17 @@ public class Match extends MatchRegister implements Serializable {
         // Dá o sucesso do confronto à equipa de fora.
         advantage = probResult < probHomeWin; // Dá o sucesso do confronto à equipa de casa.
 
-        //if (advantage) setScoreHome(getScoreHome() + 1);
-        //else setScoreAway(getScoreAway() + 1);
-        aftermath(advantage,homeSquad,awaySquad);
+        this.setBall_pos(advantage);
 
+        if (advantage) {
+            setScoreHome(getScoreHome() + 1);
+            this.ball_tracker.addVector(rand.nextDouble()*30, rand.nextDouble()*30);
+        } else {
+            setScoreAway(getScoreAway() + 1);
+            this.ball_tracker.addVector(rand.nextDouble()*-30, rand.nextDouble()*-5);
+        }
+        homePl.movePlayers(ball_tracker, ball_pos);
+        awayPl.movePlayers(ball_tracker, ball_pos);
     }
 
     public double prob(double homeSquadSkill, double awaySquadSkill) {
@@ -262,7 +275,7 @@ public class Match extends MatchRegister implements Serializable {
         //Simulação com refresh's
     }
 
-    public List<Point> getPlayersPositions(boolean home){
+    public List<Point> getPlayersPositions(boolean home) {
         if (home) return homePl.playersPosition();
         else return awayPl.playersPosition();
     }

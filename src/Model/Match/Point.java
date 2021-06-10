@@ -6,11 +6,18 @@ public class Point {
     private double x;
     private double y;
 
+    private static final double xMax = 120;
+    private static final double xMin = 0;
+
+    private static final double yMax = 90;
+    private static final double yMin = 0;
     /*------------------------------------------------Constructors----------------------------------------------------*/
 
-    public Point(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Point(double x, double y) {
+        if (x > xMax) this.x = xMax;
+        else this.x = Math.max(x, xMin);
+        if (y > yMax) this.y = yMax;
+        else this.y = Math.max(y, yMin);
     }
 
     /**
@@ -52,7 +59,8 @@ public class Point {
     }
 
     public void setX(double x) {
-        this.x = x;
+        if (x > xMax) this.x = xMax;
+        else this.x = Math.max(x, xMin);
     }
 
     public double getY() {
@@ -60,7 +68,8 @@ public class Point {
     }
 
     public void setY(double y) {
-        this.y = y;
+        if (y > yMax) this.y = yMax;
+        else this.y = Math.max(y, yMin);
     }
 
     public double distance(Point p2) {
@@ -68,8 +77,8 @@ public class Point {
     }
 
     public void addVector(double x, double y) {
-        this.x += x;
-        this.y += y;
+        this.setX(this.x + x);
+        this.setY(this.y + y);
     }
 
     @Override
