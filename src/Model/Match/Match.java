@@ -10,19 +10,26 @@ import java.util.Random;
 
 public class Match extends MatchRegister implements Serializable {
 
-    private static Point dimensionField;
     private PlayersField homePl;
+    private PlayersField awayPl;
 
     // Tamanho do campo. (Tenho de perguntar ao Pires se a variável pode ser final ou static dado que é um valor constante.)
-    private PlayersField awayPl;
+
+    private static Point dimensionField;
 
     // Variável que controla quem possui a bola neste momento. True representa homeTeam e False representa awayTeam.
     private boolean ball_pos;
 
     // Tracker da bola. A posição da bola, sendo o ponto (0,0) o centro do campo.
 
-    private final Point ball_tracker;
+    private Point ball_tracker;
 
+    public Match clone () {
+
+        //Perguntar ao Gonçalo.
+
+        return this;
+    }
 //Tenho de fazer este
     public Match (Team homeTeam, Team awayTeam, Integer[] defaultBot, Integer[] strategyPlayer) {
     //Tenho de fazer este
@@ -36,17 +43,7 @@ public class Match extends MatchRegister implements Serializable {
         this.ball_tracker = new Point(0, 0);
 
     }
-    public Match (Team homeTeam, Team awayTeam) {
 
-        super(LocalDate.now(), homeTeam, awayTeam, 0, 0, new ArrayList<>(), new ArrayList<>());
-        Integer[] defaultStartegy = new Integer[]{1, 3,3,3,1};
-        Random rand = new Random();
-        this.ball_pos = rand.nextBoolean();
-        awayPl = new PlayersField(awayTeam, defaultStartegy);
-        homePl = new PlayersField(homeTeam, defaultStartegy);
-        this.ball_tracker = new Point(0, 0);
-
-    }
     public Match (LocalDate gameDate, Team homeTeam, Team awayTeam, int homeGoals, int awayGoals, boolean ball_pos, Point ball_tracker) {
         this(homeTeam, awayTeam);
 
@@ -81,14 +78,7 @@ public class Match extends MatchRegister implements Serializable {
 
     }
 
-    public Match clone() {
-
-        //Perguntar ao Gonçalo.
-
-        return this;
-    }
-
-    public void confrontation() {
+    public void confrontation () {
 
         Random rand = new Random();
 
@@ -104,27 +94,47 @@ public class Match extends MatchRegister implements Serializable {
         double awaySquadSkill = 0;
         for (PlayerField p : awaySquad) awaySquadSkill += p.skill();
 
-        double x = rand.nextDouble(); // Random number
-
+        double probResult = rand.nextDouble(); // Número que vai servir como o nosso potencial confronto.
         boolean advantage; // Quem ganha o confronto.
 
         // O cálculo da probabilidade funciona numa escala de 0-1. Dependendo de quem tem a vantagem, a probabilidade muda para que seja mais provável uma equipa ganhar do que outra, mas não torna imo«possível uma vitória contra a probabilidade.
 
-        double probHomeWin = prob(homeSquadSkill, awaySquadSkill); // Função que dá a probabilidade da home Team ganhar range = [0, 1]
+        double probHomeWin = prob(homeSquadSkill,awaySquadSkill); // Função que dá a probabilidade da home Team ganhar range = [0, 1]
 
-        if (x < probHomeWin) {
-            // Home Wins
+        if (probResult < probHomeWin) {
+            advantage = true; // Dá o sucesso do confronto à equipa de casa.
         } else {
-            // Away wins
+            advantage = false; // Dá o sucesso do confronto à equipa de fora.
         }
 
     }
 
-    private double prob(double homeSquadSkill, double awaySquadSkill) {
-        return 0.5;
+    public double prob(double homeSquadSkill, double awaySquadSkill) {
+
+        double probability = 0;
+
+        if (homeSquadSkill > awaySquadSkill) {
+            if (awaySquadSkill < (homeSquadSkill/2)) {probability = 1 - (awaySquadSkill / homeSquadSkill);}
+            else if (awaySquadSkill > (homeSquadSkill/2)) {probability = (awaySquadSkill / homeSquadSkill);}
+            else {probability = 0.75;};
+        } else if (homeSquadSkill < awaySquadSkill) {
+            if (homeSquadSkill < (awaySquadSkill/2)) {probability = (homeSquadSkill / awaySquadSkill);}
+            else if (homeSquadSkill > (awaySquadSkill/2)) {probability = 1 - (homeSquadSkill / awaySquadSkill);}
+            else {probability = 0.25;};
+        } else {
+            probability = 0.5;
+        }
+
+        return probability;
     }
 
-    public void run() {
+    public void aftermath(boolean vantage) {
+
+
+
+    }
+
+    public void run(){
         //Simulação com refresh's
     }
 
@@ -137,18 +147,17 @@ public class Match extends MatchRegister implements Serializable {
         return homePl;
     }
 
-    public void setHomePl(PlayersField homePl) {
-        this.homePl = homePl;
-    }
-
     public void setHomePl(Team homePl, Integer[] integers) {
         this.homePl = new PlayersField(homePl, integers);
+    }
+
+    public void setHomePl(PlayersField homePl) {
+        this.homePl = homePl;
     }
 
     public PlayersField getAwayPl() {
         return awayPl;
     }
-
 
     public void setAwayPl(Team awayPl, Integer[] integers) {
         this.awayPl = new PlayersField(awayPl, integers);
