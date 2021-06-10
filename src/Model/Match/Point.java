@@ -23,25 +23,25 @@ public class Point {
      * @param lateral
      * @param pos
      */
-    public Point(float fraction, boolean lateral, Position pos){
+    public static Point createInitialPosition(float fraction, boolean lateral, Position pos) {
         Random rnd = new Random();
 
-        if (lateral){
+        if (lateral) {
             boolean esq = rnd.nextBoolean();
-            if (esq) new Point(45, roundFloat(fraction, 250));
-            else new Point(5, roundFloat(fraction, 250));
-        }
-        else{      //No x ele pode
-            if (pos.equals(Position.DEFENDER)) new Point( roundFloat(fraction, 80),rnd.nextInt(30)+10 );
+            if (esq) return new Point(45, roundFloat(fraction, 250));
+            else return new Point(5, roundFloat(fraction, 250));
+        } else {      //No x ele pode
+            if (pos.equals(Position.DEFENDER)) return new Point(roundFloat(fraction, 80), rnd.nextInt(30) + 10);
             else {
-                if (pos.equals(Position.MIDFIELD))  new Point( roundFloat(fraction, 90)+80,rnd.nextInt(30)+10 );
-                else new Point( roundFloat(fraction, 80)+170,rnd.nextInt(30)+10 );
+                if (pos.equals(Position.MIDFIELD)) return new Point(roundFloat(fraction, 90) + 80, rnd.nextInt(30) + 10);
+                else return new Point(roundFloat(fraction, 80) + 170, rnd.nextInt(30) + 10);
             }
 
         }
     }
-    private int roundFloat(float x, int y) {
-        return (int) Math.round(x*y);
+
+    private static int roundFloat(float x, int y) {
+        return Math.round(x * y);
     }
 
     public double getX() {

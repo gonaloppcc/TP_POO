@@ -29,18 +29,28 @@ public class Match extends MatchRegister implements Serializable {
         return this;
     }
 //Tenho de fazer este
-    public Match (Team homeTeam, Team awayTeam) {
+    public Match (Team homeTeam, Team awayTeam, Integer[] defaultBot, Integer[] strategyPlayer) {
 
         super(LocalDate.now(), homeTeam, awayTeam, 0, 0, new ArrayList<>(), new ArrayList<>());
 
         Random rand = new Random();
         this.ball_pos = rand.nextBoolean();
-        awayPl = new PlayersField(awayTeam, new Integer[]{4,3,3,0});
-        this.ball_tracker.setX(0);
-        this.ball_tracker.setY(0);
+        awayPl = new PlayersField(awayTeam, defaultBot);
+        homePl = new PlayersField(homeTeam, strategyPlayer);
+        this.ball_tracker = new Point(0, 0);
 
     }
+    public Match (Team homeTeam, Team awayTeam) {
 
+        super(LocalDate.now(), homeTeam, awayTeam, 0, 0, new ArrayList<>(), new ArrayList<>());
+        Integer[] defaultStartegy = new Integer[]{1, 3,3,3,1};
+        Random rand = new Random();
+        this.ball_pos = rand.nextBoolean();
+        awayPl = new PlayersField(awayTeam, defaultStartegy);
+        homePl = new PlayersField(homeTeam, defaultStartegy);
+        this.ball_tracker = new Point(0, 0);
+
+    }
     public Match (LocalDate gameDate, Team homeTeam, Team awayTeam, int homeGoals, int awayGoals, boolean ball_pos, Point ball_tracker) {
         this(homeTeam, awayTeam);
 
@@ -109,4 +119,6 @@ public class Match extends MatchRegister implements Serializable {
     public void setAwayPl(PlayersField awayPl) {
         this.awayPl = awayPl;
     }
+
+
 }

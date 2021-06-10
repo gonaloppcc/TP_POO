@@ -14,12 +14,10 @@ public class MatchController {
     private MatchView view;
 
     public MatchController(Team home, Team away, int playerPerTeam) {
-        this.game = new Match(home, away);
         terminal = new Scanner(System.in);
         numberOnField = playerPerTeam;
         view = new MatchView();
-        inicializeHome();
-        inicializeAway();
+        this.game = new Match(home, away, new Integer[]{1, 3,3,3,1},getStrategy());
         game.run();
 
     }
@@ -33,10 +31,10 @@ public class MatchController {
 
     }
     private Integer[] getStrategy(){
-        int total = 0;
+        int total = 1;
         int temp;
         Integer[] res = new Integer[5];
-        for (int i = 1; i < 5 && total < numberOnField; i++){
+        for (int i = 1; i < res.length && total < numberOnField; i++){
             view.toZone(convertPositionfromNumber(i), numberOnField-total);
             while (true) {
                 temp = terminal.nextInt();
@@ -48,17 +46,20 @@ public class MatchController {
                 }
             }
         }
+        //Guarda redes
+        res[0] = 1;
+        for (int i = 0; i < res.length; i++) if (res[i] == null) res[i] = 0;
         return res;
     }
     public void inicializeAway (){
-        game.setStrategy(new Integer[]{4,3,3,0}, false);
+        game.setStrategy(new Integer[]{ 1, 3,3,3,1}, false);
         Team away = game.getAwayTeam();
-        game.setAwayPl(away, new Integer[]{4,3,3,0});
+        game.setAwayPl(away, new Integer[]{1, 3,3,3,1});
     }
-    public void inicializeHome(){
-        Integer[] strategy = getStrategy();
-        game.setHomePl(game.getHomeTeam(), new Integer[]{4,3,3,0});
-    }
+    //public void inicializeHome(){
+    //    Integer[] strategy = getStrategy();
+    //    game.setHomePl(game.getHomeTeam(), strategy);
+    //}
 
     public Match getGame() {
         return game;

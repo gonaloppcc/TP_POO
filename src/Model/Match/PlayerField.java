@@ -1,6 +1,7 @@
 package Model.Match;
 
 import Model.Player.*;
+import com.sun.nio.sctp.PeerAddressChangeNotification;
 
 class PlayerField {
     private Player player;
@@ -18,9 +19,23 @@ class PlayerField {
 
     private static final double distance = 5;
 
+    private Position numberToPosition(Integer x) {
+        switch (x) {
+            case 0:
+                return Position.GOALKEEPER;
+            case 1:
+                return Position.DEFENDER;
+            case 2:
+                return Position.MIDFIELD;
+            case 3:
+                return Position.STRIKER;
+            default:
+                return Position.LATERAL;
+        }
+    }
     private Position bestPosition(Player x){
         if (x instanceof GoalKeeper) return Position.GOALKEEPER;
-        if (x instanceof BackWing) return Position.DEFENDER;
+        if (x instanceof Defender) return Position.DEFENDER;
         if (x instanceof Midfield) return Position.MIDFIELD;
         if (x instanceof Striker) return Position.STRIKER;
         return Position.LATERAL;
@@ -33,7 +48,7 @@ class PlayerField {
         energy = new Energy(100);
         yellowCards = 0;
         redCard = false;
-            position = new Point(-1, -1);
+        position = new Point(-1, -1);
     }
     public PlayerField(Player playerToSet, float where) {
         this.player = playerToSet;
@@ -43,10 +58,27 @@ class PlayerField {
         energy = new Energy(100);
         yellowCards = 0;
         redCard = false;
-        position = new Point(where, lateral, mainPosition);
+        position = Point.createInitialPosition(where, lateral, mainPosition);
     }
-    // Falta encapsular
 
+    /**
+     * Quando não existem jogadores suficientes numa dada posição
+     * Metemos um jogador que não devia estar numa zona nessa zona
+     * @param playerToSet
+     * @param where
+     * @param positionGiven
+     */
+    public PlayerField(Player playerToSet, float where, Integer positionGiven) {
+        Position notNatural = numberToPosition(positionGiven);
+        this.player = playerToSet;
+        mainPosition = notNatural;
+        if (notNatural.equals(Position.LATERAL)) lateral = true;
+        else lateral = false;
+        energy = new Energy(100);
+        yellowCards = 0;
+        redCard = false;
+        position = Point.createInitialPosition(where, lateral, notNatural);
+    }
 
     public PlayerField(Player player, Point position, Position mainPosition, boolean lateral, Energy energy, int yellowCards, boolean redCards) {
         this.player = player.clone();
@@ -183,6 +215,7 @@ class PlayerField {
     public String toString() {
         return "PlayerField{" +
                 "player=" + player +
+                "joga a=" + mainPosition +
                 ", position=" + position +
                 '}';
     }
