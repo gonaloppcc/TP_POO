@@ -19,6 +19,7 @@ public class Point {
      * Defesa: 0-80
      * Médio: 80-170
      * Ataque: 170-250
+     *
      * @param fraction
      * @param lateral
      * @param pos

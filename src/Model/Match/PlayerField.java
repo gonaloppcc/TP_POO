@@ -43,8 +43,7 @@ class PlayerField {
     public PlayerField(Player playerToSet) {
         this.player = playerToSet;
         mainPosition = bestPosition(playerToSet);
-        if (mainPosition.equals(Position.LATERAL)) lateral = true;
-        else lateral = false;
+        lateral = mainPosition.equals(Position.LATERAL);
         energy = new Energy(100);
         yellowCards = 0;
         redCard = false;
@@ -53,8 +52,7 @@ class PlayerField {
     public PlayerField(Player playerToSet, float where) {
         this.player = playerToSet;
         mainPosition = bestPosition(playerToSet);
-        if (mainPosition.equals(Position.LATERAL)) lateral = true;
-        else lateral = false;
+        lateral = mainPosition.equals(Position.LATERAL);
         energy = new Energy(100);
         yellowCards = 0;
         redCard = false;

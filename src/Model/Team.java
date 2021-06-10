@@ -4,7 +4,6 @@ import Model.Player.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -17,7 +16,7 @@ public class Team implements Serializable {
     private String name;
     private List<Player> players;
 
-    // Construtores
+    /*------------------------------------------------Constructors----------------------------------------------------*/
 
     public Team() {
         this.name = "Default";
@@ -36,6 +35,67 @@ public class Team implements Serializable {
             String line = jogadores.nextLine();
             addPlayer(line);
         }
+    }
+
+
+    public Team(int numJogadores) {
+        this.name = "Default";
+        this.players = new ArrayList<>(numJogadores);
+    }
+
+    public Team(ArrayList<Player> players) {
+        this.name = "Default";
+        this.players = players.stream().map(Player::clone).collect(Collectors.toList());
+    }
+
+    public Team(String name, ArrayList<Player> players, int numberOfPlayers) {
+        this.name = name;
+        this.players = players.stream().map(Player::clone).collect(Collectors.toList());
+        //this.players = (ArrayList) players.clone();
+        //this.players = players;
+    }
+
+    public Team(Team team) {
+        this.name = team.getName();
+        this.players = team.getPlayers();//.stream().map(x -> x.clone()).collect(Collectors.toList());
+    }
+
+    public Team(String name, int numberOfPlayers) {
+        this.name = name;
+        this.players = new ArrayList<>(numberOfPlayers);
+    }
+
+    public Team(String name, List<Player> players, int numberOfPlayers) {
+        this.name = name;
+        this.players = players;
+    }
+
+    /*------------------------------------------ Getters e Setters ---------------------------------------------------*/
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getNumberOfPlayers() {
+        return this.players.size();
+    }
+
+    public List<Player> getPlayers() {
+        return players.stream().map(Player::clone).collect(Collectors.toList());
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players.stream().map(Player::clone).collect(Collectors.toList());
+    }
+
+    /* ------------------------------------- Other methods ---------------------------------------------------------- */
+
+    public List<Player> getPlayer(String name){
+        return players.stream().filter(x -> x.getName().equals(name)).collect(Collectors.toList());
     }
 
     public void addPlayer(String line) throws NotValidException {
@@ -80,68 +140,6 @@ public class Team implements Serializable {
         }
     }
 
-    public Team(int numJogadores) {
-        this.name = "Default";
-        this.players = new ArrayList<>(numJogadores);
-    }
-
-    public Team(ArrayList<Player> players) {
-        this.name = "Default";
-        this.players = players;
-    }
-
-    public Team(String name, ArrayList<Player> players, int numberOfPlayers) {
-        this.name = name;
-        this.players = new ArrayList<>(players);
-        //this.players = (ArrayList) players.clone();
-        //this.players = players;
-    }
-
-    public Team(Team team) {
-        this.name = team.getName();
-        this.players = team.getPlayers();//.stream().map(x -> x.clone()).collect(Collectors.toList());
-    }
-
-    public Team(String name, int numberOfPlayers) {
-        this.name = name;
-        this.players = new ArrayList<>(numberOfPlayers);
-    }
-
-    public Team(String name, List<Player> players, int numberOfPlayers) {
-        this.name = name;
-        this.players = players;
-    }
-
-
-    // Metodos
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getNumberOfPlayers() {
-        return this.players.size();
-    }
-
-    public List<Player> getPlayers() {
-        return players.stream().map(Player::clone).collect(Collectors.toList());
-    }
-
-    public void setPlayers(List<Player> players) {
-        this.players = players;
-    }
-
-    public Player getPlayer(int pos) {
-        return players.get(pos);
-    }
-    public List<Player> getPlayer(String name){
-        return players.stream().filter(x -> x.getName().equals(name)).collect(Collectors.toList());
-    }
     public void addPlayer(Player player) {
         this.players.add(player);
     }
@@ -150,7 +148,7 @@ public class Team implements Serializable {
     public String toString() {
         return name + ":\n\t " +
                 players.stream().map(Player :: toString).collect(Collectors.joining("\n")) +
-                "}\n";
+                "\n";
     }
 
     public Team clone() {

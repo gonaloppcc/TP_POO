@@ -14,7 +14,7 @@ public class CtrlPreStatus {
             if (s.length() == 0) {
                 return null;
             }
-            if (s.compareTo("meh") == 0) return "/home/banderitas/Desktop/2_ano_2_sem/POO/TP_POO/src/Files/profFicheiro";
+            if (s.compareTo("meh") == 0) return "src/Files/profFicheiro";
             if (isValidPath(s)) return s;
             else {
                 errors.invalidChoice();

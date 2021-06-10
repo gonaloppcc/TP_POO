@@ -49,7 +49,7 @@ public class Main {
             //A partir daqui é o controller do status que faz coisas
             interacts.interactions();
         }
-        else System.out.printf("Não tenho ficheiro"); //Gerar um status aleatório?
+        else System.out.print("Não tenho ficheiro"); //Gerar um status aleatório?
 
 
 
