@@ -63,9 +63,9 @@ public class Match extends MatchRegister implements Serializable {
         this(match.getDate(), match.getHomeTeam(), match.getAwayTeam(), match.getScoreHome(), match.getScoreAway(), match.ball_pos, match.ball_tracker);
     }
 
-    public Match game_play (Team homeTeam, Team awayTeam) {
+    public static Match game_play (Team homeTeam, Team awayTeam) {
 
-        Match game = new Match(homeTeam,awayTeam); // Criar o jogo com os estados base.
+        Match game = Match.game_play(homeTeam,awayTeam); // Criar o jogo com os estados base.
         boolean swap_side = game.ball_pos; // Variável para o intervalo, é precisa para saber o state drive.
         float time; // Iniciar o contador.
 
@@ -81,48 +81,36 @@ public class Match extends MatchRegister implements Serializable {
 
     }
 
-    public Match confrontation (Match jogo) {
+    public void confrontation () {
 
         Random rand = new Random();
 
-        // Obtém todos os jogadores perto da bola.
-
-        List<PlayerField> closeByPlayers = getPlayersCloseToTheBall(jogo.ball_tracker);
-
         // Obtém todos os jogadores perto da bola, por equipa.
 
-        List<PlayerField> homeSquad = closeByPlayers.stream().filter(PlayerField -> homePl.getPlayersPlaying().contains(PlayerField)).collect(Collectors.toList());
-        List<PlayerField> awaySquad = closeByPlayers.stream().filter(PlayerField -> awayPl.getPlayersPlaying().contains(PlayerField)).collect(Collectors.toList());
+        List<PlayerField> homeSquad = homePl.getPlayersCloseToTheBall(this.ball_tracker);
+        List<PlayerField> awaySquad = awayPl.getPlayersCloseToTheBall(this.ball_tracker);
 
         // Cálculo de probabilidade(utiliza o Random)
 
         double homeSquadSkill = 0;
-        for (PlayerField p : homeSquad) {
-            homeSquadSkill += p.skill();
-            p.getEnergy().decrease();
-        }
+        for (PlayerField p : homeSquad) homeSquadSkill += p.skill();
 
         double awaySquadSkill = 0;
-        for (PlayerField p : awaySquad) {
-            awaySquadSkill += p.skill();
-            p.getEnergy().decrease();
-        }
+        for (PlayerField p : awaySquad) awaySquadSkill += p.skill();
 
-        int probResult = rand.nextInt(10); // Número que vai servir como o nosso potencial confronto
+        double probResult = rand.nextDouble(); // Número que vai servir como o nosso potencial confronto  0 1 2 3 4 | 5 6 7 8 9
         boolean advantage; // Quem ganha o confronto.
 
         // O cálculo da probabilidade funciona numa escala de 0-9. Dependendo de quem tem a vantagem, a probabilidade muda para que seja mais provável uma equipa ganhar do que outra, mas não torna imo«possível uma vitória contra a probabilidade.
 
-        if (homeSquadSkill < awaySquadSkill) {
+        double probHomeWin = prob(homeSquadSkill,awaySquadSkill); // Função que dá a probabilidade da home Team ganhar range = [0, 1], crias dps Tomás
 
-        } else if (homeSquadSkill > awaySquadSkill) {
-
+        if (probResult < probHomeWin) {
+            // Home Wins
         } else {
-
+            // Away wins
         }
 
-
-        return jogo;
     }
 
     public void run(){
