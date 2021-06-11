@@ -35,7 +35,7 @@ public class Match extends MatchRegister implements Serializable {
         this.ball_pos = rand.nextBoolean();
         this.awayPl = new PlayersField(awayTeam, defaultBot);
         this.homePl = new PlayersField(homeTeam, strategyPlayer);
-        this.ball_tracker = new Point(0, 0);
+        this.ball_tracker = new Point(45, 90);
 
     }
 
@@ -145,27 +145,17 @@ public class Match extends MatchRegister implements Serializable {
         double awaySquadSkill = 0;
         for (PlayerField p : awaySquad) awaySquadSkill += p.skill();
 
-        double probResult = rand.nextDouble(); // Número que vai servir como o nosso potencial confronto.
+        double x = rand.nextDouble(); // Número que vai servir como o nosso potencial confronto.
         boolean advantage; // Quem ganha o confronto.
 
         // O cálculo da probabilidade funciona numa escala de 0-1. Dependendo de quem tem a vantagem, a probabilidade muda para que seja mais provável uma equipa ganhar do que outra, mas não torna imo«possível uma vitória contra a probabilidade.
 
         double probHomeWin = prob(homeSquadSkill, awaySquadSkill); // Função que dá a probabilidade da home Team ganhar range = [0, 1]
 
-        // Dá o sucesso do confronto à equipa de fora.
-        advantage = probResult < probHomeWin; // Dá o sucesso do confronto à equipa de casa.
+        advantage = x < probHomeWin; // Dá o sucesso do confronto à equipa de casa.
 
-        this.setBall_pos(advantage);
+        aftermath(advantage);
 
-        if (advantage) {
-            setScoreHome(getScoreHome() + 1);
-            this.ball_tracker.addVector(rand.nextDouble()*30, rand.nextDouble()*30);
-        } else {
-            setScoreAway(getScoreAway() + 1);
-            this.ball_tracker.addVector(rand.nextDouble()*-30, rand.nextDouble()*-5);
-        }
-        homePl.movePlayers(ball_tracker, ball_pos);
-        awayPl.movePlayers(ball_tracker, ball_pos);
     }
 
     public double prob(double homeSquadSkill, double awaySquadSkill) {
@@ -195,8 +185,9 @@ public class Match extends MatchRegister implements Serializable {
         return probability;
     }
 
-    public void aftermath(boolean vantage,List<PlayerField> homeSquad,List<PlayerField> awaySquad) {
+    public void aftermath(boolean vantage) {
 
+        Random rand = new Random();
         Point homeGoal = new Point(0,45);
         Point awayGoal = new Point(120,45);
         double range;
@@ -210,9 +201,8 @@ public class Match extends MatchRegister implements Serializable {
                 if (range <= 30) { // Golo
 
                     this.ball_tracker.setX(60);this.ball_tracker.setY(45);
-                    for (PlayerField p : homeSquad) {
+                    super.setScoreHome(super.getScoreHome() + 1);
 
-                    }
 
                 } else if (range <= 60) { // Meio Campo para Campo Inimigo
 
@@ -228,6 +218,7 @@ public class Match extends MatchRegister implements Serializable {
 
                 }
 
+            this.ball_tracker.addVector(rand.nextDouble() * 2,(rand.nextDouble() * 2 - 1) * 2);
 
             } else {
 
@@ -244,9 +235,8 @@ public class Match extends MatchRegister implements Serializable {
                 if (range <= 30) { // Golo
 
                     this.ball_tracker.setX(60);this.ball_tracker.setY(45);
-                    for (PlayerField p : homeSquad) {
+                    super.setScoreAway(super.getScoreAway() + 1);
 
-                    }
 
                 } else if (range <= 60) { // Meio Campo para Campo Inimigo
 
@@ -268,7 +258,13 @@ public class Match extends MatchRegister implements Serializable {
 
             }
 
+            this.ball_tracker.addVector(rand.nextDouble() * -2,(rand.nextDouble() * 2 - 1) * 2);
+
         }
+
+        this.homePl.movePlayers(ball_tracker,ball_pos);
+        this.awayPl.movePlayers(ball_tracker,!ball_pos);
+
     }
 
     public void run() {
