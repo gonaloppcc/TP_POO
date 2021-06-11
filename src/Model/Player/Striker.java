@@ -65,7 +65,7 @@ public class Striker extends Player {
 
     @Override
     public int globalSkill() {
-        return (int) (0.2 * (super.getResistance()) + 0.2 * (super.getDexterity()) + 0.15 * super.getImpulsion() + 0.1 * super.getHeadGame() + 0.1 * super.getFinish() + 0.1 * super.getPassing());
+        return (int) (0.2 * super.getResistance() + 0.2 * super.getDexterity() + 0.15 * super.getImpulsion() + 0.15 * this.precision + 0.1 * super.getHeadGame() + 0.1 * super.getFinish() + 0.1 * super.getPassing());
     }
 
 }

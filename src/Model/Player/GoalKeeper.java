@@ -60,7 +60,7 @@ public class GoalKeeper extends Player {
     public String toStringSkills() {
         return "G " +
                 getName() +
-                " numero " + getNum() +
+                " num " + getNum() +
                 " globalSkill " + globalSkill() +
                 " historial=" + super.getHistorial();
     }

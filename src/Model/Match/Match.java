@@ -208,7 +208,7 @@ public class Match extends MatchRegister implements Serializable {
 
                 range =  awayGoal.distance(this.ball_tracker);
 
-                if (range <= 30) { // Golo
+                if (range <= 10) { // Golo
 
                     this.ball_tracker.setX(60);this.ball_tracker.setY(45);
                     super.setScoreHome(super.getScoreHome() + 1);
@@ -228,7 +228,7 @@ public class Match extends MatchRegister implements Serializable {
 
                 }
 
-            this.ball_tracker.addVector(rand.nextDouble() * 2,(rand.nextDouble() * 2 - 1) * 2);
+            this.ball_tracker.addVector(rand.nextDouble() * 5,(rand.nextDouble() * 2 - 1) * 5);
 
             } else {
 
@@ -242,7 +242,7 @@ public class Match extends MatchRegister implements Serializable {
 
                 range = homeGoal.distance(this.ball_tracker);
 
-                if (range <= 30) { // Golo
+                if (range <= 10) { // Golo
 
                     this.ball_tracker.setX(60);this.ball_tracker.setY(45);
                     super.setScoreAway(super.getScoreAway() + 1);
@@ -268,7 +268,7 @@ public class Match extends MatchRegister implements Serializable {
 
             }
 
-            this.ball_tracker.addVector(rand.nextDouble() * -2,(rand.nextDouble() * 2 - 1) * 2);
+            this.ball_tracker.addVector(rand.nextDouble() * -5,(rand.nextDouble() * 2 - 1) * 5);
 
         }
 

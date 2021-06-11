@@ -4,32 +4,32 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class Midfield extends Player {
-    private int recovery;
+    private int vision;
 
     /*------------------------------------------------Constructors----------------------------------------------------*/
 
-    public Midfield(String name, LocalDate birthDate, int num, int velocity, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, List<String> historial, int recovery) {
+    public Midfield(String name, LocalDate birthDate, int num, int velocity, int resistance, int dexterity, int impulsion, int headGame, int finish, int passing, List<String> historial, int vision) {
         super(name, birthDate, num, velocity, resistance, dexterity, impulsion, headGame, finish, passing, historial);
-        this.recovery = recovery;
+        this.vision = vision;
     }
 
     public Midfield(String[] data) {
         super(data);
-        this.recovery = Integer.parseInt(data[9]);
+        this.vision = Integer.parseInt(data[9]);
     }
 
     public Midfield(Midfield x) {
-        this(x.getName(), x.getBirthDate(), x.getNum(), x.getVelocity(), x.getResistance(), x.getDexterity(), x.getImpulsion(), x.getHeadGame(), x.getFinish(), x.getPassing(), x.getHistorial(), x.getRecovery());
+        this(x.getName(), x.getBirthDate(), x.getNum(), x.getVelocity(), x.getResistance(), x.getDexterity(), x.getImpulsion(), x.getHeadGame(), x.getFinish(), x.getPassing(), x.getHistorial(), x.getVision());
     }
 
     /*------------------------------------------ Getters e Setters ---------------------------------------------------*/
 
-    public int getRecovery() {
-        return recovery;
+    public int getVision() {
+        return vision;
     }
 
-    public void setRecovery(int recovery) {
-        this.recovery = recovery;
+    public void setVision(int vision) {
+        this.vision = vision;
     }
 
     /* ------------------------------------- Other methods ---------------------------------------------------------- */
@@ -46,7 +46,7 @@ public class Midfield extends Player {
                 " head " + super.getHeadGame() +
                 " fin " + super.getFinish() +
                 " pass " + super.getPassing() +
-                " recovery " + this.recovery;
+                " recovery " + this.vision;
     }
 
     @Override
@@ -64,6 +64,6 @@ public class Midfield extends Player {
 
     @Override
     public int globalSkill() {
-        return (int) (0.2 * (super.getResistance()) + 0.2 * (super.getDexterity()) + 0.15 * super.getImpulsion() + 0.1 * super.getHeadGame() + 0.1 * super.getFinish() + 0.1 * super.getPassing());
+        return (int) (0.2 * super.getResistance() + 0.2 * super.getDexterity() + 0.15 * super.getImpulsion() + 0.15 * this.vision + 0.1 * super.getHeadGame() + 0.1 * super.getFinish() + 0.1 * super.getPassing());
     }
 }
