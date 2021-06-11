@@ -18,7 +18,7 @@ public class DisplayGraphics extends Canvas {
     }
     public void paint(Graphics g) {
         setBackground(Color.YELLOW);
-
+        //System.out.println(this.home);
         g.setColor(Color.BLACK);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 100));
         g.drawString("Football field",300,100);
@@ -36,7 +36,7 @@ public class DisplayGraphics extends Canvas {
         //Áreas
         g.drawRect(300, 280, 180, 240);
         g.drawRect(744, 280, 180, 240);
-        g.fillOval(612,390,30, 30);
+        g.drawOval(612,390,30, 30);
         Graphics2D g2d = (Graphics2D) g.create();
 
         Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);

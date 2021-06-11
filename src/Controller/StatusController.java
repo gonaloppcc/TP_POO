@@ -89,14 +89,15 @@ public class StatusController {
     }
 
     public void saveLoadOption() {
-        view.SaveOrLoad();
         boolean validChoice = false;
         while (!validChoice) {
+            view.SaveOrLoad();
             String choice = terminal.nextLine();
             if (choice.trim().equals("Save")) {
                 view.Path();
                 try {
                     model.save(terminal.nextLine());
+                    return;
                 } catch (IOException e) {
                     view.IOerror();
                 }
@@ -105,12 +106,15 @@ public class StatusController {
                 view.Path();
                 try {
                     this.model = Status.load(terminal.nextLine());
+                    System.out.println("Load");
+                    return;
                 } catch (IOException e) {
                     view.IOerror();
                 } catch (ClassNotFoundException e) {
                     view.wrongPath();
                 }
             }
+            StatusView.InvalidOption();
         }
 
     }

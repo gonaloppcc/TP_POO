@@ -163,6 +163,6 @@ public class Team implements Serializable {
     }
 
     public int globalSkill(){
-        return players.stream().map(Player::globalSkill).reduce(0, Integer::sum);
+        return players.stream().mapToInt(Player::globalSkill).sum()/players.size();
     }
 }

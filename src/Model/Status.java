@@ -1,6 +1,5 @@
 package Model;
 
-import Model.Player.*;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -40,7 +39,7 @@ public class Status implements Serializable {
         else {
             List <MatchRegister> newList = new ArrayList();
             newList.add(toInsert);
-            games.put(toInsert.getDate(),newList);
+            games.put(toInsert.getDate(),new ArrayList<MatchRegister>());
         }
     }
     public Status() { // Construtor básico, cria com o jogo "Futebol"
@@ -72,7 +71,7 @@ public class Status implements Serializable {
     }
 
     public void save(String filePath) throws IOException {
-        System.out.println("Gonçalo?");
+       // System.out.println("Gonçalo?");
         FileOutputStream fos = new FileOutputStream(filePath);
         ObjectOutputStream out = new ObjectOutputStream(fos);
         out.writeObject(this);
