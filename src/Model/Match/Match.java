@@ -1,10 +1,13 @@
 package Model.Match;
 
+import Model.Player.GoalKeeper;
+import Model.Player.Player;
 import Model.Team;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -74,8 +77,8 @@ public class Match extends MatchRegister {
         } // Primeira metade do jogo.
 
         game.ball_pos = !swap_side;
-        game.ball_tracker.setX(0);
-        game.ball_tracker.setY(0);
+        game.ball_tracker.setX(60);
+        game.ball_tracker.setY(45);
 
         for (time = 45; time <= 90; time += 0.25) {
             game.confrontation(); // Segunda metade do jogo.
@@ -209,39 +212,88 @@ public class Match extends MatchRegister {
     public void aftermath(boolean vantage) {
 
         Random rand = new Random();
-        Point homeGoal = new Point(0, 45);
-        Point awayGoal = new Point(120, 45);
+        Point homeGoal = new Point(0,45);
+        Point awayGoal = new Point(120,45);
         double range;
 
         if (vantage) {
 
             if (this.ball_pos) {
 
-                range = awayGoal.distance(this.ball_tracker);
+                range =  awayGoal.distance(this.ball_tracker);
 
                 if (range <= 10) { // Golo
 
-                    this.ball_tracker.setX(60);
-                    this.ball_tracker.setY(45);
-                    super.setScoreHome(super.getScoreHome() + 1);
+                    if (remate_passe(this.homePl.getPlayersCloseToTheBall(this.ball_tracker).get(0))) {
 
+                        this.ball_pos = false;
+                        this.ball_tracker.setX(60);
+                        this.ball_tracker.setY(45);
+                        super.setScoreAway(super.getScoreAway() + 1);
+                        this.homePl.initialPositionAfterGoal(this.homePl.getStrategy(), this.homePl.getPlayersPlaying(), true);
+                        this.awayPl.initialPositionAfterGoal(this.awayPl.getStrategy(), this.awayPl.getPlayersPlaying(), false);
+
+                    }
+
+                    else {
+
+                        this.homePl.movePlayers(ball_tracker, ball_pos);
+                        this.awayPl.movePlayers(ball_tracker, !ball_pos);
+
+                    }
 
                 } else if (range <= 60) { // Meio Campo para Campo Inimigo
 
+                    if (drible_passe(this.homePl.getPlayersCloseToTheBall(this.ball_tracker).get(0))) {
+
+                        // passe ou segue em frente.;
+
+                    }
+
+                    else {
+
+                    }
+
+                    this.homePl.movePlayers(ball_tracker, ball_pos);
+                    this.awayPl.movePlayers(ball_tracker, !ball_pos);
 
                 } else if (range <= 90) { // Campo Amigo para Meio Campo
 
+                    if (drible_passe(this.homePl.getPlayersCloseToTheBall(this.ball_tracker).get(0))) {
 
-                } else { // Baliza
+                        // passe ou segue em frente.
 
+                    }
+
+                    else {
+
+                    }
+
+                    this.homePl.movePlayers(ball_tracker, ball_pos);
+                    this.awayPl.movePlayers(ball_tracker, !ball_pos);
+
+                } else { // Baliza para Campo Amigo
+
+                    if (remate_passe(this.homePl.getPlayersCloseToTheBall(this.ball_tracker).get(0))) {
+
+                        // passe ou lance em frente.
+
+                    }
+
+                    else {
+
+                    }
+
+                    this.homePl.movePlayers(ball_tracker, ball_pos);
+                    this.awayPl.movePlayers(ball_tracker, !ball_pos);
 
                 }
-
-                this.ball_tracker.addVector(rand.nextDouble() * 5, (rand.nextDouble() * 2 - 1) * 5);
 
             } else {
 
                 this.ball_pos = true;
+                this.ball_tracker.setX(this.homePl.getPlayersCloseToTheBall(this.ball_tracker).get(0).getPosition().getX());
+                this.ball_tracker.setX(this.homePl.getPlayersCloseToTheBall(this.ball_tracker).get(0).getPosition().getY());
 
             }
 
@@ -253,34 +305,113 @@ public class Match extends MatchRegister {
 
                 if (range <= 10) { // Golo
 
-                    this.ball_tracker.setX(60);
-                    this.ball_tracker.setY(45);
-                    super.setScoreAway(super.getScoreAway() + 1);
+                    if (remate_passe(this.awayPl.getPlayersCloseToTheBall(this.ball_tracker).get(0))) {
 
+                        this.ball_pos = true;
+                        this.ball_tracker.setX(60);
+                        this.ball_tracker.setY(45);
+                        super.setScoreAway(super.getScoreAway() + 1);
+                        this.homePl.initialPositionAfterGoal(this.homePl.getStrategy(), this.homePl.getPlayersPlaying(), true);
+                        this.awayPl.initialPositionAfterGoal(this.awayPl.getStrategy(), this.awayPl.getPlayersPlaying(), false);
+
+                    }
+
+                    else {
+
+
+                        this.homePl.movePlayers(ball_tracker, ball_pos);
+                        this.awayPl.movePlayers(ball_tracker, !ball_pos);
+
+                    }
 
                 } else if (range <= 60) { // Meio Campo para Campo Inimigo
 
+                    // passe ou segue em frente
+
+                    if (drible_passe(this.awayPl.getPlayersCloseToTheBall(this.ball_tracker).get(0))) {
+
+                    }
+
+                    else {
+
+                    }
+
+                    this.homePl.movePlayers(ball_tracker, ball_pos);
+                    this.awayPl.movePlayers(ball_tracker, !ball_pos);
 
                 } else if (range <= 90) { // Campo Amigo para Meio Campo
 
+                    // passe ou segue em frente.
+
+                    if (drible_passe(this.awayPl.getPlayersCloseToTheBall(this.ball_tracker).get(0))) {
+
+                    }
+
+                    else {
+
+                    }
+
+                    this.homePl.movePlayers(ball_tracker, ball_pos);
+                    this.awayPl.movePlayers(ball_tracker, !ball_pos);
 
                 } else { // Baliza
 
+                    // passe ou lance em frente.
+
+                    if (remate_passe(this.awayPl.getPlayersCloseToTheBall(this.ball_tracker).get(0))) {
+
+                    }
+
+                    else {
+
+                    }
+
+                    this.homePl.movePlayers(ball_tracker, ball_pos);
+                    this.awayPl.movePlayers(ball_tracker, !ball_pos);
 
                 }
 
             } else {
 
                 this.ball_pos = false;
+                this.ball_tracker.setX(this.awayPl.getPlayersCloseToTheBall(this.ball_tracker).get(0).getPosition().getX());
+                this.ball_tracker.setX(this.awayPl.getPlayersCloseToTheBall(this.ball_tracker).get(0).getPosition().getY());
 
             }
 
-            this.ball_tracker.addVector(rand.nextDouble() * -5, (rand.nextDouble() * 2 - 1) * 5);
-
         }
 
-        this.homePl.movePlayers(ball_tracker, ball_pos);
-        this.awayPl.movePlayers(ball_tracker, !ball_pos);
+    }
+
+    public boolean drible_passe (PlayerField ball_owner) {
+
+        Random rand = new Random();
+
+        double y = rand.nextDouble();
+
+        if (ball_owner.getPlayer().getDexterity() > ball_owner.getPlayer().getPassing()) {
+            return (y < 0.8);
+        } else if (ball_owner.getPlayer().getDexterity() < ball_owner.getPlayer().getPassing()) {
+            return (y < 0.2);
+        } else {
+            return (y < 0.5);
+        }
+
+    }
+
+    public boolean remate_passe (PlayerField ball_owner) {
+
+        Random rand = new Random();
+
+        double y = rand.nextDouble();
+
+        if (ball_owner.getPlayer().getFinish() > ball_owner.getPlayer().getPassing()) {
+            return (y < 0.8);
+        } else if (ball_owner.getPlayer().getFinish() < ball_owner.getPlayer().getPassing()) {
+            return (y < 0.2);
+        } else {
+            return (y < 0.5);
+        }
 
     }
 
