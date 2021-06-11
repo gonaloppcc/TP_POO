@@ -149,7 +149,7 @@ public class StatusCheckGame {
             Integer number = terminal.nextInt();
 
             if (number < sameName.size() &&  number > 0) return sameName.get(number);
-            StatusView.InvalidLine();
+            StatusView.InvalidOption();
         }
     }
    private Player getPlayer(Team team){

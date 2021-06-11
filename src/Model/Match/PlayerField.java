@@ -19,24 +19,28 @@ class PlayerField {
 
     /*------------------------------------------------Constructors----------------------------------------------------*/
 
-    public PlayerField(Player playerToSet) {
+    public PlayerField(Player playerToSet, boolean home) {
         this.player = playerToSet;
         mainPosition = bestPosition(playerToSet);
         lateral = mainPosition.equals(Position.LATERAL);
         energy = new Energy(100);
         yellowCards = 0;
         redCard = false;
-        position = new Point(-1, -1);
+        if (mainPosition != Position.GOALKEEPER) position = new Point(-1, -1);
+        else {
+            if (home) position = new Point(1, 45);
+            else position = new Point(119, 45);
+        }
     }
 
-    public PlayerField(Player playerToSet, float where) {
+    public PlayerField(Player playerToSet, float where, boolean home) {
         this.player = playerToSet;
         mainPosition = bestPosition(playerToSet);
         lateral = mainPosition.equals(Position.LATERAL);
         energy = new Energy(100);
         yellowCards = 0;
         redCard = false;
-        position = Point.createInitialPosition(where, lateral, mainPosition);
+        position = Point.createInitialPosition(where, lateral, mainPosition, home);
     }
 
     /**
@@ -47,7 +51,7 @@ class PlayerField {
      * @param where
      * @param positionGiven
      */
-    public PlayerField(Player playerToSet, float where, Integer positionGiven) {
+    public PlayerField(Player playerToSet, float where, Integer positionGiven, boolean home) {
         Position notNatural = numberToPosition(positionGiven);
         this.player = playerToSet;
         mainPosition = notNatural;
@@ -55,7 +59,8 @@ class PlayerField {
         energy = new Energy(100);
         yellowCards = 0;
         redCard = false;
-        position = Point.createInitialPosition(where, lateral, notNatural);
+        position = Point.createInitialPosition(where, lateral, notNatural, home);
+
     }
 
     public PlayerField(Player player, Point position, Position mainPosition, boolean lateral, Energy energy, int yellowCards, boolean redCards) {
@@ -240,4 +245,10 @@ class PlayerField {
     public PlayerField clone() {
         return new PlayerField(this);
     }
+
+    public boolean isGoalKeeperInField() {return this.mainPosition.equals(Position.GOALKEEPER); }
+    public boolean isLateralInField() {return this.mainPosition.equals(Position.LATERAL); }
+    public boolean isDefenderInField() {return this.mainPosition.equals(Position.DEFENDER); }
+    public boolean isMiddfieldInField() {return this.mainPosition.equals(Position.MIDFIELD); }
+    public boolean isStrikerInField() {return this.mainPosition.equals(Position.STRIKER); }
 }

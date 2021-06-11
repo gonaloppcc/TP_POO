@@ -155,6 +155,8 @@ abstract public class Player implements Serializable {
     @Override
     public abstract String toString();
 
+    public abstract String toStringSkills();
+
     abstract public Player clone();
 
     /**

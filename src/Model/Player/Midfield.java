@@ -50,6 +50,14 @@ public class Midfield extends Player {
     }
 
     @Override
+    public String toStringSkills() {
+        return "M " +
+                getName() +
+                " numero " + getNum() +
+                " globalSkill " + globalSkill() +
+                " historial=" + super.getHistorial();    }
+
+    @Override
     public Player clone() {
         return new Midfield(this);
     }

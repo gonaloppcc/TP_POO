@@ -4,7 +4,6 @@ import Model.Player.Player;
 import Model.Team;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CheckGameView {
     public static void printOptions() {
@@ -46,7 +45,7 @@ public class CheckGameView {
     }
 
     public static void printTeam(Team toPrint) {
-        System.out.println(toPrint);
+        System.out.println(toPrint.toStringSkillsAndHistory());
     }
     public static void playersWithNumber(List<Player> sameName){
         System.out.println(concatWithNumbers(sameName));
