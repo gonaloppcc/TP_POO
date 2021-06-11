@@ -376,9 +376,6 @@ public class Match extends MatchRegister {
 
                 this.ball_pos = false;
 
-                //this.ball_tracker.setX(this.awayPl.getPlayersCloseToTheBall(this.ball_tracker).get(0).getPosition().getX());
-                //this.ball_tracker.setX(this.awayPl.getPlayersCloseToTheBall(this.ball_tracker).get(0).getPosition().getY());
-
                 this.ball_tracker.setX(this.awayPl.getPlayersPlaying().stream().min(dist).get().getPosition().getX());
                 this.ball_tracker.setY(this.awayPl.getPlayersPlaying().stream().min(dist).get().getPosition().getY());
 
