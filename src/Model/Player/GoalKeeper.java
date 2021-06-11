@@ -57,6 +57,15 @@ public class GoalKeeper extends Player {
     }
 
     @Override
+    public String toStringSkills() {
+        return "G " +
+                getName() +
+                " numero " + getNum() +
+                " globalSkill " + globalSkill() +
+                " historial=" + super.getHistorial();
+    }
+
+    @Override
     public Player clone() {
         return new GoalKeeper(this);
     }

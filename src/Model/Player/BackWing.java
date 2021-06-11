@@ -50,6 +50,15 @@ public class BackWing extends Player {
     }
 
     @Override
+    public String toStringSkills() {
+        return "B " +
+                getName() +
+                " num " + super.getNum() +
+                " globalSkill " + globalSkill() +
+                " historial=" + super.getHistorial() ;
+    }
+
+    @Override
     public Player clone() {
         return new BackWing(this);
     }

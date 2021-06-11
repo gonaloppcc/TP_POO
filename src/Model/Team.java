@@ -151,7 +151,18 @@ public class Team implements Serializable {
                 "\n";
     }
 
+    public String toStringSkillsAndHistory() {
+        return name + ":\n\t " +
+                players.stream().map(Player :: toStringSkills).collect(Collectors.joining("\n")) +
+                "\n And global skill of team is: " + globalSkill() +
+                "\n";
+    }
+
     public Team clone() {
         return new Team(this);
+    }
+
+    public int globalSkill(){
+        return players.stream().map(Player::globalSkill).reduce(0, Integer::sum);
     }
 }

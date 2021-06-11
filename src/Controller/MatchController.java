@@ -30,11 +30,13 @@ public class MatchController {
 //Core a simulação ou não?
         if(simulatioOrNot()){
             this.game = new Match(home, away, new Integer[]{1, 3,3,3,1},getStrategy());
-           // while (game.getTime() < 90){
+           while (game.getTime() < 90){
                 //if (game.getTime() == 45) {}
+
                 view.CampoTodo(game.getPlayersPositions(true), game.getPlayersPositions(false), game.getBall_tracker() );
-                //game.run();
-           // }
+                game.run(5);
+
+           }
         }
         else {
             this.game = Match.game_play(home, away, new Integer[]{1, 3, 3, 3, 1}, getStrategy());

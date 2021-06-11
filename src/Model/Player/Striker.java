@@ -50,6 +50,13 @@ public class Striker extends Player {
                 " pass " + super.getPassing() +
                 " pre " + this.precision;
     }
+    @Override
+    public String toStringSkills() {
+        return "S " +
+                getName() +
+                " numero " + getNum() +
+                " globalSkill " + globalSkill() +
+                " historial=" + super.getHistorial();    }
 
     @Override
     public Player clone() {

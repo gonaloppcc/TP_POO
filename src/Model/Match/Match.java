@@ -42,7 +42,7 @@ public class Match extends MatchRegister implements Serializable {
     }
 
     public Match(LocalDate gameDate, Team homeTeam, Team awayTeam, int homeGoals, int awayGoals, boolean ball_pos, Point ball_tracker) {
-
+        super.setDate(LocalDate.now());
         super.setScoreHome(homeGoals);
         super.setScoreAway(awayGoals);
 
@@ -277,8 +277,10 @@ public class Match extends MatchRegister implements Serializable {
 
     }
 
-    public void run(int time) {
+    public void run(int refreshTime) {
         //Simulação com refresh's
+        confrontation();
+        time += refreshTime;
     }
 
     public List<Point> getPlayersPositions(boolean home) {

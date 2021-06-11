@@ -51,6 +51,16 @@ public class Defender extends Player {
     }
 
     @Override
+    public String toStringSkills() {
+        return "D " +
+                getName() +
+                " num " + super.getNum() +
+                " globalSkill " + globalSkill() +
+                " historial=" + super.getHistorial() ;
+
+    }
+
+    @Override
     public Player clone() {
         return new Defender(this);
     }

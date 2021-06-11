@@ -87,18 +87,43 @@ public class PlayersField {
             }
         //Jogadores que restam
         for (Player bench : allPlayers) playersBench.add(new PlayerField(bench, home));
+        playersPlaying.addAll(initialPosition(strategy, onField, home));
+        System.out.println("Uma equipa: ");
+        for(PlayerField x : playersPlaying) System.out.println("Um: "+x);
+    }
+
+    /**
+     *  Takes a list of players ready to play, and sorts them in field.
+     *  This method uses adequate constructors to distribute them.
+      * @param strategy
+     * @param onField
+     * @param home
+     * @return
+     */
+    private List<PlayerField> initialPosition(Integer[] strategy, List<Player> onField, boolean home){
+        List<PlayerField> initialsPositions = new ArrayList<>();
         playersPlaying.add(new PlayerField(onField.remove(0), home));
         int lidos = 0;
         for (int position = 1; position < strategy.length; position++)
             for (int player = 0; player < strategy[position] && lidos < onField.size(); player++) {
-                 if(strategy[position] != 0){
-                     playersPlaying.add(new  PlayerField(onField.get(lidos), ((float)player) / ((float)strategy[position]), position, home));
+                if(strategy[position] != 0){
+                    playersPlaying.add(new  PlayerField(onField.get(lidos), ((float)player) / ((float)strategy[position]), position, home));
                     lidos++;
-                 }
+                }
 
             }
-        System.out.println("Uma equipa: ");
-        for(PlayerField x : playersPlaying) System.out.println("Um: "+x);
+        return initialsPositions;
+    }
+
+    public List<PlayerField> initialPositionAfterGoal(Integer[] strategy, List<PlayerField> onField, boolean home){
+        List<PlayerField> initialsPositions = new ArrayList<>();
+        List<Player> sortGivenList = new ArrayList<>();
+        sortGivenList.add(onField.stream().filter(PlayerField::isGoalKeeperInField).collect(Collectors.toList()).get(0).getPlayer());
+        sortGivenList.addAll(onField.stream().filter(PlayerField::isDefenderInField).map(PlayerField::getPlayer).collect(Collectors.toList()));
+        sortGivenList.addAll(onField.stream().filter(PlayerField::isMiddfieldInField).map(PlayerField::getPlayer).collect(Collectors.toList()));
+        sortGivenList.addAll(onField.stream().filter(PlayerField::isStrikerInField).map(PlayerField::getPlayer).collect(Collectors.toList()));
+        sortGivenList.addAll(onField.stream().filter(PlayerField::isLateralInField).map(PlayerField::getPlayer).collect(Collectors.toList()));
+        return initialPosition(strategy, sortGivenList, home);
     }
 
     // Construtores

@@ -245,4 +245,10 @@ class PlayerField {
     public PlayerField clone() {
         return new PlayerField(this);
     }
+
+    public boolean isGoalKeeperInField() {return this.mainPosition.equals(Position.GOALKEEPER); }
+    public boolean isLateralInField() {return this.mainPosition.equals(Position.LATERAL); }
+    public boolean isDefenderInField() {return this.mainPosition.equals(Position.DEFENDER); }
+    public boolean isMiddfieldInField() {return this.mainPosition.equals(Position.MIDFIELD); }
+    public boolean isStrikerInField() {return this.mainPosition.equals(Position.STRIKER); }
 }
