@@ -195,9 +195,80 @@ public class Match extends MatchRegister implements Serializable {
         return probability;
     }
 
-    public void aftermath(boolean vantage) {
+    public void aftermath(boolean vantage,List<PlayerField> homeSquad,List<PlayerField> awaySquad) {
+
+        Point homeGoal = new Point(0,45);
+        Point awayGoal = new Point(120,45);
+        double range;
+
+        if (vantage) {
+
+            if (this.ball_pos) {
+
+                range =  awayGoal.distance(this.ball_tracker);
+
+                if (range <= 30) { // Golo
+
+                    this.ball_tracker.setX(60);this.ball_tracker.setY(45);
+                    for (PlayerField p : homeSquad) {
+
+                    }
+
+                } else if (range <= 60) { // Meio Campo para Campo Inimigo
 
 
+
+                } else if (range <= 90) { // Campo Amigo para Meio Campo
+
+
+
+                } else { // Baliza
+
+
+
+                }
+
+
+            } else {
+
+                this.ball_pos = true;
+
+            }
+
+        } else {
+
+            if (this.ball_pos) {
+
+                range = homeGoal.distance(this.ball_tracker);
+
+                if (range <= 30) { // Golo
+
+                    this.ball_tracker.setX(60);this.ball_tracker.setY(45);
+                    for (PlayerField p : homeSquad) {
+
+                    }
+
+                } else if (range <= 60) { // Meio Campo para Campo Inimigo
+
+
+
+                } else if (range <= 90) { // Campo Amigo para Meio Campo
+
+
+
+                } else { // Baliza
+
+
+
+                }
+
+            } else {
+
+                this.ball_pos = false;
+
+            }
+
+        }
     }
 
     public void run() {
