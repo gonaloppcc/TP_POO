@@ -152,7 +152,7 @@ class PlayerField {
         }
     }
 
-    private Position bestPosition(Player x) { // <- Não devia ser static?
+    private static Position bestPosition(Player x) { // <- Não devia ser static?
         if (x instanceof GoalKeeper) return Position.GOALKEEPER;
         if (x instanceof Defender) return Position.DEFENDER;
         if (x instanceof Midfield) return Position.MIDFIELD;

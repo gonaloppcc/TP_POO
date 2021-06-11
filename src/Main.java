@@ -50,10 +50,8 @@ public class Main {
             interacts.interactions();
         }
         else System.out.print("Não tenho ficheiro"); //Gerar um status aleatório?
-
-
-
     }
+
     private static void createGoalKeeper() {
         String name = "Manuel Neuer";
         LocalDate birth = LocalDate.of(1986, 3, 27);

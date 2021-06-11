@@ -20,7 +20,9 @@ public class CtrlPreStatus {
                 return null;
             }
             if (s.compareTo("meh") == 0) return "src/Files/profFicheiro";
-            if (isValidPath(s)) return s;
+            if (isValidPath(s)) {
+                return s;
+            }
             else {
                 errors.invalidChoice();
             }

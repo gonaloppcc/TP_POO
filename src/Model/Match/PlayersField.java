@@ -24,9 +24,7 @@ public class PlayersField {
 //        return p1.globalS
 //}
 
-        public List<Point> playersPosition(){
-            return playersPlaying.stream().map(PlayerField::getPosition).collect(Collectors.toList());
-        }
+
 
     /**
      * Get the players in a given position, position 0 is the GoalKeeper.
@@ -197,6 +195,10 @@ public class PlayersField {
 
     public void setStrategy(Integer[] strategy) {
         this.strategy = strategy;
+    }
+
+    public List<Point> playersPosition(){
+        return playersPlaying.stream().map(PlayerField::getPosition).collect(Collectors.toList());
     }
 }
 

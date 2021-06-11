@@ -178,8 +178,10 @@ public class Match extends MatchRegister {
 
         advantage = x < probHomeWin; // Dá o sucesso do confronto à equipa de casa.
 
-        aftermath(advantage);
-
+       // aftermath(advantage);
+        homePl.movePlayers(ball_tracker, ball_pos);
+        awayPl.movePlayers(ball_tracker, !ball_pos);
+        ball_tracker.addVector(rand.nextDouble()*2 - 1, rand.nextDouble()*2-1);
     }
 
     public double prob(double homeSquadSkill, double awaySquadSkill) {
