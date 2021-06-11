@@ -147,7 +147,7 @@ class PlayerField {
         }
     }
 
-    private Position bestPosition(Player x) {
+    private Position bestPosition(Player x) { // <- Não devia ser static?
         if (x instanceof GoalKeeper) return Position.GOALKEEPER;
         if (x instanceof Defender) return Position.DEFENDER;
         if (x instanceof Midfield) return Position.MIDFIELD;
@@ -160,7 +160,7 @@ class PlayerField {
     }
 
     public double skill() { // Skill formula
-        return player.globalSkill() * (energy.getEnergy() / 100); // Falta ter em atenção o facto do jogador não estar na sua posição
+        return player.globalSkill() * (energy.getEnergy() / 100) * (bestPosition(player).equals(mainPosition) ? 1 : 0.5); // Falta ter em atenção o facto do jogador não estar na sua posição
     }
 
     // Combines the x and y arguments with the position of the player

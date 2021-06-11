@@ -18,7 +18,7 @@ public class Match extends MatchRegister implements Serializable {
     // Variável que controla quem possui a bola neste momento. True representa homeTeam e False representa awayTeam.
     private boolean ball_pos;
 
-    // Tracker da bola. A posição da bola, sendo o ponto (0,0) o centro do campo.
+    // Tracker da bola. A posição da bola, sendo o ponto (45, 90) o centro do campo.
 
     private Point ball_tracker;
 
@@ -35,7 +35,7 @@ public class Match extends MatchRegister implements Serializable {
         this.ball_pos = rand.nextBoolean();
         this.awayPl = new PlayersField(awayTeam, defaultBot);
         this.homePl = new PlayersField(homeTeam, strategyPlayer);
-        this.ball_tracker = new Point(0, 0);
+        this.ball_tracker = new Point(45, 90);
 
     }
 
