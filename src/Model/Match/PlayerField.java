@@ -171,11 +171,11 @@ class PlayerField {
     /**
      * Moves the player accordingly with the position of the ball.
      * @param pos_ball
-     * @param homeHasBall
+     * @param hasBall
      */
-    public void movePlayer(Point pos_ball, boolean homeHasBall) {
+    public void movePlayer(Point pos_ball, boolean hasBall) {
         double distance = (this.energy.getEnergy() / 100) * PlayerField.distance;
-        if (homeHasBall) this.moveForward(pos_ball, distance);
+        if (hasBall) this.moveForward(pos_ball, distance);
         else this.moveBack(pos_ball, distance);
         this.energy.decrease();
     }
