@@ -2,6 +2,7 @@ package Model.Match;
 
 import Model.Team;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -10,7 +11,7 @@ import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatchRegister {
+public class MatchRegister implements Serializable {
     //Variáveis de instância
     private LocalDate date;
     private Team homeTeam;

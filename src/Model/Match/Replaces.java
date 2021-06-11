@@ -1,6 +1,8 @@
 package Model.Match;
 
-public class Replaces {
+import java.io.Serializable;
+
+public class Replaces implements Serializable {
     int out;
     int in;
 

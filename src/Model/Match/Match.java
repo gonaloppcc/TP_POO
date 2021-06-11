@@ -7,8 +7,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
-public class Match extends MatchRegister implements Serializable {
+public class Match extends MatchRegister {
 
     private static Point dimensionField;
     private PlayersField homePl;
@@ -65,6 +66,11 @@ public class Match extends MatchRegister implements Serializable {
         for (time = 0; time <= 45; time += 0.25) {
             game.confrontation();
             System.out.println(game.getBall_tracker());
+            boolean b = game.homePl.getPlayersPlaying().stream().map(PlayerField::getPosition).
+                    anyMatch(p -> p.getX() > 120 || p.getX() < 0 || p.getY() > 90 || p.getY() < 0);
+            boolean b2 = game.awayPl.getPlayersPlaying().stream().map(PlayerField::getPosition).
+                    anyMatch(p -> p.getX() > 120 || p.getX() < 0 || p.getY() > 90 || p.getY() < 0);
+            System.out.println(b || b2);
         } // Primeira metade do jogo.
 
         game.ball_pos = !swap_side;
@@ -74,6 +80,11 @@ public class Match extends MatchRegister implements Serializable {
         for (time = 45; time <= 90; time += 0.25) {
             game.confrontation(); // Segunda metade do jogo.
             System.out.println(game.getBall_tracker());
+            boolean b = game.homePl.getPlayersPlaying().stream().map(PlayerField::getPosition).
+                    anyMatch(p -> p.getX() > 120 || p.getX() < 0 || p.getY() > 90 || p.getY() < 0);
+            boolean b2 = game.awayPl.getPlayersPlaying().stream().map(PlayerField::getPosition).
+                    anyMatch(p -> p.getX() > 120 || p.getX() < 0 || p.getY() > 90 || p.getY() < 0);
+            System.out.println(b || b2);
         }
 
         return game;
@@ -82,20 +93,20 @@ public class Match extends MatchRegister implements Serializable {
 
     /*------------------------------------------ Getters e Setters ---------------------------------------------------*/
 
-    public int getTime() {
-        return time;
-    }
-
-    public void setTime(int time) {
-        this.time = time;
-    }
-
     public static Point getDimensionField() {
         return dimensionField;
     }
 
     public static void setDimensionField(Point dimensionField) {
         Match.dimensionField = dimensionField;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
     }
 
     public PlayersField getHomePl() {
@@ -198,37 +209,35 @@ public class Match extends MatchRegister implements Serializable {
     public void aftermath(boolean vantage) {
 
         Random rand = new Random();
-        Point homeGoal = new Point(0,45);
-        Point awayGoal = new Point(120,45);
+        Point homeGoal = new Point(0, 45);
+        Point awayGoal = new Point(120, 45);
         double range;
 
         if (vantage) {
 
             if (this.ball_pos) {
 
-                range =  awayGoal.distance(this.ball_tracker);
+                range = awayGoal.distance(this.ball_tracker);
 
                 if (range <= 10) { // Golo
 
-                    this.ball_tracker.setX(60);this.ball_tracker.setY(45);
+                    this.ball_tracker.setX(60);
+                    this.ball_tracker.setY(45);
                     super.setScoreHome(super.getScoreHome() + 1);
 
 
                 } else if (range <= 60) { // Meio Campo para Campo Inimigo
 
 
-
                 } else if (range <= 90) { // Campo Amigo para Meio Campo
-
 
 
                 } else { // Baliza
 
 
-
                 }
 
-            this.ball_tracker.addVector(rand.nextDouble() * 5,(rand.nextDouble() * 2 - 1) * 5);
+                this.ball_tracker.addVector(rand.nextDouble() * 5, (rand.nextDouble() * 2 - 1) * 5);
 
             } else {
 
@@ -244,20 +253,18 @@ public class Match extends MatchRegister implements Serializable {
 
                 if (range <= 10) { // Golo
 
-                    this.ball_tracker.setX(60);this.ball_tracker.setY(45);
+                    this.ball_tracker.setX(60);
+                    this.ball_tracker.setY(45);
                     super.setScoreAway(super.getScoreAway() + 1);
 
 
                 } else if (range <= 60) { // Meio Campo para Campo Inimigo
 
 
-
                 } else if (range <= 90) { // Campo Amigo para Meio Campo
 
 
-
                 } else { // Baliza
-
 
 
                 }
@@ -268,12 +275,12 @@ public class Match extends MatchRegister implements Serializable {
 
             }
 
-            this.ball_tracker.addVector(rand.nextDouble() * -5,(rand.nextDouble() * 2 - 1) * 5);
+            this.ball_tracker.addVector(rand.nextDouble() * -5, (rand.nextDouble() * 2 - 1) * 5);
 
         }
 
-        this.homePl.movePlayers(ball_tracker,ball_pos);
-        this.awayPl.movePlayers(ball_tracker,!ball_pos);
+        this.homePl.movePlayers(ball_tracker, ball_pos);
+        this.awayPl.movePlayers(ball_tracker, !ball_pos);
 
     }
 
