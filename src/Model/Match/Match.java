@@ -237,6 +237,7 @@ public class Match extends MatchRegister {
 
                     else {
 
+                        ball_tracker.addVector(rand.nextDouble() * 10, rand.nextDouble() * 10);
                         this.homePl.movePlayers(ball_tracker, ball_pos);
                         this.awayPl.movePlayers(ball_tracker, !ball_pos);
 
@@ -246,11 +247,13 @@ public class Match extends MatchRegister {
 
                     if (drible_passe(this.homePl.getPlayersCloseToTheBall(this.ball_tracker).get(0))) {
 
-                        // passe ou segue em frente.;
+                        ball_tracker.addVector(rand.nextDouble() * 10, rand.nextDouble() * 10);
 
                     }
 
                     else {
+
+                        ball_tracker.addVector(rand.nextDouble() * 10, rand.nextDouble() * 10);
 
                     }
 
@@ -261,12 +264,13 @@ public class Match extends MatchRegister {
 
                     if (drible_passe(this.homePl.getPlayersCloseToTheBall(this.ball_tracker).get(0))) {
 
-                        // passe ou segue em frente.
+                        ball_tracker.addVector(rand.nextDouble() * 10, rand.nextDouble() * 10);
 
                     }
 
                     else {
 
+                        ball_tracker.addVector(rand.nextDouble() * 10, rand.nextDouble() * 10);
                     }
 
                     this.homePl.movePlayers(ball_tracker, ball_pos);
@@ -276,12 +280,12 @@ public class Match extends MatchRegister {
 
                     if (remate_passe(this.homePl.getPlayersCloseToTheBall(this.ball_tracker).get(0))) {
 
-                        // passe ou lance em frente.
-
+                        ball_tracker.addVector(rand.nextDouble() * 10, rand.nextDouble() * 10);
                     }
 
                     else {
 
+                        ball_tracker.addVector(rand.nextDouble() * 10, rand.nextDouble() * 10);
                     }
 
                     this.homePl.movePlayers(ball_tracker, ball_pos);
@@ -319,7 +323,7 @@ public class Match extends MatchRegister {
 
                     else {
 
-
+                        ball_tracker.addVector(rand.nextDouble() * -10, rand.nextDouble() * 10);
                         this.homePl.movePlayers(ball_tracker, ball_pos);
                         this.awayPl.movePlayers(ball_tracker, !ball_pos);
 
@@ -331,12 +335,16 @@ public class Match extends MatchRegister {
 
                     if (drible_passe(this.awayPl.getPlayersCloseToTheBall(this.ball_tracker).get(0))) {
 
+                        ball_tracker.addVector(rand.nextDouble() * -10, rand.nextDouble() * 10);
                     }
 
                     else {
 
+                        ball_tracker.addVector(rand.nextDouble() * -10, rand.nextDouble() * 10);
+
                     }
 
+                    ball_tracker.addVector(rand.nextDouble() * -10, rand.nextDouble() * 10);
                     this.homePl.movePlayers(ball_tracker, ball_pos);
                     this.awayPl.movePlayers(ball_tracker, !ball_pos);
 
@@ -346,9 +354,13 @@ public class Match extends MatchRegister {
 
                     if (drible_passe(this.awayPl.getPlayersCloseToTheBall(this.ball_tracker).get(0))) {
 
+                        ball_tracker.addVector(rand.nextDouble() * -10, rand.nextDouble() * 10);
+
                     }
 
                     else {
+
+                        ball_tracker.addVector(rand.nextDouble() * -10, rand.nextDouble() * 10);
 
                     }
 
@@ -361,9 +373,13 @@ public class Match extends MatchRegister {
 
                     if (remate_passe(this.awayPl.getPlayersCloseToTheBall(this.ball_tracker).get(0))) {
 
+                        ball_tracker.addVector(rand.nextDouble() * -10, rand.nextDouble() * 10);
+
                     }
 
                     else {
+
+                        ball_tracker.addVector(rand.nextDouble() * -10, rand.nextDouble() * 10);
 
                     }
 
