@@ -4,6 +4,7 @@ import Model.Match.Match;
 import Model.Team;
 import View.MatchView;
 import View.StatusView;
+import View.SwingTimerEx;
 
 import java.util.*;
 
@@ -19,6 +20,7 @@ public class MatchController {
 
     /**
      * Main function, that controls the interaction between differents class.
+     *
      * @param home
      * @param away
      * @param playerPerTeam Number of players each team has
@@ -28,28 +30,37 @@ public class MatchController {
         numberOnField = playerPerTeam;
         view = new MatchView();
 //Core a simulação ou não?
-        if(simulatioOrNot()){
-            this.game = new Match(home, away, new Integer[]{1, 3,3,3,1},getStrategy());
-       //     while (game.getTime() < 90){
-         //       if (game.getTime() == 45) {}
-                view.CampoTodo(game.getPlayersPositions(true), game.getPlayersPositions(false), game.getBall_tracker() );
-        //        terminal.nextLine();
+        if (simulatioOrNot()) {
+            this.game = new Match(home, away, new Integer[]{1, 3, 3, 3, 1}, getStrategy());
+            SwingTimerEx.displayField(game);
+            while (game.getTime() < 90) game.run(5);
+            /*
+            while (game.getTime() < 90) {
+                if (game.getTime() == 45) {
+                }
+                view.CampoTodo(game.getPlayersPositions(true), game.getPlayersPositions(false), game.getBall_tracker());
 
-        //        System.out.println(game.getPlayersPositions(true));
-        //        view.CampoTodo(game.getPlayersPositions(true), game.getPlayersPositions(false), game.getBall_tracker() );
-        //        game.run(5);
-        //        terminal.nextLine();
-        }
-        else {
+                terminal.nextLine();
+
+                System.out.println(game.getPlayersPositions(true));
+                view.CampoTodo(game.getPlayersPositions(true), game.getPlayersPositions(false), game.getBall_tracker());
+                game.run(5);
+                terminal.nextLine();
+            }
+
+             */
+        } else {
             this.game = Match.game_play(home, away, new Integer[]{1, 3, 3, 3, 1}, getStrategy());
             System.out.println("Game score: " + game.getScoreHome() + "-" + game.getScoreAway());
         }
         //Sai deste menu, devia retornar o match para o guardar no stats
     }
-    public void inicializeAway (){
-        game.setStrategy(new Integer[]{ 1, 3,3,3,1}, false);
+    
+
+    public void inicializeAway() {
+        game.setStrategy(new Integer[]{1, 3, 3, 3, 1}, false);
         Team away = game.getAwayTeam();
-        game.setAwayPl(away, new Integer[]{1, 3,3,3,1});
+        game.setAwayPl(away, new Integer[]{1, 3, 3, 3, 1});
     }
     //public void inicializeHome(){
     //    Integer[] strategy = getStrategy();
@@ -75,12 +86,16 @@ public class MatchController {
         }
     }
 
-    private String convertPositionfromNumber(Integer pos){
-        switch (pos){
-            case 1: return "Defender";
-            case 2: return "Midfield";
-            case 3: return "Striker";
-            default: return "BackWing";
+    private String convertPositionfromNumber(Integer pos) {
+        switch (pos) {
+            case 1:
+                return "Defender";
+            case 2:
+                return "Midfield";
+            case 3:
+                return "Striker";
+            default:
+                return "BackWing";
         }
     }
 
@@ -88,14 +103,15 @@ public class MatchController {
      * Asks the user to insert a valid strategy, where the total of players choosen is equal to the possible players on field.
      * The last position gets the remaing players. In this case, the last position are the "Backwing".
      * We only got 5 different positions in game
+     *
      * @return
      */
-    private Integer[] getStrategy(){
+    private Integer[] getStrategy() {
         int total = 1;
         int temp;
         Integer[] res = new Integer[5];
-        for (int i = 1; i < res.length -1&& total < numberOnField; i++){
-            view.toZone(convertPositionfromNumber(i), numberOnField-total);
+        for (int i = 1; i < res.length - 1 && total < numberOnField; i++) {
+            view.toZone(convertPositionfromNumber(i), numberOnField - total);
             while (true) {
                 temp = terminal.nextInt();
                 if (temp + total > numberOnField) StatusView.InvalidLine();
@@ -106,13 +122,13 @@ public class MatchController {
                 }
             }
         }
-        res[4] = numberOnField-total;
+        res[4] = numberOnField - total;
         //Guarda redes
         res[0] = 1;
         for (int i = 0; i < res.length; i++) if (res[i] == null) res[i] = 0;
         return res;
     }
-    
+
     //public void inicializeHome(){
     //    Integer[] strategy = getStrategy();
     //    game.setHomePl(game.getHomeTeam(), strategy);

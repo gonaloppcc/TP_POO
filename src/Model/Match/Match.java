@@ -175,10 +175,10 @@ public class Match extends MatchRegister {
 
         advantage = x < probHomeWin; // Dá o sucesso do confronto à equipa de casa.
 
-       // aftermath(advantage);
-        homePl.movePlayers(ball_tracker, ball_pos);
-        awayPl.movePlayers(ball_tracker, !ball_pos);
-        ball_tracker.addVector(rand.nextDouble()*2 - 1, rand.nextDouble()*2-1);
+        aftermath(advantage);
+        //homePl.movePlayers(ball_tracker, ball_pos);
+        //awayPl.movePlayers(ball_tracker, !ball_pos);
+        ball_tracker.addVector(rand.nextDouble() * 10, rand.nextDouble() * 10);
     }
 
     public double prob(double homeSquadSkill, double awaySquadSkill) {
@@ -275,7 +275,6 @@ public class Match extends MatchRegister {
                 } else { // Baliza para Campo Amigo
 
                     if (remate_passe(this.homePl.getPlayersCloseToTheBall(this.ball_tracker).get(0))) {
-
                         // passe ou lance em frente.
 
                     }

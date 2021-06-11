@@ -20,6 +20,10 @@ public class Point {
         else this.y = Math.max(y, yMin);
     }
 
+    public Point(Point point) {
+        this(point.getX(), point.getY());
+    }
+
     /**
      * Define em que posição um dado jogador vai estar em função da sua posição.
      * Se for lateral, pode ser esquerdo ou direito.
@@ -95,5 +99,9 @@ public class Point {
                 "x=" + x +
                 ", y=" + y +
                 '}';
+    }
+
+    public Point clone() {
+        return new Point(this);
     }
 }

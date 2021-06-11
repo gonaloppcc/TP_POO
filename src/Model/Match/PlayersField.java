@@ -18,7 +18,7 @@ public class PlayersField {
     private List<PlayerField> playersBench;
     private Integer[] strategy;
     private Point dimensionField;
-    private static final double radius = 25;
+    private static final double radius = 50;
 
 //static class PlayerComparator (Player p1, Player p2){
 //        return p1.globalS
@@ -198,7 +198,10 @@ public class PlayersField {
     }
 
     public List<Point> playersPosition(){
-        return playersPlaying.stream().map(PlayerField::getPosition).collect(Collectors.toList());
+        List<Point> p = new ArrayList<>(playersPlaying.size());
+        for (PlayerField pl : playersPlaying) p.add(pl.getPosition());
+        return p;
+        //return playersPlaying.stream().map(PlayerField::getPosition).collect(Collectors.toList());
     }
 }
 

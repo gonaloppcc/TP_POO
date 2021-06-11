@@ -6,7 +6,7 @@ import com.sun.nio.sctp.PeerAddressChangeNotification;
 import java.util.List;
 
 class PlayerField {
-    private static final double distance = 5;
+    private static final double distance = 2;
     private Player player;
     private Point position; // current position on the field
     private Position mainPosition; // main position
@@ -79,6 +79,14 @@ class PlayerField {
 
     /*------------------------------------------ Getters e Setters ---------------------------------------------------*/
 
+    private static Position bestPosition(Player x) { // <- Não devia ser static?
+        if (x instanceof GoalKeeper) return Position.GOALKEEPER;
+        if (x instanceof Defender) return Position.DEFENDER;
+        if (x instanceof Midfield) return Position.MIDFIELD;
+        if (x instanceof Striker) return Position.STRIKER;
+        return Position.LATERAL;
+    }
+
     public Player getPlayer() {
         return player;
     }
@@ -88,7 +96,7 @@ class PlayerField {
     }
 
     public Point getPosition() {
-        return position;
+        return position; //.clone();
     }
 
     public void setPosition(Point position) {
@@ -131,11 +139,11 @@ class PlayerField {
         return redCard;
     }
 
+    /* ------------------------------------- Other methods ---------------------------------------------------------- */
+
     public void setRedCard(boolean redCard) {
         this.redCard = redCard;
     }
-
-    /* ------------------------------------- Other methods ---------------------------------------------------------- */
 
     private Position numberToPosition(Integer x) {
         switch (x) {
@@ -152,14 +160,6 @@ class PlayerField {
         }
     }
 
-    private static Position bestPosition(Player x) { // <- Não devia ser static?
-        if (x instanceof GoalKeeper) return Position.GOALKEEPER;
-        if (x instanceof Defender) return Position.DEFENDER;
-        if (x instanceof Midfield) return Position.MIDFIELD;
-        if (x instanceof Striker) return Position.STRIKER;
-        return Position.LATERAL;
-    }
-    
     public double distance(Point point) {
         return this.position.distance(point);
     }
@@ -175,6 +175,7 @@ class PlayerField {
 
     /**
      * Moves the player accordingly with the position of the ball.
+     *
      * @param pos_ball
      * @param hasBall
      */
@@ -186,52 +187,14 @@ class PlayerField {
     }
 
     private void moveBack(Point pos_ball, double distance) {
-        this.position.addVector((getPosition().getX() - pos_ball.getX()) / distance, (getPosition().getY() - pos_ball.getY()) / distance);
-        /*
-        // y = m*x + b
-        double m = getSlope(pos_ball);
-        double b = getB(m);
-
-        double x = form(m, b, distance, false);
-        double y = m * x + b;
-
-        this.position.addVector(x, y);
-
-         */
-    }
-
-    private double form(double m, double b, double distance, boolean forward) {
-        double sqrt = Math.min(Math.sqrt(-Math.pow(b, 2) + distance * (Math.pow(m, 2)) + distance), 0);
-        if (forward) return (sqrt - b * m) / (Math.pow(m, 2) + 1);
-        return (-sqrt - b * m) / (Math.pow(m, 2) + 1);
+        this.position.addVector(-distance, 0);
     }
 
     private void moveForward(Point pos_ball, double distance) {
-        this.position.addVector(pos_ball.getX() - getPosition().getX(), pos_ball.getY() - getPosition().getY());
+        this.position.addVector(distance, 0);
 
-        // y = m*x + b
-        /*
-        double m = getSlope(pos_ball);
-        double b = getB(m);
-
-        double x = -form(m, b, distance, true);
-        double y = m * x + b;
-
-        this.position.addVector(x, y);
-
-         */
     }
 
-    private double getB(double m) {
-        return this.position.getY() - (m * this.position.getX());
-    }
-
-    private double getSlope(Point pos_ball) {
-        double mY = this.position.getY() - pos_ball.getY();
-        double mX = this.position.getX() - pos_ball.getX();
-        if (mY == 0 && mX == 0) return 0;
-        return (mY/mX);
-    }
 
     @Override
     public String toString() {
@@ -241,14 +204,28 @@ class PlayerField {
                 ", position=" + position +
                 '}';
     }
-    
+
     public PlayerField clone() {
         return new PlayerField(this);
     }
 
-    public boolean isGoalKeeperInField() {return this.mainPosition.equals(Position.GOALKEEPER); }
-    public boolean isLateralInField() {return this.mainPosition.equals(Position.LATERAL); }
-    public boolean isDefenderInField() {return this.mainPosition.equals(Position.DEFENDER); }
-    public boolean isMiddfieldInField() {return this.mainPosition.equals(Position.MIDFIELD); }
-    public boolean isStrikerInField() {return this.mainPosition.equals(Position.STRIKER); }
+    public boolean isGoalKeeperInField() {
+        return this.mainPosition.equals(Position.GOALKEEPER);
+    }
+
+    public boolean isLateralInField() {
+        return this.mainPosition.equals(Position.LATERAL);
+    }
+
+    public boolean isDefenderInField() {
+        return this.mainPosition.equals(Position.DEFENDER);
+    }
+
+    public boolean isMiddfieldInField() {
+        return this.mainPosition.equals(Position.MIDFIELD);
+    }
+
+    public boolean isStrikerInField() {
+        return this.mainPosition.equals(Position.STRIKER);
+    }
 }
