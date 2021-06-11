@@ -6,10 +6,7 @@ import Model.Team;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Match extends MatchRegister {
@@ -215,6 +212,7 @@ public class Match extends MatchRegister {
         Point homeGoal = new Point(0,45);
         Point awayGoal = new Point(120,45);
         double range;
+        Comparator<PlayerField> dist = (x,y) -> (int) (x.getPosition().distance(this.ball_tracker) - y.getPosition().distance(this.ball_tracker));
 
         if (vantage) {
 
@@ -292,8 +290,9 @@ public class Match extends MatchRegister {
             } else {
 
                 this.ball_pos = true;
-                this.ball_tracker.setX(this.homePl.getPlayersCloseToTheBall(this.ball_tracker).get(0).getPosition().getX());
-                this.ball_tracker.setX(this.homePl.getPlayersCloseToTheBall(this.ball_tracker).get(0).getPosition().getY());
+
+                this.ball_tracker.setX(this.awayPl.getPlayersPlaying().stream().min(dist).get().getPosition().getX());
+                this.ball_tracker.setY(this.awayPl.getPlayersPlaying().stream().min(dist).get().getPosition().getY());
 
             }
 
@@ -374,8 +373,12 @@ public class Match extends MatchRegister {
             } else {
 
                 this.ball_pos = false;
-                this.ball_tracker.setX(this.awayPl.getPlayersCloseToTheBall(this.ball_tracker).get(0).getPosition().getX());
-                this.ball_tracker.setX(this.awayPl.getPlayersCloseToTheBall(this.ball_tracker).get(0).getPosition().getY());
+
+                //this.ball_tracker.setX(this.awayPl.getPlayersCloseToTheBall(this.ball_tracker).get(0).getPosition().getX());
+                //this.ball_tracker.setX(this.awayPl.getPlayersCloseToTheBall(this.ball_tracker).get(0).getPosition().getY());
+
+                this.ball_tracker.setX(this.awayPl.getPlayersPlaying().stream().min(dist).get().getPosition().getX());
+                this.ball_tracker.setY(this.awayPl.getPlayersPlaying().stream().min(dist).get().getPosition().getY());
 
             }
 
