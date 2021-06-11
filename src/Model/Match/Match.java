@@ -22,6 +22,8 @@ public class Match extends MatchRegister implements Serializable {
 
     private Point ball_tracker;
 
+    private int time;
+
 
     /*------------------------------------------------Constructors----------------------------------------------------*/
 
@@ -33,8 +35,8 @@ public class Match extends MatchRegister implements Serializable {
 
         Random rand = new Random();
         this.ball_pos = rand.nextBoolean();
-        this.awayPl = new PlayersField(awayTeam, defaultBot);
-        this.homePl = new PlayersField(homeTeam, strategyPlayer);
+        this.awayPl = new PlayersField(awayTeam, defaultBot, false);
+        this.homePl = new PlayersField(homeTeam, strategyPlayer, true);
         this.ball_tracker = new Point(45, 90);
 
     }
@@ -80,6 +82,14 @@ public class Match extends MatchRegister implements Serializable {
 
     /*------------------------------------------ Getters e Setters ---------------------------------------------------*/
 
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
+
     public static Point getDimensionField() {
         return dimensionField;
     }
@@ -97,7 +107,7 @@ public class Match extends MatchRegister implements Serializable {
     }
 
     public void setHomePl(Team homePl, Integer[] integers) {
-        this.homePl = new PlayersField(homePl, integers);
+        this.homePl = new PlayersField(homePl, integers, true);
     }
 
     public PlayersField getAwayPl() {
@@ -109,7 +119,7 @@ public class Match extends MatchRegister implements Serializable {
     }
 
     public void setAwayPl(Team awayPl, Integer[] integers) {
-        this.awayPl = new PlayersField(awayPl, integers);
+        this.awayPl = new PlayersField(awayPl, integers, false);
     }
 
     public boolean isBall_pos() {
@@ -267,7 +277,7 @@ public class Match extends MatchRegister implements Serializable {
 
     }
 
-    public void run() {
+    public void run(int time) {
         //Simulação com refresh's
     }
 

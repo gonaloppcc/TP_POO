@@ -32,22 +32,30 @@ public class Point {
      * @param fraction
      * @param lateral
      * @param pos
+     * @param home To know wich side the player is
      */
-    public static Point createInitialPosition(float fraction, boolean lateral, Position pos) {
+    public static Point createInitialPosition(float fraction, boolean lateral, Position pos, boolean home) {
         Random rnd = new Random();
-
+        int lateralsDimension = 15;
         if (lateral) {
             boolean esq = rnd.nextBoolean();
-            if (esq) return new Point(45, roundFloat(fraction, 250));
-            else return new Point(5, roundFloat(fraction, 250));
+            int positionInX = convertHomeAway(roundFloat(fraction, (int) xMax), home);
+            if (esq) return new Point(positionInX, lateralsDimension/2);
+            else return new Point(positionInX, yMax-(lateralsDimension/2));
+
         } else {      //No x ele pode
-            if (pos.equals(Position.DEFENDER)) return new Point(roundFloat(fraction, 80), rnd.nextInt(30) + 10);
+            if (pos.equals(Position.DEFENDER)) return new Point(convertHomeAway(rnd.nextInt(30), home), lateralsDimension+ roundFloat(fraction, 50));
             else {
-                if (pos.equals(Position.MIDFIELD)) return new Point(roundFloat(fraction, 90) + 80, rnd.nextInt(30) + 10);
-                else return new Point(roundFloat(fraction, 80) + 170, rnd.nextInt(30) + 10);
+                if (pos.equals(Position.MIDFIELD)) return new Point(convertHomeAway(rnd.nextInt(60)+30, home), lateralsDimension+ roundFloat(fraction, 50));
+                else return new Point(convertHomeAway(rnd.nextInt(30)+90, home), lateralsDimension+ roundFloat(fraction, 50));
             }
 
         }
+    }
+
+    private static int convertHomeAway(int pos, boolean home){
+        if (home) return pos;
+        else return (int) xMax - pos;
     }
 
     private static int roundFloat(float x, int y) {

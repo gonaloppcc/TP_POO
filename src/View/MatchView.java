@@ -8,7 +8,7 @@ import java.util.List;
 public class MatchView {
 
     public  static void simulateOrNot(){
-        System.out.println("Do you want to see the simulation?");
+        System.out.println("Do you want to see the simulation (s/n)?");
         System.out.println("É gira...");
     }
 
@@ -17,8 +17,8 @@ public class MatchView {
         System.out.println("And you only got "+left+" players.");
     }
 
-    public void CampoTodo(List<Point> home, List<Point> away){
-        DisplayGraphics toPrint = new DisplayGraphics(home, away);
-        toPrint.campo(home,away);
+    public void CampoTodo(List<Point> home, List<Point> away, Point ball){
+        DisplayGraphics toPrint = new DisplayGraphics(home, away, ball);
+        toPrint.campo(home,away, ball);
     }
 }

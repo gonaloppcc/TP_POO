@@ -27,15 +27,20 @@ public class MatchController {
         terminal = new Scanner(System.in);
         numberOnField = playerPerTeam;
         view = new MatchView();
+//Core a simulação ou não?
         if(simulatioOrNot()){
             this.game = new Match(home, away, new Integer[]{1, 3,3,3,1},getStrategy());
-            view.CampoTodo(game.getPlayersPositions(true), game.getPlayersPositions(false) );
-            //game.run();
+           // while (game.getTime() < 90){
+                //if (game.getTime() == 45) {}
+                view.CampoTodo(game.getPlayersPositions(true), game.getPlayersPositions(false), game.getBall_tracker() );
+                //game.run();
+           // }
         }
         else {
             this.game = Match.game_play(home, away, new Integer[]{1, 3, 3, 3, 1}, getStrategy());
             System.out.println("Game score: " + game.getScoreHome() + "-" + game.getScoreAway());
         }
+        //Sai deste menu, devia retornar o match para o guardar no stats
     }
     public void inicializeAway (){
         game.setStrategy(new Integer[]{ 1, 3,3,3,1}, false);
@@ -46,7 +51,6 @@ public class MatchController {
     //    Integer[] strategy = getStrategy();
     //    game.setHomePl(game.getHomeTeam(), strategy);
     //}
-
 
     public Match getGame() {
         return game;

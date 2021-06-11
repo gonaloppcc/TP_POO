@@ -57,7 +57,7 @@ public class PlayersField {
     return null;
 }
 
-    public PlayersField(Team bot, Integer[] strategy) {
+    public PlayersField(Team bot, Integer[] strategy, boolean home) {
 
         this.strategy = strategy;
         playersPlaying = new ArrayList<>();
@@ -86,13 +86,13 @@ public class PlayersField {
                 }
             }
         //Jogadores que restam
-        for (Player bench : allPlayers) playersBench.add(new PlayerField(bench));
-        playersPlaying.add(new PlayerField(onField.remove(0)));
+        for (Player bench : allPlayers) playersBench.add(new PlayerField(bench, home));
+        playersPlaying.add(new PlayerField(onField.remove(0), home));
         int lidos = 0;
         for (int position = 1; position < strategy.length; position++)
             for (int player = 0; player < strategy[position] && lidos < onField.size(); player++) {
                  if(strategy[position] != 0){
-                     playersPlaying.add(new  PlayerField(onField.get(lidos), ((float)player) / ((float)strategy[position]), position));
+                     playersPlaying.add(new  PlayerField(onField.get(lidos), ((float)player) / ((float)strategy[position]), position, home));
                     lidos++;
                  }
 
