@@ -370,8 +370,9 @@ public class Match extends MatchRegister {
      * @param out
      */
 
-    public void changePlayer(PlayerField in,PlayerField out){
+    public void changePlayer(PlayerField in,PlayerField out,boolean home){
         homePl.replace(in, out);
+        super.addReplace(in.getPlayer().getNum(), out.getPlayer().getNum(),home);
     }
 
 }

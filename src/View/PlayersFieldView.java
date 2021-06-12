@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 
 public class PlayersFieldView {
     public static void printPlayerFields(List<PlayerField> list){
-        System.out.println("Those are the games in between\n" +
-                CheckGameView.myPrint(list.stream().map(PlayerField::toString).collect(Collectors.toList()),1));
+        System.out.println("Choose one player by number:\n" +
+                CheckGameView.myPrint(list.stream().map(PlayerField::stringToChoose).collect(Collectors.toList()),1));
 
     }
 }

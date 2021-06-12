@@ -7,7 +7,7 @@ import javax.print.attribute.standard.RequestingUserName;
 import java.util.List;
 import java.util.Random;
 
-class PlayerField {
+public class PlayerField {
     private static final double distance = 5;
     private final static Point homeGoal = new Point(0, 45);
     private final static Point awayGoal = new Point(120, 45);
@@ -230,6 +230,14 @@ class PlayerField {
                 "player=" + player +
                 "joga a=" + mainPosition +
                 ", position=" + position +
+                '}';
+    }
+
+    public String stringToChoose() {
+        return " PlayerField{" +
+                " player=" + player.getName() +
+                " Número=" + player.getNum() +
+                " joga a=" + mainPosition +
                 '}';
     }
 

@@ -9,39 +9,22 @@ import View.StatusView;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ This class is use to contenting all data regarding the game
+ It's here where we comand basically everything (Create a team, transfer a player)
+ It has methods for saving and loading game purposes
+ */
+
 public class Status implements Serializable {
     private String gameName;
     private int playersPerTeam;
- /*
-    private List<Team> teams; // Informações sobre o save atual
-    private Map<LocalDate, List<Match>> games; // Ainda falta desenvolver!!!!!!!!! A forma de ordenar seria a data do jogo
-    // A lista seria os jogos que tinhamos ocorrido naquele dia
-=======
-*/
-    private Map<String, Team> teams; // Informações sobre o save atual
-    private Map<LocalDate, List<MatchRegister>> games;    // A lista seria os jogos que tinhamos ocorrido naquele dia
-    private String playerTeam;
 
+    private Map<String, Team> teams; //All teams stored by name
+    private Map<LocalDate, List<MatchRegister>> games;    // Games stored by date
+    private String playerTeam; //Team of the player
 
-    /*
-    This class is use to contenting all data regarding the game
-    It's here where we comand basically everything (Create a team, transfer a player)
-    It has methods for saving and loading game purposes
-    */
-    private void addgame(MatchRegister toInsert){
-        if (games.containsKey(toInsert.getDate()))
-        {
-            List<MatchRegister> one = games.get(toInsert.getDate());
-            one.add(toInsert);
-            games.put(toInsert.getDate(), one);
+    /*-------------------- Constructors ------------------------*/
 
-        }
-        else {
-            List <MatchRegister> newList = new ArrayList();
-            newList.add(toInsert);
-            games.put(toInsert.getDate(),new ArrayList<MatchRegister>());
-        }
-    }
     public Status() { // Construtor básico, cria com o jogo "Futebol"
         this.gameName = "Futebol";
         this.teams = new HashMap<>();
@@ -50,28 +33,15 @@ public class Status implements Serializable {
     }
 
 
-    private void addgame(Match toInsert){
-        if (games.containsKey(toInsert.getDate()))
-        {
-            List<MatchRegister> one = games.get(toInsert.getDate());
-            one.add(toInsert);
-            games.put(toInsert.getDate(), one);
-
-        }
-        else {
-            List<MatchRegister> newList = new ArrayList<>();
-            newList.add(toInsert);
-            games.put(toInsert.getDate(),newList);
-        }
-    }
     public Status(String gameName, int playersPerTeam, Map<String, Team> teams) {
         this.gameName = gameName;
         this.playersPerTeam = playersPerTeam;
         this.teams = new HashMap<>(teams);
     }
 
+
+    /*----------------------- Public functions ----------------------------*/
     public void save(String filePath) throws IOException {
-       // System.out.println("Gonçalo?");
         FileOutputStream fos = new FileOutputStream(filePath);
         ObjectOutputStream out = new ObjectOutputStream(fos);
         out.writeObject(this);
@@ -92,40 +62,55 @@ public class Status implements Serializable {
 
         return status;
     }
-//Quando o ficheiro original é .txt
-    public void loadText(String filePath) throws NotValidException {
+
+    /**
+     * Loads a text file
+     * @param filePath Path
+     * @throws InvalidLineExcpetion When there is no file
+     */
+    public void loadText(String filePath) {
         try{
+            int invalidLines = 0;
             File fd = new File(filePath);
             Scanner file = new Scanner(fd);
-            String line ;//= file.nextLine();
-            //boolean NotlastLine = true;
+            String line ;
             line = file.nextLine();
 
             while (file.hasNext() ) {
-
-                // System.out.println("lin " + line);
-                if (line.startsWith("Jogo:")) {
-                    addMatch(line);
-                    line = file.nextLine();
-                }
-                else {
-                    if (line.startsWith("Equipa:")) {
-                        line = addTeam(line, file);
-
-                    } else {
-                        //Linha inválida
-                        //Para fazer debugging
-                        System.out.println("Inválida . -> "+ line);
+                try {
+                    //If the line is related to a game
+                    if (line.startsWith("Jogo:")) {
+                        addMatch(line);
                         line = file.nextLine();
+                    } else {
+                        //If the line is related to a team
+                        if (line.startsWith("Equipa:")) {
+                            line = addTeam(line, file);
+
+                        } else {
+                            //Invalid line, the function ignores
+                            line = file.nextLine();
+                            throw new InvalidLineExcpetion();
+                        }
                     }
+                } catch (InvalidLineExcpetion e) {
+                    invalidLines++;
                 }
             }
             file.close();
-            if (line.startsWith("Jogo:")) {
-                  addMatch(line);
-            }
-            else if (line.startsWith("Equipa:")) {
-                line = addTeam(line, file);
+            if (invalidLines != 0) StatusView.numberOfInvalidLines(invalidLines);
+
+            try {
+                if (line.startsWith("Jogo:")) {
+                    addMatch(line);
+                } else if (line.startsWith("Equipa:")) {
+                    addTeam(line, file);
+                }
+
+            } catch (InvalidLineExcpetion e) {
+                invalidLines++;
+                StatusView.numberOfInvalidLines(invalidLines);
+
             }
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
@@ -133,16 +118,21 @@ public class Status implements Serializable {
         }
 
     }
-    public void addTeam(String name){
-        Team byPlayer = new Team();
-        byPlayer.setName(name);
-        teams.put(name, byPlayer);
-    }
-    private String addTeam(String line, Scanner file ) throws NotValidException {
+
+    /*----------------------- Private functions ----------------------------*/
+
+    /**
+     * Gets a line from the text file and converts to a full team.
+     * @param line First line
+     * @param file Scanner of the file, with path included
+     * @return String Next line of the file, after the last player of this team.
+     * @throws InvalidLineExcpetion In case the line is invalid
+     */
+    private String addTeam(String line, Scanner file ) throws InvalidLineExcpetion {
         StringBuilder team = new StringBuilder(line.substring(7)+"###");
         line = file.nextLine();
         while (isTeam(line)) {
-            team.append(line + "\n");
+            team.append(line).append("\n");
             line = file.nextLine();
         }
         //System.out.println("Equipa: "+team.toString());
@@ -150,6 +140,11 @@ public class Status implements Serializable {
         teams.put(toInsert.getName(), toInsert);
         return line;
     }
+
+    /**
+     * Converts one line of the text file, converts to a MatchRegister, and adds to the status.
+     * @param match Line of the txt file
+     */
     private void addMatch(String match){
         String[] info = match.substring(5).split(",");
         Team home  = null;
@@ -159,35 +154,25 @@ public class Status implements Serializable {
 
         if (home != null && away != null)
         {
-            MatchRegister one = new MatchRegister(info, home, away);
-            if (games.containsKey(one.getDate())) games.get(one.getDate()).add(one);
-            else games.put(one.getDate(), new ArrayList<MatchRegister>(List.of(one)));
+            MatchRegister one = null;
+            try {
+                one = new MatchRegister(info, home, away);
+                if (games.containsKey(one.getDate())) games.get(one.getDate()).add(one);
+                else games.put(one.getDate(), new ArrayList<>(List.of(one)));
+            } catch (InvalidLineExcpetion invalidLineExcpetion) {
+                return;
+            }
         }
     }
 
     /**
-     * Inserts a new game in the current register
-     * @param match
+     * Check if the line is a player of a team or not.
+     * @param lineFile line from the text file.
+     * @return It it is or not.
      */
-    public void addMatch(Match match){
-        LocalDate dateGame = match.getDate();
-        if(games.containsKey(dateGame)){
-            List<MatchRegister> sameDate = games.get(dateGame);
-            sameDate.add(match);
-        }
-
-        else {
-            List<MatchRegister> toAdd = new ArrayList<>();
-            toAdd.add(match);
-            games.put(dateGame, toAdd);
-        }
-    }
-
     private boolean isTeam(String lineFile){
-        if (!lineFile.startsWith("Equipa:") &&
-                !lineFile.startsWith("Jogo:")
-        ) return true;
-        else return false;
+        return !lineFile.startsWith("Equipa:") &&
+                !lineFile.startsWith("Jogo:");
     }
 
     public void loadPath(String path)  {
@@ -195,15 +180,11 @@ public class Status implements Serializable {
             load(path);
 
         } catch (Exception e) {
-            try {
                 loadText(path);
-            } catch (NotValidException notValidException) {
-                StatusView.InvalidLine();
             }
         }
-    }
 
-    /*------------------------------------------ Getters e Setters ---------------------------------------------------*/
+        /*------------------------------------------ Getters / Setters and other similiar methods ---------------------------------------------------*/
 
     public String getGameName() {
         return gameName;
@@ -239,7 +220,7 @@ public class Status implements Serializable {
     }
 
     public void setGames(Map <LocalDate, List<MatchRegister>> games) {
-        this.games = new HashMap<LocalDate, List<MatchRegister>>(games) ;
+        this.games = new HashMap<>(games) ;
     }
 
     public String getPlayerTeam() {
@@ -249,6 +230,32 @@ public class Status implements Serializable {
     public void setPlayerTeam(String playerTeam) {
         this.playerTeam = playerTeam;
     }
+
+    public void addTeam(String name){
+        Team byPlayer = new Team();
+        byPlayer.setName(name);
+        teams.put(name, byPlayer);
+    }
+
+    /**
+     * Inserts a new game in the current register
+     * @param match Match to be added
+     */
+    public void addMatch(Match match){
+        LocalDate dateGame = match.getDate();
+        if(games.containsKey(dateGame)){
+            List<MatchRegister> sameDate = games.get(dateGame);
+            sameDate.add(match);
+        }
+
+        else {
+            List<MatchRegister> toAdd = new ArrayList<>();
+            toAdd.add(match);
+            games.put(dateGame, toAdd);
+        }
+    }
+
+
 
     @Override
     public String toString() {

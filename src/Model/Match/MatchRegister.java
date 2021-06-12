@@ -1,16 +1,17 @@
 package Model.Match;
 
+import Model.InvalidLineExcpetion;
 import Model.Team;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Stores the information of a game, but not the necessary information to simulate a game.
+ * This has the equivalent information of a text file.
+ */
 public class MatchRegister implements Serializable {
     //Variáveis de instância
     private LocalDate date;
@@ -22,6 +23,8 @@ public class MatchRegister implements Serializable {
 
     List<Replaces> homeRepl;
     List<Replaces> awayRepl;
+
+    /* ------------------------------------- Constructors  ---------------------------------------------------------- */
 
     public MatchRegister() {
         this.date = LocalDate.of(2010, 10,10);
@@ -43,32 +46,33 @@ public class MatchRegister implements Serializable {
         this.awayRepl = awayRepl;
     }
 
-    public MatchRegister(String[] line, Team home, Team awayTeam) {
-
-        homeTeam = home;
-        this.awayTeam = awayTeam;
-        scoreHome = Integer.parseInt(line[2]);
-        scoreAway = Integer.parseInt(line[3]);
-       // DateTimeFormatterBuilder formatter = new DateTimeFormatterBuilder().appendValue(ChronoField.YEAR, 4)
-        //       .appendValue(ChronoField.MONTH_OF_YEAR, 2)
-        //        .appendValue(ChronoField.DAY_OF_MONTH, 2);
-        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern(formatter);
-        //       date = LocalDate.parse(line[4], formatter.toFormatter());
-        //Não estou a guardar os jogadores
-        String[] data = line[4].split("-");
-        date = LocalDate.of(Integer.parseInt(data[0]), Integer.parseInt(data[1]), Integer.parseInt(data[2]));
-        homeRepl = new ArrayList<>();
-        awayRepl = new ArrayList<>();
-        boolean isItHome = true;
-        for (int i = 5; i < line.length; i++) {
-            if (line[i].contains("->")) {
-                Replaces one = new Replaces(Integer.parseInt(line[i].split("->")[0]), Integer.parseInt(line[i].split("->")[1]));
-                if (isItHome) homeRepl.add(one);
-                else awayRepl.add(one);
+    public MatchRegister(String[] line, Team home, Team awayTeam) throws InvalidLineExcpetion {
+        try {
+            homeTeam = home;
+            this.awayTeam = awayTeam;
+            scoreHome = Integer.parseInt(line[2]);
+            scoreAway = Integer.parseInt(line[3]);
+            String[] data = line[4].split("-");
+            date = LocalDate.of(Integer.parseInt(data[0]), Integer.parseInt(data[1]), Integer.parseInt(data[2]));
+            homeRepl = new ArrayList<>();
+            awayRepl = new ArrayList<>();
+            boolean isItHome = true;
+            for (int i = 5; i < line.length; i++) {
+                if (line[i].contains("->")) {
+                    Replaces one = new Replaces(Integer.parseInt(line[i].split("->")[0]), Integer.parseInt(line[i].split("->")[1]));
+                    if (isItHome) homeRepl.add(one);
+                    else awayRepl.add(one);
+                }
+                if (isItHome && !line[i].contains("->") && homeRepl.size() > 0) isItHome = !isItHome;
             }
-            if (isItHome && !line[i].contains("->") && homeRepl.size() > 0)  isItHome = !isItHome;
+        }
+        catch(Exception e){
+            throw new InvalidLineExcpetion();
         }
     }
+
+    /* ------------------------------------- Getters and Setters ---------------------------------------------------------- */
+
 
     public LocalDate getDate() {
         return date;
@@ -109,6 +113,12 @@ public class MatchRegister implements Serializable {
     public void setScoreAway(int scoreAway) {
         this.scoreAway = scoreAway;
     }
+
+    public void addReplace(int in, int out, boolean home){
+        if (home) homeRepl.add(new Replaces(in, out));
+        else awayRepl.add(new Replaces(in, out));
+    }
+    /* ------------------------------------- To String ---------------------------------------------------------- */
 
     @Override
     public String toString() {

@@ -43,6 +43,7 @@ public class MatchController {
             this.game = Match.game_play(home, away, new Integer[]{1, 3, 3, 3, 1}, getStrategy());
             System.out.println("Game score: " + game.getScoreHome() + "-" + game.getScoreAway());
         }
+
         //Sai deste menu, devia retornar o match para o guardar no stats
     }
     
@@ -103,12 +104,16 @@ public class MatchController {
         for (int i = 1; i < res.length - 1 && total < numberOnField; i++) {
             view.toZone(convertPositionfromNumber(i), numberOnField - total);
             while (true) {
+                try{
                 temp = terminal.nextInt();
                 if (temp + total > numberOnField) StatusView.InvalidLine();
                 else {
                     res[i] = temp;
                     total += temp;
                     break;
+                }}
+                catch(Exception e){
+                    StatusView.InvalidOption();
                 }
             }
         }
@@ -129,9 +134,9 @@ public class MatchController {
             view.ReplacePlayers();
             String option = terminal.nextLine();
             if (option.trim().toLowerCase(Locale.ROOT).equals("s")) {
-                //Caso escolha contra quem jogar
                 PlayerField out = PlayersField.getPlayer(game.getHomePl().getPlayersPlaying());
                 PlayerField in = PlayersField.getPlayer(game.getHomePl().getPlayersBench());
+                game.changePlayer(in, out, true);
 
             }
            else {

@@ -7,6 +7,9 @@ import Model.Team;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * View of the CheckGame class.
+ */
 public class CheckGameView {
     public static void printOptions() {
         System.out.print("""
@@ -59,6 +62,13 @@ public class CheckGameView {
         for (int i = 0; i < list.size(); i++) res.append(i+")"+list.get(i));
         return res.toString();
     }
+
+    /**
+     * Concatenate one list of string to one final string, with changing lines.
+     * @param line List of String to print.
+     * @param num Number of elements per line.
+     * @return
+     */
     public static String myPrint(List<String> line, int num){
         for (int i = num; i < line.size(); i+= num)
             line.set(i, line.get(i).concat(" \n "));
