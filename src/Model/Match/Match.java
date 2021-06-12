@@ -211,12 +211,23 @@ public class Match extends MatchRegister {
         Point homeGoal = new Point(0, 45);
         Point awayGoal = new Point(120, 45);
 
+        Comparator<PlayerField> dist = (x, y) -> (int) (x.getPosition().distance(this.ball_tracker) - y.getPosition().distance(this.ball_tracker));
+
         Random rand = new Random();
         this.ball_pos = vantage;
         // Home: + [0, 20] x, [-5, 5] y
         // Home: - [0, 20] x, [-5, 5] y
-        if (vantage) this.ball_tracker.addVector( rand.nextDouble() * 20 , ((rand.nextDouble() * 2) - 1) * 5);
-        else this.ball_tracker.addVector( rand.nextDouble() * -20 , ((rand.nextDouble() * 2) - 1) * 5);
+        if (vantage) {
+            Point jog = homePl.getPlayersPlaying().stream().min(dist).get().getPosition();
+            this.ball_tracker.setY(jog.getY() + 1);
+            this.ball_tracker.setX(jog.getX() + 1);
+        } //this.ball_tracker.addVector( rand.nextDouble() * 20 , ((rand.nextDouble() * 2) - 1) * 5);
+        else {
+            Point jog = awayPl.getPlayersPlaying().stream().min(dist).get().getPosition();
+            this.ball_tracker.setY(jog.getY() - 1);
+            this.ball_tracker.setX(jog.getX() - 1);
+            //this.ball_tracker.addVector( rand.nextDouble() * -20 , ((rand.nextDouble() * 2) - 1) * 5);
+        }
 
         double rangeAway = awayGoal.distance(this.ball_tracker);
         double rangeHome = homeGoal.distance(this.ball_tracker);
@@ -245,11 +256,12 @@ public class Match extends MatchRegister {
             super.setScoreHome(super.getScoreHome() + 1);
         }
 
-        this.homePl.movePlayers(ball_tracker, ball_pos);
-        this.awayPl.movePlayers(ball_tracker, ball_pos);
+        this.homePl.movePlayers(ball_tracker, ball_pos, true);
+        this.awayPl.movePlayers(ball_tracker, ball_pos, false);
 
     }
 
+    /*
     public void aftermath(boolean vantage) {
 
         Random rand = new Random();
@@ -426,6 +438,8 @@ public class Match extends MatchRegister {
         }
 
     }
+
+     */
 
     public boolean drible_passe(PlayerField ball_owner) {
 

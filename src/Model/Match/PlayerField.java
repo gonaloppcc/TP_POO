@@ -3,10 +3,14 @@ package Model.Match;
 import Model.Player.*;
 import com.sun.nio.sctp.PeerAddressChangeNotification;
 
+import javax.print.attribute.standard.RequestingUserName;
 import java.util.List;
+import java.util.Random;
 
-public class PlayerField {
-    private static final double distance = 2;
+class PlayerField {
+    private static final double distance = 5;
+    private final static Point homeGoal = new Point(0, 45);
+    private final static Point awayGoal = new Point(120, 45);
     private Player player;
     private Point position; // current position on the field
     private Position mainPosition; // main position
@@ -14,12 +18,10 @@ public class PlayerField {
     private boolean lateral;
     private Energy energy; // range [0, 100]
     private int yellowCards;//0 não tem nenhum, 1 tem amarelo, 2 tem vermelho
-
     // Manipular isto dps para que não ultrapasse certos valores
     private boolean redCard;
 
     /*------------------------------------------------Constructors----------------------------------------------------*/
-
 
     public PlayerField(Player playerToSet, boolean home) {
         player = playerToSet;
@@ -78,7 +80,6 @@ public class PlayerField {
         this.yellowCards = yellowCards;
         this.redCard = redCards;
     }
-
 
     public PlayerField(PlayerField playerField) {
         this(playerField.getPlayer(), playerField.getPosition(), playerField.getMainPosition(), playerField.getBeginPosition(), playerField.isLateral(), playerField.getEnergy(), playerField.getYellowCards(), playerField.isRedCard());
@@ -197,19 +198,28 @@ public class PlayerField {
      * @param pos_ball
      * @param hasBall
      */
-    public void movePlayer(Point pos_ball, boolean hasBall) {
+    public void movePlayer(Point pos_ball, boolean hasBall, boolean homeTeam) {
         double distance = (this.energy.getEnergy() / 100) * PlayerField.distance;
-        if (hasBall) this.moveForward(pos_ball, distance);
-        else this.moveBack(pos_ball, distance);
+        if (hasBall && homeTeam) this.moveBack(pos_ball, distance);
+        else if (hasBall) this.moveForward(pos_ball, distance);
+        else if (homeTeam && pos_ball.getY() < this.position.getY()) this.moveForward(pos_ball, distance);
+        else if (!homeTeam && pos_ball.getY() > this.position.getY()) this.moveBack(pos_ball, distance);
+        else ;
         this.energy.decrease();
     }
 
     private void moveBack(Point pos_ball, double distance) {
-        this.position.addVector(-distance / (getPosition().getX() - pos_ball.getX()), distance / (getPosition().getY() - pos_ball.getY()));
+        Random r = new Random();
+        if (this.position.getY() > 45) this.position.addVector(0, -4);
+        this.position.addVector(distance, ((r.nextDouble() * 2) - 1) * 2);
+        ;//addVector(-distance / (getPosition().getX() - pos_ball.getX()), distance / (getPosition().getY() - pos_ball.getY()));
     }
 
     private void moveForward(Point pos_ball, double distance) {
-        this.position.addVector(distance / (getPosition().getX() - pos_ball.getX()), distance / (pos_ball.getY() - getPosition().getY()));
+        Random r = new Random();
+        if (this.position.getY() > 45) this.position.addVector(0, -4);
+        this.position.addVector(-distance, ((r.nextDouble() * 2) - 1) * 2);
+        //this.position.addVector(distance / (getPosition().getX() - pos_ball.getX()), distance / (pos_ball.getY() - getPosition().getY()));
 
     }
 
@@ -218,7 +228,6 @@ public class PlayerField {
     public String toString() {
         return "PlayerField{" +
                 "player=" + player +
-                "num =" + player.getNum() +
                 "joga a=" + mainPosition +
                 ", position=" + position +
                 '}';
