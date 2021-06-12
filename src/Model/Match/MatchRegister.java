@@ -13,21 +13,18 @@ import java.util.List;
  * This has the equivalent information of a text file.
  */
 public class MatchRegister implements Serializable {
-    //Variáveis de instância
+    private List<Replaces> homeRepl;
+    private List<Replaces> awayRepl;
     private LocalDate date;
     private Team homeTeam;
     private Team awayTeam;
-
     private int scoreHome;
     private int scoreAway;
-
-    List<Replaces> homeRepl;
-    List<Replaces> awayRepl;
 
     /* ------------------------------------- Constructors  ---------------------------------------------------------- */
 
     public MatchRegister() {
-        this.date = LocalDate.of(2010, 10,10);
+        this.date = LocalDate.of(2010, 10, 10);
         homeRepl = new ArrayList<>();
         awayRepl = new ArrayList<>();
         scoreAway = 0;
@@ -65,8 +62,7 @@ public class MatchRegister implements Serializable {
                 }
                 if (isItHome && !line[i].contains("->") && homeRepl.size() > 0) isItHome = false;
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             throw new InvalidLineExcpetion();
         }
     }
@@ -114,7 +110,7 @@ public class MatchRegister implements Serializable {
         this.scoreAway = scoreAway;
     }
 
-    public void addReplace(int in, int out, boolean home){
+    public void addReplace(int in, int out, boolean home) {
         if (home) homeRepl.add(new Replaces(in, out));
         else awayRepl.add(new Replaces(in, out));
     }

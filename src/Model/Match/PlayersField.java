@@ -15,8 +15,17 @@ public class PlayersField {
     private List<PlayerField> playersPlaying;
     private List<PlayerField> playersBench;
     private Integer[] strategy;
-    private Point dimensionField;
     private static final double radius = 30;
+
+    public PlayersField(PlayersField playersField) {
+        this(playersField.playersPlaying, playersField.playersBench, playersField.strategy);
+    }
+
+    public PlayersField(List<PlayerField> playersPlaying, List<PlayerField> playersBench, Integer[] strategy) {
+        this.playersPlaying = playersPlaying.stream().map(PlayerField::clone).collect(Collectors.toList());
+        this.playersBench = playersBench.stream().map(PlayerField::clone).collect(Collectors.toList());
+        this.strategy = strategy.clone();
+    }
 
 //static class PlayerComparator (Player p1, Player p2){
 //        return p1.globalS
@@ -33,11 +42,7 @@ public class PlayersField {
      */
 
     public static List<Player> getHowManyInThatPosition(List<Player> team, int position) {
-        Comparator<Player> cmpPlayer = new Comparator<Player>() {
-            public int compare(Player p1, Player p2) {
-                return p1.globalSkill() - p2.globalSkill();
-            }
-        };
+        Comparator<Player> cmpPlayer = Comparator.comparingInt(Player::globalSkill);
         if (position == 0) return team.stream().filter(x -> x instanceof GoalKeeper).sorted(cmpPlayer)
                 .collect(Collectors.toList());
         if (position == 1) return team.stream().filter(x -> x instanceof Defender).sorted(cmpPlayer)
@@ -178,12 +183,13 @@ public class PlayersField {
 
     }
 
+
     public Integer[] getStrategy() {
-        return strategy;
+        return strategy.clone();
     }
 
     public void setStrategy(Integer[] strategy) {
-        this.strategy = strategy;
+        this.strategy = strategy.clone();
     }
 
     public List<Point> playersPosition() {
@@ -200,7 +206,7 @@ public class PlayersField {
         while (true) {
             PlayersFieldView.printPlayerFields(teamI);
             try{
-            Integer playerNum = Integer.parseInt(terminal.nextLine());
+            int playerNum = Integer.parseInt(terminal.nextLine());
 
             if (teamI.stream().anyMatch(x -> x.getPlayer().getNum() == playerNum))
                 return teamI.stream().filter(x -> x.getPlayer().getNum() == playerNum).collect(Collectors.toList()).get(0);
@@ -211,5 +217,9 @@ public class PlayersField {
             }
 
         }
+    }
+
+    public PlayersField clone() {
+        return new PlayersField(this);
     }
 }

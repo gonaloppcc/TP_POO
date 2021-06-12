@@ -53,7 +53,7 @@ public class Midfield extends Player {
     public String toStringSkills() {
         return "M " +
                 getName() +
-                " numero " + getNum() +
+                " num " + getNum() +
                 " globalSkill " + globalSkill() +
                 " historial=" + super.getHistorial();    }
 

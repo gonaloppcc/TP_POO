@@ -23,8 +23,4 @@ public class MatchView {
         System.out.println("Do you want to replace players (s/n)?");
     }
 
-    public void CampoTodo(List<Point> home, List<Point> away, Point ball) {
-        DisplayGraphics toPrint = new DisplayGraphics(home, away, ball);
-        toPrint.campo(home, away, ball);
-    }
 }

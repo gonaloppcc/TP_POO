@@ -180,7 +180,7 @@ public class Team implements Serializable {
      * @return String ready to be printed
      */
     public String toStringSkillsAndHistory() {
-        return name + ":\n\t " +
+        return name + ":\n" +
                 players.stream().map(Player :: toStringSkills).collect(Collectors.joining("\n")) +
                 "\n And global skill of team is: " + globalSkill() +
                 "\n";
