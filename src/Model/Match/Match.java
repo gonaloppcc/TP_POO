@@ -70,7 +70,7 @@ public class Match extends MatchRegister {
                     anyMatch(p -> p.getX() > 120 || p.getX() < 0 || p.getY() > 90 || p.getY() < 0);
             boolean b2 = game.awayPl.getPlayersPlaying().stream().map(PlayerField::getPosition).
                     anyMatch(p -> p.getX() > 120 || p.getX() < 0 || p.getY() > 90 || p.getY() < 0);
-            System.out.println(b || b2);
+          //  System.out.println(b || b2);
         } // Primeira metade do jogo.
 
         game.ball_pos = !swap_side;
@@ -79,12 +79,12 @@ public class Match extends MatchRegister {
 
         for (time = 45; time <= 90; time += 0.25) {
             game.confrontation(); // Segunda metade do jogo.
-            System.out.println(game.getBall_tracker());
+         //   System.out.println(game.getBall_tracker());
             boolean b = game.homePl.getPlayersPlaying().stream().map(PlayerField::getPosition).
                     anyMatch(p -> p.getX() > 120 || p.getX() < 0 || p.getY() > 90 || p.getY() < 0);
             boolean b2 = game.awayPl.getPlayersPlaying().stream().map(PlayerField::getPosition).
                     anyMatch(p -> p.getX() > 120 || p.getX() < 0 || p.getY() > 90 || p.getY() < 0);
-            System.out.println(b || b2);
+           // System.out.println(b || b2);
         }
 
         return game;
