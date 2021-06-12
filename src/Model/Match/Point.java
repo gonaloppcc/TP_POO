@@ -36,7 +36,7 @@ public class Point {
      * @param fraction
      * @param lateral
      * @param pos
-     * @param home To know wich side the player is
+     * @param home To know which side the player is
      */
     public static Point createInitialPosition(float fraction, boolean lateral, Position pos, boolean home) {
         Random rnd = new Random();
