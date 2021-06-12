@@ -1,11 +1,9 @@
 package Model;
 
-
 import java.io.*;
 import java.time.LocalDate;
 import Model.Match.*;
 import View.StatusView;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -16,9 +14,9 @@ import java.util.stream.Collectors;
  */
 
 public class Status implements Serializable {
+
     private String gameName;
     private int playersPerTeam;
-
     private Map<String, Team> teams; //All teams stored by name
     private Map<LocalDate, List<MatchRegister>> games;    // Games stored by date
     private String playerTeam; //Team of the player
@@ -73,6 +71,7 @@ public class Status implements Serializable {
      * Loads a text file
      * @param filePath Path
      */
+
     public void loadText(String filePath) {
         try{
             int invalidLines = 0;
@@ -117,9 +116,7 @@ public class Status implements Serializable {
                 StatusView.numberOfInvalidLines(invalidLines);
 
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+        } catch (Exception ignored) {
         }
 
     }
@@ -142,7 +139,7 @@ public class Status implements Serializable {
         }
         //System.out.println("Equipa: "+team.toString());
         Team toInsert = new Team(team.toString());
-        teams.put(toInsert.getName(), toInsert);
+        this.teams.put(toInsert.getName(), toInsert);
         return line;
     }
 
@@ -154,17 +151,18 @@ public class Status implements Serializable {
         String[] info = match.substring(5).split(",");
         Team home  = null;
         Team away= null;
-        if (teams.containsKey(info[0])) home = new Team(teams.get(info[0]));
-        if (teams.containsKey(info[1])) away = new Team(teams.get(info[1]));
+        if (this.teams.containsKey(info[0])) home = new Team(this.teams.get(info[0]));
+        if (this.teams.containsKey(info[1])) away = new Team(this.teams.get(info[1]));
 
         if (home != null && away != null)
         {
             MatchRegister one;
             try {
                 one = new MatchRegister(info, home, away);
-                if (games.containsKey(one.getDate())) games.get(one.getDate()).add(one);
-                else games.put(one.getDate(), new ArrayList<>(List.of(one)));
-            } catch (InvalidLineExcpetion ignored) {
+                if (this.games.containsKey(one.getDate())) this.games.get(one.getDate()).add(one);
+                else this.games.put(one.getDate(), new ArrayList<>(List.of(one)));
+            } catch (InvalidLineExcpetion invalidLineExcpetion) {
+                return;
             }
         }
     }
@@ -182,15 +180,16 @@ public class Status implements Serializable {
     public void loadPath(String path)  {
         try {
             load(path);
+
         } catch (Exception e) {
                 loadText(path);
             }
         }
 
-        /*------------------------------------------ Getters / Setters and other similiar methods ---------------------------------------------------*/
+        /*------------------------------------------ Getters / Setters and similiar methods ---------------------------------------------------*/
 
     public String getGameName() {
-        return gameName;
+        return this.gameName;
     }
 
     public void setGameName(String gameName) {
@@ -198,7 +197,7 @@ public class Status implements Serializable {
     }
 
     public int getPlayersPerTeam() {
-        return playersPerTeam;
+        return this.playersPerTeam;
     }
 
     public void setPlayersPerTeam(int playersPerTeam) {
@@ -206,20 +205,19 @@ public class Status implements Serializable {
     }
 
     public Map<String, Team> getTeams() {
-        return new HashMap<>(teams);
+        return new HashMap<>(this.teams);
     }
 
     public Team getTeam(String name) {
-        return teams.get(name);
+        return this.teams.get(name);
     }
-
 
     public void setTeams(Map<String, Team> teams) {
         this.teams = teams;
     }
 
     public Map<LocalDate, List<MatchRegister>> getGames() {
-        return games.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return this.games.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     public void setGames(Map <LocalDate, List<MatchRegister>> games) {
@@ -227,7 +225,7 @@ public class Status implements Serializable {
     }
 
     public String getPlayerTeam() {
-        return playerTeam;
+        return this.playerTeam;
     }
 
     public void setPlayerTeam(String playerTeam) {
@@ -237,24 +235,25 @@ public class Status implements Serializable {
     public void addTeam(String name){
         Team byPlayer = new Team();
         byPlayer.setName(name);
-        teams.put(name, byPlayer);
+        this.teams.put(name, byPlayer);
     }
 
     /**
      * Inserts a new game in the current register
      * @param match Match to be added
      */
+
     public void addMatch(Match match){
         LocalDate dateGame = match.getDate();
-        if(games.containsKey(dateGame)){
-            List<MatchRegister> sameDate = games.get(dateGame);
+        if(this.games.containsKey(dateGame)){
+            List<MatchRegister> sameDate = this.games.get(dateGame);
             sameDate.add(match);
         }
 
         else {
             List<MatchRegister> toAdd = new ArrayList<>();
             toAdd.add(match);
-            games.put(dateGame, toAdd);
+            this.games.put(dateGame, toAdd);
         }
     }
 
@@ -263,16 +262,16 @@ public class Status implements Serializable {
     @Override
     public String toString() {
         return "Status{" +
-                "\n\tGameName= " + gameName +
-                "\n\tPlayersPerTeam= " + playersPerTeam +
-                "\n\tTeams= " + teams +
+                "\n\tGameName= " + this.gameName +
+                "\n\tPlayersPerTeam= " + this.playersPerTeam +
+                "\n\tTeams= " + this.teams +
                 "\n\t}";
     }
 
     public Status clone() {
-        Status res = new Status(gameName, playersPerTeam, teams);
-        res.games = new HashMap<>(games);
-        res.playerTeam = playerTeam;
+        Status res = new Status(this.gameName, this.playersPerTeam, this.teams);
+        res.games = new HashMap<>(this.games);
+        res.playerTeam = this.playerTeam;
         return res;
     }
 

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Striker extends Player {
+
     private int precision;
 
     /*------------------------------------------------Constructors----------------------------------------------------*/
@@ -27,7 +28,7 @@ public class Striker extends Player {
     /*------------------------------------------ Getters e Setters ---------------------------------------------------*/
 
     public int getPrecision() {
-        return precision;
+        return this.precision;
     }
 
     public void setPrecision(int precision) {

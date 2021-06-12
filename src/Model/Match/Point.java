@@ -7,6 +7,7 @@ import java.util.Random;
  * This class is used to represent the position of a player in the field.
  */
 public class Point {
+
     private double x;
     private double y;
 

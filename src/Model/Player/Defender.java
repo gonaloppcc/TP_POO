@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Defender extends Player {
+
     private int recorvery;
 
     /*------------------------------------------------Constructors----------------------------------------------------*/
@@ -27,7 +28,7 @@ public class Defender extends Player {
     /*------------------------------------------ Getters e Setters ---------------------------------------------------*/
 
     public int getRecorvery() {
-        return recorvery;
+        return this.recorvery;
     }
 
     public void setRecorvery(int recorvery) {

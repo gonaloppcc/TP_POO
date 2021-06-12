@@ -2,7 +2,6 @@ package Model.DefaultGames;
 
 import Model.Player.*;
 import Model.Team;
-
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -101,10 +100,10 @@ public class Football {
 
     /**
      * This method generates a Player with random attributes
-     *
      * @param pType The player type
      * @return The random player
      */
+
     private Player generatePlayer(Class<?> pType) {
         Random r = new Random();
         Player player = null;
@@ -136,6 +135,7 @@ public class Football {
      * @param max the max value of the random attribute (inclusive)
      * @return The random attribute
      */
+
     private int playerAttribuite(int min, int max) {
         Random r = new Random();
         return r.nextInt(max - min + 1) + min;

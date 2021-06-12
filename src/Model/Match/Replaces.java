@@ -5,6 +5,7 @@ import java.io.Serializable;
 /**
  * Class that stores when a player is replaced by other.
  */
+
 public class Replaces implements Serializable {
     int out;
     int in;

@@ -1,14 +1,12 @@
 package Model.Match;
 
 import Model.Team;
-
 import java.time.LocalDate;
 import java.util.*;
 
 public class Match extends MatchRegister {
 
     private PlayersField homePl;
-
     private PlayersField awayPl;
 
     // Variável que controla quem possui a bola neste momento. True representa homeTeam e False representa awayTeam.
@@ -81,7 +79,7 @@ public class Match extends MatchRegister {
     /*------------------------------------------ Getters e Setters ---------------------------------------------------*/
 
     public double getTime() {
-        return time;
+        return this.time;
     }
 
     public void setTime(double time) {
@@ -89,7 +87,7 @@ public class Match extends MatchRegister {
     }
 
     public PlayersField getHomePl() {
-        return homePl;
+        return this.homePl;
     }
 
     public void setHomePl(PlayersField homePl) {
@@ -101,7 +99,7 @@ public class Match extends MatchRegister {
     }
 
     public PlayersField getAwayPl() {
-        return awayPl;
+        return this.awayPl;
     }
 
     public void setAwayPl(PlayersField awayPl) {
@@ -113,7 +111,7 @@ public class Match extends MatchRegister {
     }
 
     public boolean isBall_pos() {
-        return ball_pos;
+        return this.ball_pos;
     }
 
     public void setBall_pos(boolean ball_pos) {
@@ -121,7 +119,7 @@ public class Match extends MatchRegister {
     }
 
     public Point getBall_tracker() {
-        return ball_tracker;
+        return this.ball_tracker;
     }
 
     public void setBall_tracker(Point ball_tracker) {
@@ -136,13 +134,14 @@ public class Match extends MatchRegister {
      * Dependendo desses valores, utiliza a função prob para calcular quem tem a maior probabilidade ganhar o confronto.
      * E aplica essa probabilidade, dando uma "vantagem"  (ou seja, um valor boolean que decide quem ganhou o confronto.) à função aftermath.
      */
+
     public void confrontation() {
 
         Random rand = new Random();
 
         // Obtém todos os jogadores perto da bola, por equipa.
-        List<PlayerField> homeSquad = homePl.getPlayersCloseToTheBall(this.ball_tracker);
-        List<PlayerField> awaySquad = awayPl.getPlayersCloseToTheBall(this.ball_tracker);
+        List<PlayerField> homeSquad = this.homePl.getPlayersCloseToTheBall(this.ball_tracker);
+        List<PlayerField> awaySquad = this.awayPl.getPlayersCloseToTheBall(this.ball_tracker);
 
         // Cálculo de probabilidade(utiliza o Random)
 
@@ -302,20 +301,21 @@ public class Match extends MatchRegister {
      *
      * @param refreshTime
      */
+
     public void run(double refreshTime) {
         //Simulação com refresh's
         confrontation();
-        time += refreshTime;
+        this.time += refreshTime;
     }
 
     public List<Point> getPlayersPositions(boolean home) {
-        if (home) return homePl.playersPosition();
-        else return awayPl.playersPosition();
+        if (home) return this.homePl.playersPosition();
+        else return this.awayPl.playersPosition();
     }
 
     public void setStrategy(Integer[] strategy, boolean home) {
-        if (home) homePl.setStrategy(strategy);
-        else awayPl.setStrategy(strategy);
+        if (home) this.homePl.setStrategy(strategy);
+        else this.awayPl.setStrategy(strategy);
     }
 
     /**

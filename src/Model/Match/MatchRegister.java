@@ -2,7 +2,6 @@ package Model.Match;
 
 import Model.InvalidLineExcpetion;
 import Model.Team;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import java.util.List;
  * This has the equivalent information of a text file.
  */
 public class MatchRegister implements Serializable {
+
     private List<Replaces> homeRepl;
     private List<Replaces> awayRepl;
     private LocalDate date;
@@ -60,7 +60,7 @@ public class MatchRegister implements Serializable {
                     if (isItHome) homeRepl.add(one);
                     else awayRepl.add(one);
                 }
-                if (isItHome && !line[i].contains("->") && homeRepl.size() > 0) isItHome = !isItHome;
+                if (isItHome && !line[i].contains("->") && homeRepl.size() > 0) isItHome = false;
             }
         } catch (Exception e) {
             throw new InvalidLineExcpetion();

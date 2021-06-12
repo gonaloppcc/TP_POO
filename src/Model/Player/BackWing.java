@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class BackWing extends Player {
+
     private int crossing;
 
     /*------------------------------------------------Constructors----------------------------------------------------*/
@@ -25,7 +26,7 @@ public class BackWing extends Player {
     /*------------------------------------------ Getters e Setters ---------------------------------------------------*/
 
     public int getCrossing() {
-        return crossing;
+        return this.crossing;
     }
 
     public void setCrossing(int crossing) {
@@ -46,7 +47,7 @@ public class BackWing extends Player {
                 " head " + super.getHeadGame() +
                 " fin " + super.getFinish() +
                 " pass " + super.getPassing() +
-                " cross " + crossing;
+                " cross " + this.crossing;
     }
 
     @Override
