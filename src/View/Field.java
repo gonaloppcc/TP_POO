@@ -17,7 +17,7 @@ public class Field extends JPanel implements ActionListener {
 
     private final int B_WIDTH = 1200;
     private final int B_HEIGHT = 1400;
-    private final int DELAY = 250;
+    private final int DELAY = 500;
     Match match;
     private Timer timer;
 
@@ -77,11 +77,12 @@ public class Field extends JPanel implements ActionListener {
 
             //gets rid of the copy
             g2d.dispose();
-            //g.drawOval((int) (5*120) + 300, (int) (4.5*90) +200, 20, 20);
-            //Imprime os de casa
+
+            // Time of the game
+            g.drawString(String.valueOf(match.getTime()), 300, 200);
+
             g.setColor(Color.BLACK);
             g.fillOval((5 * (int) match.getBall_tracker().getX()) + 300, (int) (4.5 * match.getBall_tracker().getY()) + 200, 12, 12);
-            System.out.println(match.getBall_tracker());
 
             g.setColor(Color.RED);
             for (Point x : match.getHomePl().playersPosition()) {
@@ -121,7 +122,6 @@ public class Field extends JPanel implements ActionListener {
         if (match.getTime() > 90) {
             //System.exit(0);
         } else {
-            System.out.println(match.getTime());
             match.run(1);
         }
         repaint();

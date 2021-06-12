@@ -18,7 +18,7 @@ public class PlayersField {
     private List<PlayerField> playersBench;
     private Integer[] strategy;
     private Point dimensionField;
-    private static final double radius = 50;
+    private static final double radius = 30;
 
 //static class PlayerComparator (Player p1, Player p2){
 //        return p1.globalS
@@ -185,7 +185,8 @@ public class PlayersField {
 
     // Function that moves players in the field
     public void movePlayers(Point pos_ball, boolean homeHasBall) {
-        this.playersPlaying.stream().filter(p -> p.getMainPosition() != Position.GOALKEEPER).forEach(playerField -> playerField.movePlayer(pos_ball, homeHasBall));
+        this.playersPlaying.stream().filter(p -> /*p.getMainPosition() != Position.GOALKEEPER &&*/ p.distance(pos_ball) <= 50).
+                forEach(playerField -> playerField.movePlayer(pos_ball, homeHasBall));
 
     }
 

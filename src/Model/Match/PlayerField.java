@@ -203,11 +203,11 @@ class PlayerField {
     }
 
     private void moveBack(Point pos_ball, double distance) {
-        this.position.addVector(-distance, distance / (getPosition().getY() - pos_ball.getY()));
+        this.position.addVector(-distance / (getPosition().getX() - pos_ball.getX()), distance / (getPosition().getY() - pos_ball.getY()));
     }
 
     private void moveForward(Point pos_ball, double distance) {
-        this.position.addVector(distance, distance / (pos_ball.getY() - getPosition().getY()));
+        this.position.addVector(distance / (getPosition().getX() - pos_ball.getX()), distance / (pos_ball.getY() - getPosition().getY()));
 
     }
 

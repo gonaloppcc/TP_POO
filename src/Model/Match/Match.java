@@ -209,6 +209,8 @@ public class Match extends MatchRegister {
 
         Random rand = new Random();
         this.ball_pos = vantage;
+        // Home: + [0, 20] x, [-5, 5] y
+        // Home: - [0, 20] x, [-5, 5] y
         if (vantage) this.ball_tracker.addVector( rand.nextDouble() * 20 , ((rand.nextDouble() * 2) - 1) * 5);
         else this.ball_tracker.addVector( rand.nextDouble() * -20 , ((rand.nextDouble() * 2) - 1) * 5);
 
