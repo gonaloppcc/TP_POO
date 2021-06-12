@@ -1,9 +1,4 @@
 package Model.Match;
-//Coisas para fazer, importante
-/*
-Nos getter e setter meter clones, se não é apenas o endereço que vai e pode dar problemas
-Meter os enum a funcionar para ele poder usar aqui os enum, caso contrário é muito chato
- */
 
 import Model.Player.*;
 import Model.Team;
@@ -178,7 +173,7 @@ public class PlayersField {
 
     // Function that moves players in the field
     public void movePlayers(Point pos_ball, boolean homeHasBall, boolean homeTeam) {
-        this.playersPlaying.stream().filter(p -> p.getMainPosition() != Position.GOALKEEPER && p.distance(pos_ball) <= 20).
+        this.playersPlaying.stream().filter(p -> p.getMainPosition() != Position.GOALKEEPER && p.distance(pos_ball) <= 30).
                 forEach(playerField -> playerField.movePlayer(pos_ball, homeHasBall, homeTeam));
 
     }

@@ -200,25 +200,35 @@ public class PlayerField {
      */
     public void movePlayer(Point pos_ball, boolean hasBall, boolean homeTeam) {
         double distance = (this.energy.getEnergy() / 100) * PlayerField.distance;
-        if (hasBall && homeTeam) this.moveBack(pos_ball, distance);
-        else if (hasBall) this.moveForward(pos_ball, distance);
-        else if (homeTeam && pos_ball.getY() < this.position.getY()) this.moveForward(pos_ball, distance);
-        else if (!homeTeam && pos_ball.getY() > this.position.getY()) this.moveBack(pos_ball, distance);
+        if (homeTeam) {
+            if (hasBall) moveForward(pos_ball, distance);
+            else moveBack(pos_ball, distance);
+        } else {
+            if (hasBall) moveForward(pos_ball, distance);
+            else moveBack(pos_ball, distance);
+        }
+        /*
+        if (hasBall && homeTeam) this.moveForward(pos_ball, distance);
+        else if (hasBall) this.moveBack(pos_ball, distance);
+        else if (homeTeam && pos_ball.getX() < this.position.getX()) this.moveBack(pos_ball, distance);
+        else if (!homeTeam && pos_ball.getX() > this.position.getX()) this.moveForward(pos_ball, distance);
         else ;
+
+         */
         this.energy.decrease();
     }
 
     private void moveBack(Point pos_ball, double distance) {
         Random r = new Random();
         if (this.position.getY() > 45) this.position.addVector(0, -4);
-        this.position.addVector(distance, ((r.nextDouble() * 2) - 1) * 2);
+        this.position.addVector(-distance, ((r.nextDouble() * 2) - 1) * 1);
         ;//addVector(-distance / (getPosition().getX() - pos_ball.getX()), distance / (getPosition().getY() - pos_ball.getY()));
     }
 
     private void moveForward(Point pos_ball, double distance) {
         Random r = new Random();
         if (this.position.getY() > 45) this.position.addVector(0, -4);
-        this.position.addVector(-distance, ((r.nextDouble() * 2) - 1) * 2);
+        this.position.addVector(distance, ((r.nextDouble() * 2) - 1) * 1);
         //this.position.addVector(distance / (getPosition().getX() - pos_ball.getX()), distance / (pos_ball.getY() - getPosition().getY()));
 
     }

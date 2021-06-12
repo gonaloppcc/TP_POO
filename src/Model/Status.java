@@ -66,7 +66,6 @@ public class Status implements Serializable {
     /**
      * Loads a text file
      * @param filePath Path
-     * @throws InvalidLineExcpetion When there is no file
      */
     public void loadText(String filePath) {
         try{

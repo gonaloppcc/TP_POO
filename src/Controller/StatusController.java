@@ -79,7 +79,7 @@ public class StatusController {
             //   System.out.flush();
             StatusView.chooseTeam(model.getTeams().keySet(), "Please choose your favourite team (write name):");
             String teamChoosen = terminal.nextLine();
-            if (teamChoosen.equals("meh")) {
+            if (teamChoosen.equals("default")) {
                 List<String> valuesList = new ArrayList<>(model.getTeams().keySet());
                 model.setPlayerTeam(valuesList.get(0));
                 return;

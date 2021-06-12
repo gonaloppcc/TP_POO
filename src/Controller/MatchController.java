@@ -3,7 +3,6 @@ package Controller;
 import Model.Match.Match;
 import Model.Match.PlayerField;
 import Model.Match.PlayersField;
-import Model.Player.Player;
 import Model.Team;
 import View.MatchView;
 import View.StatusView;
@@ -37,7 +36,10 @@ public class MatchController {
             this.game = new Match(home, away, new Integer[]{1, 3, 3, 3, 1}, getStrategy());
             SwingTimerEx.displayField(game);
             replaceQuestion();
+
             game.setTime(46);
+            game.inicialPositions();
+
             SwingTimerEx.displayField(game);
         } else {
             this.game = Match.game_play(home, away, new Integer[]{1, 3, 3, 3, 1}, getStrategy());
