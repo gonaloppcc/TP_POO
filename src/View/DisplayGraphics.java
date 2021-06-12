@@ -5,12 +5,15 @@ import Model.Match.Point;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
-public class DisplayGraphics extends Canvas {
+public class DisplayGraphics extends Canvas implements ActionListener {
     List<Point> home;
     List<Point> away;
     Point ball;
+
     public DisplayGraphics(List<Point> homeI, List<Point> awayI, Point ballI) {
         home = homeI;
         away = awayI;
@@ -50,6 +53,9 @@ public class DisplayGraphics extends Canvas {
         //g.drawOval((int) (5*120) + 300, (int) (4.5*90) +200, 20, 20);
         //Imprime os de casa
 
+        g.setColor(Color.BLACK);
+
+
         for(Point x: home){
             g.fillOval((5*(int)x.getX()) + 300, (int) (4.5* x.getY()) + 200, 10, 10);
         }
@@ -71,4 +77,11 @@ public class DisplayGraphics extends Canvas {
 
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        repaint();
+        EventQueue.invokeLater(() -> {
+
+        });
+    }
 }

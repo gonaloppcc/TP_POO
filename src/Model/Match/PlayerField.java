@@ -6,10 +6,11 @@ import com.sun.nio.sctp.PeerAddressChangeNotification;
 import java.util.List;
 
 class PlayerField {
-    private static final double distance = 5;
+    private static final double distance = 2;
     private Player player;
     private Point position; // current position on the field
     private Position mainPosition; // main position
+    private Point beginPosition;
     private boolean lateral;
     private Energy energy; // range [0, 100]
     private int yellowCards;//0 não tem nenhum, 1 tem amarelo, 2 tem vermelho
@@ -20,7 +21,7 @@ class PlayerField {
     /*------------------------------------------------Constructors----------------------------------------------------*/
 
     public PlayerField(Player playerToSet, boolean home) {
-        this.player = playerToSet;
+        player = playerToSet;
         mainPosition = bestPosition(playerToSet);
         lateral = mainPosition.equals(Position.LATERAL);
         energy = new Energy(100);
@@ -31,16 +32,19 @@ class PlayerField {
             if (home) position = new Point(1, 45);
             else position = new Point(119, 45);
         }
+
+        beginPosition = position.clone();
     }
 
     public PlayerField(Player playerToSet, float where, boolean home) {
-        this.player = playerToSet;
+        player = playerToSet;
         mainPosition = bestPosition(playerToSet);
         lateral = mainPosition.equals(Position.LATERAL);
         energy = new Energy(100);
         yellowCards = 0;
         redCard = false;
         position = Point.createInitialPosition(where, lateral, mainPosition, home);
+        beginPosition = position.clone();
     }
 
     /**
@@ -53,20 +57,21 @@ class PlayerField {
      */
     public PlayerField(Player playerToSet, float where, Integer positionGiven, boolean home) {
         Position notNatural = numberToPosition(positionGiven);
-        this.player = playerToSet;
+        player = playerToSet;
         mainPosition = notNatural;
         lateral = notNatural.equals(Position.LATERAL);
         energy = new Energy(100);
         yellowCards = 0;
         redCard = false;
         position = Point.createInitialPosition(where, lateral, notNatural, home);
-
+        beginPosition = position.clone();
     }
 
-    public PlayerField(Player player, Point position, Position mainPosition, boolean lateral, Energy energy, int yellowCards, boolean redCards) {
+    public PlayerField(Player player, Point position, Position mainPosition, Point beginPosition, boolean lateral, Energy energy, int yellowCards, boolean redCards) {
         this.player = player.clone();
         this.position = position;
         this.mainPosition = mainPosition;
+        this.beginPosition = beginPosition;
         this.lateral = lateral;
         this.energy = energy.clone();
         this.yellowCards = yellowCards;
@@ -74,10 +79,22 @@ class PlayerField {
     }
 
     public PlayerField(PlayerField playerField) {
-        this(playerField.getPlayer(), playerField.getPosition(), playerField.getMainPosition(), playerField.isLateral(), playerField.getEnergy(), playerField.getYellowCards(), playerField.isRedCard());
+        this(playerField.getPlayer(), playerField.getPosition(), playerField.getMainPosition(), playerField.getBeginPosition(), playerField.isLateral(), playerField.getEnergy(), playerField.getYellowCards(), playerField.isRedCard());
     }
 
     /*------------------------------------------ Getters e Setters ---------------------------------------------------*/
+
+    private static Position bestPosition(Player x) {
+        if (x instanceof GoalKeeper) return Position.GOALKEEPER;
+        if (x instanceof Defender) return Position.DEFENDER;
+        if (x instanceof Midfield) return Position.MIDFIELD;
+        if (x instanceof Striker) return Position.STRIKER;
+        return Position.LATERAL;
+    }
+
+    public static double getDistance() {
+        return distance;
+    }
 
     public Player getPlayer() {
         return player;
@@ -88,7 +105,7 @@ class PlayerField {
     }
 
     public Point getPosition() {
-        return position;
+        return position; //.clone();
     }
 
     public void setPosition(Point position) {
@@ -135,7 +152,14 @@ class PlayerField {
         this.redCard = redCard;
     }
 
+    public Point getBeginPosition() {
+        return beginPosition;
+    }
     /* ------------------------------------- Other methods ---------------------------------------------------------- */
+
+    public void setBeginPosition(Point beginPosition) {
+        this.beginPosition = beginPosition;
+    }
 
     private Position numberToPosition(Integer x) {
         switch (x) {
@@ -152,14 +176,6 @@ class PlayerField {
         }
     }
 
-    private static Position bestPosition(Player x) { // <- Não devia ser static?
-        if (x instanceof GoalKeeper) return Position.GOALKEEPER;
-        if (x instanceof Defender) return Position.DEFENDER;
-        if (x instanceof Midfield) return Position.MIDFIELD;
-        if (x instanceof Striker) return Position.STRIKER;
-        return Position.LATERAL;
-    }
-    
     public double distance(Point point) {
         return this.position.distance(point);
     }
@@ -175,6 +191,7 @@ class PlayerField {
 
     /**
      * Moves the player accordingly with the position of the ball.
+     *
      * @param pos_ball
      * @param hasBall
      */
@@ -186,52 +203,14 @@ class PlayerField {
     }
 
     private void moveBack(Point pos_ball, double distance) {
-        this.position.addVector((getPosition().getX() - pos_ball.getX()) / distance, (getPosition().getY() - pos_ball.getY()) / distance);
-        /*
-        // y = m*x + b
-        double m = getSlope(pos_ball);
-        double b = getB(m);
-
-        double x = form(m, b, distance, false);
-        double y = m * x + b;
-
-        this.position.addVector(x, y);
-
-         */
-    }
-
-    private double form(double m, double b, double distance, boolean forward) {
-        double sqrt = Math.min(Math.sqrt(-Math.pow(b, 2) + distance * (Math.pow(m, 2)) + distance), 0);
-        if (forward) return (sqrt - b * m) / (Math.pow(m, 2) + 1);
-        return (-sqrt - b * m) / (Math.pow(m, 2) + 1);
+        this.position.addVector(-distance, distance / (getPosition().getY() - pos_ball.getY()));
     }
 
     private void moveForward(Point pos_ball, double distance) {
-        this.position.addVector(pos_ball.getX() - getPosition().getX(), pos_ball.getY() - getPosition().getY());
+        this.position.addVector(distance, distance / (pos_ball.getY() - getPosition().getY()));
 
-        // y = m*x + b
-        /*
-        double m = getSlope(pos_ball);
-        double b = getB(m);
-
-        double x = -form(m, b, distance, true);
-        double y = m * x + b;
-
-        this.position.addVector(x, y);
-
-         */
     }
 
-    private double getB(double m) {
-        return this.position.getY() - (m * this.position.getX());
-    }
-
-    private double getSlope(Point pos_ball) {
-        double mY = this.position.getY() - pos_ball.getY();
-        double mX = this.position.getX() - pos_ball.getX();
-        if (mY == 0 && mX == 0) return 0;
-        return (mY/mX);
-    }
 
     @Override
     public String toString() {
@@ -241,14 +220,28 @@ class PlayerField {
                 ", position=" + position +
                 '}';
     }
-    
+
     public PlayerField clone() {
         return new PlayerField(this);
     }
 
-    public boolean isGoalKeeperInField() {return this.mainPosition.equals(Position.GOALKEEPER); }
-    public boolean isLateralInField() {return this.mainPosition.equals(Position.LATERAL); }
-    public boolean isDefenderInField() {return this.mainPosition.equals(Position.DEFENDER); }
-    public boolean isMiddfieldInField() {return this.mainPosition.equals(Position.MIDFIELD); }
-    public boolean isStrikerInField() {return this.mainPosition.equals(Position.STRIKER); }
+    public boolean isGoalKeeperInField() {
+        return this.mainPosition.equals(Position.GOALKEEPER);
+    }
+
+    public boolean isLateralInField() {
+        return this.mainPosition.equals(Position.LATERAL);
+    }
+
+    public boolean isDefenderInField() {
+        return this.mainPosition.equals(Position.DEFENDER);
+    }
+
+    public boolean isMiddfieldInField() {
+        return this.mainPosition.equals(Position.MIDFIELD);
+    }
+
+    public boolean isStrikerInField() {
+        return this.mainPosition.equals(Position.STRIKER);
+    }
 }
