@@ -8,6 +8,7 @@ import java.util.List;
 
 
 abstract public class Player implements Serializable {
+
     private String name;
     private LocalDate birthDate;
 
@@ -63,7 +64,7 @@ abstract public class Player implements Serializable {
     /*------------------------------------------ Getters e Setters ---------------------------------------------------*/
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -71,7 +72,7 @@ abstract public class Player implements Serializable {
     }
 
     public LocalDate getBirthDate() {
-        return birthDate;
+        return this.birthDate;
     }
 
     public void setBirthDate(LocalDate birthDate) {
@@ -79,7 +80,7 @@ abstract public class Player implements Serializable {
     }
 
     public int getResistance() {
-        return resistance;
+        return this.resistance;
     }
 
     public void setResistance(int resistance) {
@@ -87,7 +88,7 @@ abstract public class Player implements Serializable {
     }
 
     public int getDexterity() {
-        return dexterity;
+        return this.dexterity;
     }
 
     public void setDexterity(int dexterity) {
@@ -95,7 +96,7 @@ abstract public class Player implements Serializable {
     }
 
     public int getImpulsion() {
-        return impulsion;
+        return this.impulsion;
     }
 
     public void setImpulsion(int impulsion) {
@@ -103,7 +104,7 @@ abstract public class Player implements Serializable {
     }
 
     public int getHeadGame() {
-        return headGame;
+        return this.headGame;
     }
 
     public void setHeadGame(int headGame) {
@@ -111,7 +112,7 @@ abstract public class Player implements Serializable {
     }
 
     public int getFinish() {
-        return finish;
+        return this.finish;
     }
 
     public void setFinish(int finish) {
@@ -119,7 +120,7 @@ abstract public class Player implements Serializable {
     }
 
     public int getPassing() {
-        return passing;
+        return this.passing;
     }
 
     public void setPassing(int passing) {
@@ -127,7 +128,7 @@ abstract public class Player implements Serializable {
     }
 
     public List<String> getHistorial() {
-        return new ArrayList<>(historial);
+        return new ArrayList<>(this.historial);
     }
 
     public void setHistorial(List<String> historial) {
@@ -135,7 +136,7 @@ abstract public class Player implements Serializable {
     }
 
     public int getNum() {
-        return num;
+        return this.num;
     }
 
     public void setNum(int num) {
@@ -143,7 +144,7 @@ abstract public class Player implements Serializable {
     }
 
     public int getVelocity() {
-        return velocity;
+        return this.velocity;
     }
 
     public void setVelocity(int velocity) {
@@ -172,7 +173,7 @@ abstract public class Player implements Serializable {
      * @return the of age of the player
      */
     public int getAge() {
-        return Period.between(birthDate, LocalDate.now()).getYears();
+        return Period.between(this.birthDate, LocalDate.now()).getYears();
     }
 
     /**

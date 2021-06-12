@@ -1,6 +1,5 @@
 package Model.Player;
 
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -25,13 +24,13 @@ public class GoalKeeper extends Player {
 
     public GoalKeeper(String[] data) {
         super(data);
-        elasticity = Integer.parseInt(data[9]);
+        this.elasticity = Integer.parseInt(data[9]);
     }
 
     /*------------------------------------------ Getters e Setters ---------------------------------------------------*/
 
     public int getElasticity() {
-        return elasticity;
+        return this.elasticity;
     }
 
     public void setElasticity(int elasticity) {

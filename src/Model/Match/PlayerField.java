@@ -14,7 +14,7 @@ public class PlayerField {
     private Player player;
     private Point position; // current position on the field
     private Position mainPosition; // main position
-    private Point beginPosition;
+    private Point beginPosition; // position in which the player begins
     private boolean lateral;
     private Energy energy; // range [0, 100]
     private int yellowCards;//0 não tem nenhum, 1 tem amarelo, 2 tem vermelho
@@ -100,7 +100,7 @@ public class PlayerField {
     }
 
     public Player getPlayer() {
-        return player;
+        return this.player;
     }
 
     public void setPlayer(Player player) {
@@ -108,7 +108,7 @@ public class PlayerField {
     }
 
     public Point getPosition() {
-        return position; //.clone();
+        return this.position; //.clone();
     }
 
     public void setPosition(Point position) {
@@ -116,7 +116,7 @@ public class PlayerField {
     }
 
     public Position getMainPosition() {
-        return mainPosition;
+        return this.mainPosition;
     }
 
     public void setMainPosition(Position mainPosition) {
@@ -124,7 +124,7 @@ public class PlayerField {
     }
 
     public boolean isLateral() {
-        return lateral;
+        return this.lateral;
     }
 
     public void setLateral(boolean lateral) {
@@ -132,7 +132,7 @@ public class PlayerField {
     }
 
     public Energy getEnergy() {
-        return energy;
+        return this.energy;
     }
 
     public void setEnergy(Energy energy) {
@@ -140,7 +140,7 @@ public class PlayerField {
     }
 
     public int getYellowCards() {
-        return yellowCards;
+        return this.yellowCards;
     }
 
     public void setYellowCards(int yellowCards) {
@@ -148,7 +148,7 @@ public class PlayerField {
     }
 
     public boolean isRedCard() {
-        return redCard;
+        return this.redCard;
     }
 
     public void setRedCard(boolean redCard) {
@@ -156,7 +156,7 @@ public class PlayerField {
     }
 
     public Point getBeginPosition() {
-        return beginPosition;
+        return this.beginPosition;
     }
     /* ------------------------------------- Other methods ---------------------------------------------------------- */
 
@@ -184,7 +184,7 @@ public class PlayerField {
     }
 
     public double skill() { // Skill formula
-        return player.globalSkill() * (energy.getEnergy() / 100) * (bestPosition(player).equals(mainPosition) ? 1 : 0.5); // Falta ter em atenção o facto do jogador não estar na sua posição
+        return this.player.globalSkill() * (this.energy.getEnergy() / 100) * (bestPosition(this.player).equals(this.mainPosition) ? 1 : 0.5); // Falta ter em atenção o facto do jogador não estar na sua posição
     }
 
     // Combines the x and y arguments with the position of the player
@@ -230,9 +230,7 @@ public class PlayerField {
         if (this.position.getY() > 45) this.position.addVector(0, -4);
         this.position.addVector(distance, ((r.nextDouble() * 2) - 1) * 1);
         //this.position.addVector(distance / (getPosition().getX() - pos_ball.getX()), distance / (pos_ball.getY() - getPosition().getY()));
-
     }
-
 
     @Override
     public String toString() {

@@ -1,8 +1,10 @@
 package Model.Match;
 
 public class Energy {
+
     private double energy; // Has to be in this range [0, 100]
     private double decreaseRate; // Normal value: 1
+
     // decreaseRate is the amount of energy that drops per minute
     // decreaseRate is linear
 
@@ -37,11 +39,11 @@ public class Energy {
     }
 
     public Energy clone() {
-        return new Energy(energy, decreaseRate);
+        return new Energy(this.energy, this.decreaseRate);
     }
 
     public void decrease() {
-        double e = energy - decreaseRate;
+        double e = this.energy - this.decreaseRate;
         if (e < 10) e = 10;
         this.energy = e;
     }

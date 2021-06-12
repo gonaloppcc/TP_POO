@@ -61,8 +61,8 @@ public class PlayersField {
     public PlayersField(Team bot, Integer[] strategy, boolean home) {
 
         this.strategy = strategy;
-        playersPlaying = new ArrayList<>();
-        playersBench = new ArrayList<>();
+        this.playersPlaying = new ArrayList<>();
+        this.playersBench = new ArrayList<>();
         List<Player> onField = new ArrayList<>();
         List<Player> allPlayers = bot.getPlayers();
         //onField.addAll(bot.getPlayers().stream().filter(x -> x instanceof GoalKeeper).sorted(cmpPlayer).limit(1).collect(Collectors.toList()));
@@ -86,10 +86,10 @@ public class PlayersField {
                 }
             }
         //Jogadores que restam
-        for (Player bench : allPlayers) playersBench.add(new PlayerField(bench, home));
-        playersPlaying.addAll(initialPosition(strategy, onField, home));
+        for (Player bench : allPlayers) this.playersBench.add(new PlayerField(bench, home));
+        this.playersPlaying.addAll(initialPosition(strategy, onField, home));
         System.out.println("Uma equipa: ");
-        for (PlayerField x : playersPlaying) System.out.println("Um: " + x);
+        for (PlayerField x : this.playersPlaying) System.out.println("Um: " + x);
     }
 
     /**
@@ -141,7 +141,7 @@ public class PlayersField {
     }
 
     public List<PlayerField> getBenched() {
-        return playersBench;
+        return this.playersBench;
     }
 
     public void setBenched(List<PlayerField> benched) {
@@ -149,7 +149,7 @@ public class PlayersField {
     }
 
     public List<PlayerField> getPlayersPlaying() {
-        return playersPlaying;
+        return this.playersPlaying;
     }
 
     public void setPlayersPlaying(List<PlayerField> playersPlaying) {
@@ -157,21 +157,20 @@ public class PlayersField {
     }
 
     public List<PlayerField> getPlayersBench() {
-        return playersBench;
+        return this.playersBench;
     }
 
     public void setPlayersBench(List<PlayerField> playersBench) {
         this.playersBench = playersBench;
     }
 
-
     public void replace(PlayerField in, PlayerField out) {
-        if (playersBench.contains(in) && playersPlaying.contains(out)) {
+        if (this.playersBench.contains(in) && this.playersPlaying.contains(out)) {
             PlayerField.copy(in, out);
-            playersPlaying.remove(out);
-            playersPlaying.add(in);
-            playersBench.add(out);
-            playersBench.remove(in);
+            this.playersPlaying.remove(out);
+            this.playersPlaying.add(in);
+            this.playersBench.add(out);
+            this.playersBench.remove(in);
         }
 
     }
@@ -193,8 +192,8 @@ public class PlayersField {
     }
 
     public List<Point> playersPosition() {
-        List<Point> p = new ArrayList<>(playersPlaying.size());
-        for (PlayerField pl : playersPlaying) p.add(pl.getPosition());
+        List<Point> p = new ArrayList<>(this.playersPlaying.size());
+        for (PlayerField pl : this.playersPlaying) p.add(pl.getPosition());
         return p;
         //return playersPlaying.stream().map(PlayerField::getPosition).collect(Collectors.toList());
     }

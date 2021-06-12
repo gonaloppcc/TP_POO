@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class Midfield extends Player {
+
     private int vision;
 
     /*------------------------------------------------Constructors----------------------------------------------------*/
@@ -25,7 +26,7 @@ public class Midfield extends Player {
     /*------------------------------------------ Getters e Setters ---------------------------------------------------*/
 
     public int getVision() {
-        return vision;
+        return this.vision;
     }
 
     public void setVision(int vision) {
