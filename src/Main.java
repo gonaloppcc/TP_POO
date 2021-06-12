@@ -46,10 +46,15 @@ public class Main {
             fromFile.loadPath(maybePath); //Carrega o status
 
             StatusController interacts = new StatusController(fromFile, new StatusView());
-            //A partir daqui é o controller do status que faz coisas
             interacts.interactions();
+            //A partir daqui é o controller do status que faz coisas
         }
-        else System.out.print("Não tenho ficheiro"); //Gerar um status aleatório?
+        else {
+            Status empty = new Status();
+            StatusController interacts = new StatusController(empty, new StatusView());
+            interacts.interactions();
+
+        }
     }
 
     private static void createGoalKeeper() {

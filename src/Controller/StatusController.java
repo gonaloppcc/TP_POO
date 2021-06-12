@@ -31,7 +31,7 @@ public class StatusController {
     }
 
     public void interactions() {
-        chooseTeam();
+        if (model.getTeams().size() > 0) chooseTeam();
         boolean exit = false;
         while (!exit) {
             view.printOptions();
@@ -71,6 +71,10 @@ public class StatusController {
 
     private void chooseTeam() {
         boolean validTeam = false;
+        if (model.getTeams().size() < 1) {
+            view.noValidTeam();
+            return;
+        }
         while (!validTeam) {
             //   System.out.print("\033[H\033[2J");
             //   System.out.flush();
