@@ -155,6 +155,10 @@ abstract public class Player implements Serializable {
     @Override
     public abstract String toString();
 
+    /**
+     * An alternative "toString" method that prints less information (Name, number, skill and historial).
+     * @return
+     */
     public abstract String toStringSkills();
 
     abstract public Player clone();

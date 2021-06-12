@@ -17,7 +17,6 @@ public class Main {
         String maybePath = maybeFilePath.readStatus();
         //Status loaded with a file
         if (maybePath != null) {
-            System.out.println("Tenho ficheiro");
             Status fromFile = new Status();
             fromFile.loadPath(maybePath);
             //Beggining of interaction with user

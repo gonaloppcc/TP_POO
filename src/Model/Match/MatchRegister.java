@@ -63,7 +63,7 @@ public class MatchRegister implements Serializable {
                     if (isItHome) homeRepl.add(one);
                     else awayRepl.add(one);
                 }
-                if (isItHome && !line[i].contains("->") && homeRepl.size() > 0) isItHome = !isItHome;
+                if (isItHome && !line[i].contains("->") && homeRepl.size() > 0) isItHome = false;
             }
         }
         catch(Exception e){
