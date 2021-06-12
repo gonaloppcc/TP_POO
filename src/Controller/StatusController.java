@@ -131,13 +131,14 @@ public class StatusController {
      * It asks some questions before calling the Match.
      */
     private void playOption() {
-        //If the opposite team is choosen or not.
-        view.randomOrChoose();
-        Team opposite;
         if (model.getTeams().size() < 2) {
             StatusView.noValidTeam();
             return;
         }
+        //If the opposite team is choosen or not.
+        view.randomOrChoose();
+        Team opposite;
+
         while (true) {
             String option = terminal.nextLine();
             if (option.trim().toLowerCase(Locale.ROOT).equals("s")) {

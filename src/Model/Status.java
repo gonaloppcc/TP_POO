@@ -66,38 +66,51 @@ public class Status implements Serializable {
     /**
      * Loads a text file
      * @param filePath Path
-     * @throws NotValidException When there is no file
+     * @throws InvalidLineExcpetion When there is no file
      */
-    public void loadText(String filePath) throws NotValidException {
+    public void loadText(String filePath) {
         try{
+            int invalidLines = 0;
             File fd = new File(filePath);
             Scanner file = new Scanner(fd);
             String line ;
             line = file.nextLine();
 
             while (file.hasNext() ) {
-                //If the line is related to a game
-                if (line.startsWith("Jogo:")) {
-                    addMatch(line);
-                    line = file.nextLine();
-                }
-                else {
-                    //If the line is related to a team
-                    if (line.startsWith("Equipa:")) {
-                        line = addTeam(line, file);
-
-                    } else {
-                        //Invalid line, the function ignores
+                try {
+                    //If the line is related to a game
+                    if (line.startsWith("Jogo:")) {
+                        addMatch(line);
                         line = file.nextLine();
+                    } else {
+                        //If the line is related to a team
+                        if (line.startsWith("Equipa:")) {
+                            line = addTeam(line, file);
+
+                        } else {
+                            //Invalid line, the function ignores
+                            line = file.nextLine();
+                            throw new InvalidLineExcpetion();
+                        }
                     }
+                } catch (InvalidLineExcpetion e) {
+                    invalidLines++;
                 }
             }
             file.close();
-            if (line.startsWith("Jogo:")) {
-                  addMatch(line);
-            }
-            else if (line.startsWith("Equipa:")) {
-                addTeam(line, file);
+            if (invalidLines != 0) StatusView.numberOfInvalidLines(invalidLines);
+
+            try {
+                if (line.startsWith("Jogo:")) {
+                    addMatch(line);
+                } else if (line.startsWith("Equipa:")) {
+                    addTeam(line, file);
+                }
+
+            } catch (InvalidLineExcpetion e) {
+                invalidLines++;
+                StatusView.numberOfInvalidLines(invalidLines);
+
             }
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
@@ -113,9 +126,9 @@ public class Status implements Serializable {
      * @param line First line
      * @param file Scanner of the file, with path included
      * @return String Next line of the file, after the last player of this team.
-     * @throws NotValidException In case the line is invalid
+     * @throws InvalidLineExcpetion In case the line is invalid
      */
-    private String addTeam(String line, Scanner file ) throws NotValidException {
+    private String addTeam(String line, Scanner file ) throws InvalidLineExcpetion {
         StringBuilder team = new StringBuilder(line.substring(7)+"###");
         line = file.nextLine();
         while (isTeam(line)) {
@@ -141,9 +154,14 @@ public class Status implements Serializable {
 
         if (home != null && away != null)
         {
-            MatchRegister one = new MatchRegister(info, home, away);
-            if (games.containsKey(one.getDate())) games.get(one.getDate()).add(one);
-            else games.put(one.getDate(), new ArrayList<>(List.of(one)));
+            MatchRegister one = null;
+            try {
+                one = new MatchRegister(info, home, away);
+                if (games.containsKey(one.getDate())) games.get(one.getDate()).add(one);
+                else games.put(one.getDate(), new ArrayList<>(List.of(one)));
+            } catch (InvalidLineExcpetion invalidLineExcpetion) {
+                return;
+            }
         }
     }
 
@@ -162,13 +180,9 @@ public class Status implements Serializable {
             load(path);
 
         } catch (Exception e) {
-            try {
                 loadText(path);
-            } catch (NotValidException notValidException) {
-                StatusView.InvalidLine();
             }
         }
-    }
 
         /*------------------------------------------ Getters / Setters and other similiar methods ---------------------------------------------------*/
 

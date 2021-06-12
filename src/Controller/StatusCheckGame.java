@@ -1,7 +1,7 @@
 package Controller;
 
 import Model.Match.MatchRegister;
-import Model.NotValidException;
+import Model.InvalidLineExcpetion;
 import Model.Player.Player;
 import Model.Status;
 import Model.Team;
@@ -123,7 +123,7 @@ public class StatusCheckGame {
                 toAdd.addPlayer(possiblePlayer);
                 CheckGameView.SuccessfullOperation("Addin player");
                 return;
-            } catch (NotValidException e) {
+            } catch (InvalidLineExcpetion e) {
                 StatusView.InvalidLine();
             }
         }

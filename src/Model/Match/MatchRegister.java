@@ -1,5 +1,6 @@
 package Model.Match;
 
+import Model.InvalidLineExcpetion;
 import Model.Team;
 
 import java.io.Serializable;
@@ -45,24 +46,28 @@ public class MatchRegister implements Serializable {
         this.awayRepl = awayRepl;
     }
 
-    public MatchRegister(String[] line, Team home, Team awayTeam) {
-
-        homeTeam = home;
-        this.awayTeam = awayTeam;
-        scoreHome = Integer.parseInt(line[2]);
-        scoreAway = Integer.parseInt(line[3]);
-        String[] data = line[4].split("-");
-        date = LocalDate.of(Integer.parseInt(data[0]), Integer.parseInt(data[1]), Integer.parseInt(data[2]));
-        homeRepl = new ArrayList<>();
-        awayRepl = new ArrayList<>();
-        boolean isItHome = true;
-        for (int i = 5; i < line.length; i++) {
-            if (line[i].contains("->")) {
-                Replaces one = new Replaces(Integer.parseInt(line[i].split("->")[0]), Integer.parseInt(line[i].split("->")[1]));
-                if (isItHome) homeRepl.add(one);
-                else awayRepl.add(one);
+    public MatchRegister(String[] line, Team home, Team awayTeam) throws InvalidLineExcpetion {
+        try {
+            homeTeam = home;
+            this.awayTeam = awayTeam;
+            scoreHome = Integer.parseInt(line[2]);
+            scoreAway = Integer.parseInt(line[3]);
+            String[] data = line[4].split("-");
+            date = LocalDate.of(Integer.parseInt(data[0]), Integer.parseInt(data[1]), Integer.parseInt(data[2]));
+            homeRepl = new ArrayList<>();
+            awayRepl = new ArrayList<>();
+            boolean isItHome = true;
+            for (int i = 5; i < line.length; i++) {
+                if (line[i].contains("->")) {
+                    Replaces one = new Replaces(Integer.parseInt(line[i].split("->")[0]), Integer.parseInt(line[i].split("->")[1]));
+                    if (isItHome) homeRepl.add(one);
+                    else awayRepl.add(one);
+                }
+                if (isItHome && !line[i].contains("->") && homeRepl.size() > 0) isItHome = !isItHome;
             }
-            if (isItHome && !line[i].contains("->") && homeRepl.size() > 0)  isItHome = !isItHome;
+        }
+        catch(Exception e){
+            throw new InvalidLineExcpetion();
         }
     }
 
