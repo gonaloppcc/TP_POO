@@ -43,7 +43,7 @@ public class CheckGameView {
     }
 
     public static void ChooseTeam(String msg) {
-        System.out.println("Choose team to " + msg + ":");
+        System.out.println("Choose team to " + msg + " :\n");
     }
 
     public static void SuccessfullOperation(String msg) {

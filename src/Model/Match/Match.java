@@ -7,7 +7,6 @@ import java.util.*;
 
 public class Match extends MatchRegister {
 
-    private static Point dimensionField;
     private PlayersField homePl;
 
     private PlayersField awayPl;
@@ -35,19 +34,18 @@ public class Match extends MatchRegister {
 
     }
 
-    public Match(LocalDate gameDate, Team homeTeam, Team awayTeam, int homeGoals, int awayGoals, boolean ball_pos, Point ball_tracker) {
-        super.setDate(LocalDate.now());
-        super.setScoreHome(homeGoals);
-        super.setScoreAway(awayGoals);
+    public Match(LocalDate gameDate, Team homeTeam, Team awayTeam, int homeGoals, int awayGoals, PlayersField homePl, PlayersField awayPl, boolean ball_pos, Point ball_tracker) {
+        super(gameDate, homeTeam, awayTeam, homeGoals, awayGoals, new ArrayList<>(), new ArrayList<>());
+
+        this.homePl = homePl.clone();
+        this.awayPl = awayPl.clone();
 
         this.ball_pos = ball_pos;
-
-        this.ball_tracker.setX(ball_tracker.getX());
-        this.ball_tracker.setY(ball_tracker.getY());
+        this.ball_tracker = ball_tracker.clone();
     }
 
     public Match(Match match) {
-        this(match.getDate(), match.getHomeTeam(), match.getAwayTeam(), match.getScoreHome(), match.getScoreAway(), match.ball_pos, match.ball_tracker);
+        this(match.getDate(), match.getHomeTeam(), match.getAwayTeam(), match.getScoreHome(), match.getScoreAway(), match.homePl, match.awayPl, match.ball_pos, match.ball_tracker);
     }
 
     /**
@@ -96,14 +94,6 @@ public class Match extends MatchRegister {
     }
 
     /*------------------------------------------ Getters e Setters ---------------------------------------------------*/
-
-    public static Point getDimensionField() {
-        return dimensionField;
-    }
-
-    public static void setDimensionField(Point dimensionField) {
-        Match.dimensionField = dimensionField;
-    }
 
     public double getTime() {
         return time;

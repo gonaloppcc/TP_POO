@@ -51,16 +51,22 @@ public class Status implements Serializable {
         fos.close();
     }
 
-    public static Status load(String filePath) throws IOException, ClassNotFoundException {
+    public static Status load(String filePath) throws ClassNotFoundException, IOException {
         FileInputStream fis = new FileInputStream(filePath);
         ObjectInputStream in = new ObjectInputStream(fis);
-        Status status = (Status) in.readObject();
+        try {
+            Status status = (Status) in.readObject();
 
-        // Closing stuff
-        in.close();
-        fis.close();
+            // Closing stuff
+            in.close();
+            fis.close();
 
-        return status;
+            return status;
+        } catch (IOException e) {
+            in.close();
+            fis.close();
+            throw new IOException();
+        }
     }
 
     /**
@@ -175,9 +181,8 @@ public class Status implements Serializable {
     }
 
     public void loadPath(String path)  {
-        try{
+        try {
             load(path);
-
         } catch (Exception e) {
                 loadText(path);
             }
