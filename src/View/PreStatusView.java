@@ -1,9 +1,8 @@
 package View;
 
 /**
- * Class used to print information related to the loading of file.
+ * Class used to print information related to the loading of the file.
  */
-
 public class PreStatusView {
 
     public void welcomeAndLoad(){

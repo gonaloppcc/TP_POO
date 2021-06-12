@@ -2,7 +2,6 @@ package View;
 
 import Model.Match.Match;
 import Model.Match.Point;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,8 +37,8 @@ public class Field extends JPanel implements ActionListener {
 
     /**
      * Returns true if a given match has a valid time.
-     * @param time a time
-     * @return true if the time is valid
+     * @param time a time.
+     * @return true if the time is valid.
      */
     public static boolean playTime(double time) {
         return (time >= 0 && time < 45) || (time > 45 && time < 90);
@@ -58,7 +57,7 @@ public class Field extends JPanel implements ActionListener {
 
     /**
      * Paints the Field.
-     * @param g a graphics
+     * @param g a graphics.
      */
     @Override
     public void paintComponent(Graphics g) {
@@ -69,7 +68,7 @@ public class Field extends JPanel implements ActionListener {
 
     /**
      * Draws the football field.
-     * @param g a graphics
+     * @param g a graphics.
      */
     private void drawField(Graphics g) {
         setBackground(Color.YELLOW);
@@ -81,7 +80,7 @@ public class Field extends JPanel implements ActionListener {
 
         // Drawing the score
         g.setFont(new Font("TimesRoman", Font.PLAIN, 50));
-        g.drawString(match.getScoreHome() + "-" + match.getScoreAway(), 300 + 5 * 60, 200);
+        g.drawString(this.match.getScoreHome() + "-" + this.match.getScoreAway(), 300 + 5 * 60, 200);
 
         g.setColor(Color.GREEN);
 
@@ -107,20 +106,20 @@ public class Field extends JPanel implements ActionListener {
         g2d.dispose();
 
         // Time of the game
-        g.drawString(String.valueOf(Math.round(match.getTime())), 300, 200);
+        g.drawString(String.valueOf(Math.round(this.match.getTime())), 300, 200);
 
         g.setColor(Color.BLACK);
-        g.fillOval((5 * (int) match.getBall_tracker().getX()) + 300, (int) (4.5 * match.getBall_tracker().getY()) + 200, 12, 12);
+        g.fillOval((5 * (int) match.getBall_tracker().getX()) + 300, (int) (4.5 * this.match.getBall_tracker().getY()) + 200, 12, 12);
 
         g.setColor(Color.RED);
-        for (Point x : match.getHomePl().playersPosition()) {
+        for (Point x : this.match.getHomePl().playersPosition()) {
             //System.out.println(x);
             g.fillOval((5 * (int) x.getX()) + 300, (int) (4.5 * x.getY()) + 200, 10, 10);
         }
         //Imprime os de fora
 
         g.setColor(Color.BLUE);
-        for (Point x : match.getAwayPl().playersPosition()) {
+        for (Point x : this.match.getAwayPl().playersPosition()) {
             //System.out.println(x);
             g.fillOval((5 * (int) x.getX()) + 300, (int) (4.5 * x.getY()) + 200, 10, 10);
         }
@@ -131,8 +130,8 @@ public class Field extends JPanel implements ActionListener {
     }
 
     /**
-     * Given a event this method does something.
-     * @param e a actionEvent
+     * Given a event, this method does something.
+     * @param e a actionEvent.
      */
     @Override
     public void actionPerformed(ActionEvent e) {

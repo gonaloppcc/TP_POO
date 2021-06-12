@@ -1,11 +1,9 @@
 package Controller;
 
-
 import Model.Status;
 import Model.Team;
 import View.SlideTextSwing;
 import View.StatusView;
-
 import java.io.IOException;
 import java.util.*;
 
@@ -31,15 +29,15 @@ public class StatusController {
 
 
     public void interactions() {
-        if (model.getTeams().size() > 0) chooseTeam();
+        if (this.model.getTeams().size() > 0) chooseTeam();
         while (true) {
-            view.printOptions();
-            String num = terminal.nextLine();
+            this.view.printOptions();
+            String num = this.terminal.nextLine();
             try {
                 switch (Integer.parseInt(num)) {
                     case 1: //Verificar jogo, talvez trocar jogadores
                         StatusCheckGame novo = new StatusCheckGame();
-                        this.model = novo.run(model.clone());
+                        this.model = novo.run(this.model.clone());
                         break;
                     case 2: //Jogar random
                         playOption();
@@ -50,7 +48,7 @@ public class StatusController {
                         break;
                     case 4: //End Game
                         SlideTextSwing noveo = new SlideTextSwing();
-                        view.EndGame();
+                        this.view.EndGame();
                         return;
                     default:
                         StatusView.InvalidOption();
@@ -65,27 +63,27 @@ public class StatusController {
     /*------------------------------- Other functions ------------------------*/
 
     /**
-     * Sets the favourite team of the player.
-     * This team is used to the confrontations, option 2 of the menu, because it is the home team.
+     * Sets the favorite team of the player.
+     * This team is used for the confrontations, option 2 of the menu, because it is the home team.
      */
     private void chooseTeam() {
         boolean validTeam = false;
-        if (model.getTeams().size() < 1) {
+        if (this.model.getTeams().size() < 1) {
             StatusView.noValidTeam();
             return;
         }
         while (!validTeam) {
             //   System.out.print("\033[H\033[2J");
             //   System.out.flush();
-            StatusView.chooseTeam(model.getTeams().keySet(), "Please choose your favourite team (write name):");
-            String teamChoosen = terminal.nextLine();
+            StatusView.chooseTeam(this.model.getTeams().keySet(), "Please choose your favorite team (write name):");
+            String teamChoosen = this.terminal.nextLine();
             if (teamChoosen.equals("default")) {
-                List<String> valuesList = new ArrayList<>(model.getTeams().keySet());
-                model.setPlayerTeam(valuesList.get(0));
+                List<String> valuesList = new ArrayList<>(this.model.getTeams().keySet());
+                this.model.setPlayerTeam(valuesList.get(0));
                 return;
             }
-            if (model.getTeams().containsKey(teamChoosen.trim())) {
-                model.setPlayerTeam(teamChoosen);
+            if (this.model.getTeams().containsKey(teamChoosen.trim())) {
+                this.model.setPlayerTeam(teamChoosen);
                 validTeam = true;
             } else StatusView.InvalidOption();
         }
@@ -96,28 +94,28 @@ public class StatusController {
      */
     public void saveLoadOption() {
         while (true) {
-            view.SaveOrLoad();
-            String choice = terminal.nextLine();
+            this.view.SaveOrLoad();
+            String choice = this.terminal.nextLine();
             if (choice.trim().equals("Exit")) return;
             if (choice.trim().equals("Save")) {
-                view.Path();
+                this.view.Path();
                 try {
-                    model.save(terminal.nextLine());
+                    this.model.save(this.terminal.nextLine());
                     return;
                 } catch (IOException e) {
-                    view.IOerror();
+                    this.view.IOerror();
                 }
             }
             if (choice.trim().equals("Load")) {
-                view.Path();
+                this.view.Path();
                 try {
-                    this.model = Status.load(terminal.nextLine());
+                    this.model = Status.load(this.terminal.nextLine());
                     System.out.println("Load");
                     return;
                 } catch (IOException e) {
-                    view.IOerror();
+                    this.view.IOerror();
                 } catch (ClassNotFoundException e) {
-                    view.wrongPath();
+                    this.view.wrongPath();
                 }
             }
             StatusView.InvalidOption();
@@ -126,33 +124,33 @@ public class StatusController {
     }
 
     /**
-     * Second option of the menu
+     * Second option of the menu.
      * It asks some questions before calling the Match.
      */
     private void playOption() {
-        if (model.getTeams().size() < 2) {
+        if (this.model.getTeams().size() < 2) {
             StatusView.noValidTeam();
             return;
         }
         //If the opposite team is choosen or not.
-        view.randomOrChoose();
+        this.view.randomOrChoose();
         Team opposite;
 
         while (true) {
-            String option = terminal.nextLine();
+            String option = this.terminal.nextLine();
             if (option.trim().toLowerCase(Locale.ROOT).equals("s")) {
-                StatusCheckGame toChoose = new StatusCheckGame(model);
+                StatusCheckGame toChoose = new StatusCheckGame(this.model);
                 opposite = toChoose.getTeam("To play against");
                 break;
             }
             if (option.trim().toLowerCase(Locale.ROOT).equals("n")) {
                 Random rand = new Random();
-                List<Team> teams = new ArrayList<>(model.getTeams().values());
+                List<Team> teams = new ArrayList<>(this.model.getTeams().values());
                 //Só existe uma equipa, joga contra ele próprio
                 if (teams.size() == 1) opposite = teams.get(0);
                 else {
                     int rand_num = rand.nextInt(teams.size() - 1);
-                    teams.remove(model.getTeam(model.getPlayerTeam()));
+                    teams.remove(this.model.getTeam(this.model.getPlayerTeam()));
                     opposite = teams.get(rand_num);
                 }
                 break;
@@ -163,8 +161,8 @@ public class StatusController {
             StatusView.invalidTeam();
             return;
         }
-        MatchController simulation = new MatchController(model.getTeam(model.getPlayerTeam()), opposite, model.getPlayersPerTeam());
-        model.addMatch(simulation.getGame());
+        MatchController simulation = new MatchController(this.model.getTeam(this.model.getPlayerTeam()), opposite, this.model.getPlayersPerTeam());
+        this.model.addMatch(simulation.getGame());
     }
 
 }

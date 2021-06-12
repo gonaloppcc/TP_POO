@@ -1,15 +1,17 @@
 package View;
 
 import Model.Player.Player;
-
 import java.util.List;
 import java.util.Scanner;
 
-//Arranjar uma maneira para que cada método não tenha de fazer new Scanner
 public class ChosingPlayers {
 
-    //Método que imprime todos os jogadores da dada lista
-    //Recebe como argumento o que vai imprimir
+    /**
+     * Method which prints all the players of a certain list that is given as an argument.
+     * @param list
+     * @param thing
+     */
+
     public void printPlayers(List<Player> list, String thing) {
         StringBuilder sb = new StringBuilder();
         sb.append("Equipa: ").append(thing);
@@ -22,7 +24,12 @@ public class ChosingPlayers {
         System.out.println(sb);
     }
 
-    //Devolve no array os números dos jogadores
+    /**
+     * Returns an array with the number of players.
+     * @param array
+     * @param total
+     */
+
     public void choosePlayers(int[] array, int total) {
         Scanner myInput = new Scanner(System.in);
         for (int i = 0; i < total; i++) {
@@ -35,7 +42,11 @@ public class ChosingPlayers {
         }
     }
 
-    //Pergunta para saber se de cada vez imprimos a equipa toda, ou apenas os das respetivas posições
+    /**
+     * Places the question of whether we should print the whole team at a time or just the ones in a respective position.
+     * @return
+     */
+
     public boolean printAllQuestion() {
         Scanner myInput = new Scanner(System.in);
         char read;
@@ -57,9 +68,19 @@ public class ChosingPlayers {
         return result;
     }
 
+    /**
+     * Places the questions of how many players you want per role.
+     * @param num_positions
+     */
+
     public void ChooseStrategy(int num_positions) {
         System.out.println("Choose your strategy, there are " + num_positions + " positions!");
     }
+
+    /**
+     * Places the strategy based on role.
+     * @param strategy
+     */
 
     public void stategyChoose(int[] strategy) {
         Scanner myInput = new Scanner(System.in);
@@ -70,6 +91,12 @@ public class ChosingPlayers {
         System.out.println("attack: ");
         strategy[2] = myInput.nextInt();
     }
+
+    /**
+     * Returns the position that the user specified the player to be in.
+     * @param whatToDo
+     * @return
+     */
 
     public int whereIsPlayer(String whatToDo) {
         StringBuilder sb = new StringBuilder();

@@ -1,9 +1,6 @@
 package View;
 
-import Model.Match.MatchRegister;
 import Model.Match.PlayerField;
-import Model.Match.PlayersField;
-
 import java.util.List;
 import java.util.stream.Collectors;
 

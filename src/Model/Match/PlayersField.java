@@ -34,7 +34,7 @@ public class PlayersField {
 
     /**
      * Get the players in a given position, position 0 is the GoalKeeper.
-     * A lista é ordenada
+     * The list is sorted.
      *
      * @param team
      * @param position
@@ -93,8 +93,8 @@ public class PlayersField {
     }
 
     /**
-     * Takes a list of players ready to play, and sorts them in field.
-     * This method uses adequate constructors to distribute them.
+     * Takes a list of players ready to play, and sorts them out on field.
+     * This method uses adequate constructors to distribute the players..
      *
      * @param strategy
      * @param onField

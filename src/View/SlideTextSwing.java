@@ -12,14 +12,14 @@ public class SlideTextSwing {
     private JPanel windowContents = new JPanel();
 
     public SlideTextSwing() {
-        windowContents.add(label);
-        window.add(windowContents);
-        window.pack();
-        window.setLocationRelativeTo(null);
-        final int desiredWidth = window.getWidth();
-        window.getContentPane().setLayout(null);
-        window.setSize(0, window.getHeight());
-        window.setVisible(true);
+        this.windowContents.add(this.label);
+        this.window.add(this.windowContents);
+        this.window.pack();
+        this.window.setLocationRelativeTo(null);
+        final int desiredWidth = this.window.getWidth();
+        this.window.getContentPane().setLayout(null);
+        this.window.setSize(0, this.window.getHeight());
+        this.window.setVisible(true);
         Timer timer = new Timer(20, new ActionListener() {
 
             @Override

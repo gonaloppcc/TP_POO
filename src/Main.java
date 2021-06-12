@@ -5,7 +5,7 @@ import View.PreStatusView;
 import View.StatusView;
 
 /**
- * Initializates the game, and give to the Status a valid path to one file.
+ * Initializates the game, and gives to Status a valid path to one file.
  */
 public class Main {
 

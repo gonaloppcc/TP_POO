@@ -21,11 +21,11 @@ public class MatchController {
     private final MatchView view;
 
     /**
-     * Main function, that controls the interaction between differents class.
+     * Main function, that controls the interaction between different class.
      *
      * @param home
      * @param away
-     * @param playerPerTeam Number of players each team has
+     * @param playerPerTeam Number of players each team has.
      */
     public MatchController(Team home, Team away, int playerPerTeam) {
         terminal = new Scanner(System.in);
@@ -89,9 +89,9 @@ public class MatchController {
     }
 
     /**
-     * Asks the user to insert a valid strategy, where the total of players choosen is equal to the possible players on field.
+     * Asks the user to insert a valid strategy, where the total of players chosen is equal to the possible players on the field.
      * The last position gets the remaing players. In this case, the last position are the "Backwing".
-     * We only got 5 different positions in game
+     * We only got 5 different positions in the game.
      *
      * @return
      */

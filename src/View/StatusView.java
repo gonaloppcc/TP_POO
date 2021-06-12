@@ -1,7 +1,6 @@
 package View;
 
 import Model.Team;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +14,7 @@ public class StatusView {
     public static void chooseTeam(Set<String> teams){
         System.out.println( myPrint(new ArrayList<>(teams)));
     }
+
     private static String myPrint(List<String> teams){
             for (int i = 5; i < teams.size(); i+= 5)
                 teams.set(i, teams.get(i).concat(" \n "));
@@ -22,7 +22,7 @@ public class StatusView {
     }
 
     public static void invalidTeam() {
-        System.out.println("The team choosed don't have sufficient players");
+        System.out.println("The chosen team doesn't have sufficient players");
     }
 
     public void printStatus(String gameName, Map<String, Team> teams) {
@@ -33,7 +33,6 @@ public class StatusView {
 
     }
     public void SaveOrLoad(){
-        //System.out.println("Choose the path to save the file (it will be Stored");
         System.out.println("\\\"Load\\\"   or \\\"Save\\\"?" + "\nOr  to \\\"Exit\\\" to go back");
     }
 
@@ -75,6 +74,7 @@ public class StatusView {
     public void randomOrChoose(){
         System.out.println("Do you want to choose who you are going to play (s/n)?");
     }
+
     public static void noValidTeam() {
         System.out.println("There is no valid team");
     }

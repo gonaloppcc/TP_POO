@@ -31,7 +31,7 @@ public class Energy {
     }
 
     public double getDecreaseRate() {
-        return decreaseRate;
+        return this.decreaseRate;
     }
 
     public void setDecreaseRate(double decreaseRate) {

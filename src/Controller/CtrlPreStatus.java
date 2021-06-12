@@ -7,13 +7,13 @@ import java.util.Scanner;
 
 /**
  * This class is user to load a correct path to a file.
- * It checks if the file exist.
+ * It checks if the file exists.
  */
 public class CtrlPreStatus {
 
     /**
      * Returns a String with a path to a file that exists.
-     * @return String with path
+     * @return String with path.
      */
     public String readStatus() {
         Scanner in = new Scanner(System.in);

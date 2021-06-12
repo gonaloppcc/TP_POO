@@ -1,7 +1,6 @@
 package View;
 
 import Model.Match.Match;
-
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 
@@ -11,8 +10,8 @@ import javax.swing.JFrame;
 public class SwingTimerEx extends JFrame {
 
     /**
-     * Constructors a SwingTimerEx given a match.
-     * @param match a match
+     * Constructs a SwingTimerEx given a match.
+     * @param match a match.
      */
     public SwingTimerEx(Match match) {
 
@@ -21,7 +20,7 @@ public class SwingTimerEx extends JFrame {
 
     /**
      * Initializes this SwingTimerEx object given a match.
-     * @param match a match
+     * @param match a match.
      */
     private void initUI(Match match) {
         add(new Field(match));

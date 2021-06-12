@@ -24,35 +24,35 @@ public class PlayerField {
     /*------------------------------------------------Constructors----------------------------------------------------*/
 
     public PlayerField(Player playerToSet, boolean home) {
-        player = playerToSet;
-        mainPosition = bestPosition(playerToSet);
-        lateral = mainPosition.equals(Position.LATERAL);
-        energy = new Energy(100);
-        yellowCards = 0;
-        redCard = false;
-        if (mainPosition != Position.GOALKEEPER) position = new Point(-1, -1);
+        this.player = playerToSet;
+        this.mainPosition = bestPosition(playerToSet);
+        this.lateral = this.mainPosition.equals(Position.LATERAL);
+        this.energy = new Energy(100);
+        this.yellowCards = 0;
+        this.redCard = false;
+        if (this.mainPosition != Position.GOALKEEPER) this.position = new Point(-1, -1);
         else {
-            if (home) position = new Point(1, 45);
-            else position = new Point(119, 45);
+            if (home) this.position = new Point(1, 45);
+            else this.position = new Point(119, 45);
         }
 
-        beginPosition = position.clone();
+        this.beginPosition = this.position.clone();
     }
 
     public PlayerField(Player playerToSet, float where, boolean home) {
-        player = playerToSet;
-        mainPosition = bestPosition(playerToSet);
-        lateral = mainPosition.equals(Position.LATERAL);
-        energy = new Energy(100);
-        yellowCards = 0;
-        redCard = false;
-        position = Point.createInitialPosition(where, lateral, mainPosition, home);
-        beginPosition = position.clone();
+        this.player = playerToSet;
+        this.mainPosition = bestPosition(playerToSet);
+        this.lateral = this.mainPosition.equals(Position.LATERAL);
+        this.energy = new Energy(100);
+        this.yellowCards = 0;
+        this.redCard = false;
+        this.position = Point.createInitialPosition(where, this.lateral, this.mainPosition, home);
+        this.beginPosition = this.position.clone();
     }
 
     /**
-     * Quando não existem jogadores suficientes numa dada posição
-     * Metemos um jogador que não devia estar numa zona nessa zona
+     * When there aren't enough players for a specific position.
+     * We place a player where he shouldn't be in a zone of that zone.
      *
      * @param playerToSet
      * @param where
@@ -60,14 +60,14 @@ public class PlayerField {
      */
     public PlayerField(Player playerToSet, float where, Integer positionGiven, boolean home) {
         Position notNatural = numberToPosition(positionGiven);
-        player = playerToSet;
-        mainPosition = notNatural;
-        lateral = notNatural.equals(Position.LATERAL);
-        energy = new Energy(100);
-        yellowCards = 0;
-        redCard = false;
-        position = Point.createInitialPosition(where, lateral, notNatural, home);
-        beginPosition = position.clone();
+        this.player = playerToSet;
+        this.mainPosition = notNatural;
+        this.lateral = notNatural.equals(Position.LATERAL);
+        this.energy = new Energy(100);
+        this.yellowCards = 0;
+        this.redCard = false;
+        this.position = Point.createInitialPosition(where, this.lateral, notNatural, home);
+        this.beginPosition = this.position.clone();
     }
 
     public PlayerField(Player player, Point position, Position mainPosition, Point beginPosition, boolean lateral, Energy energy, int yellowCards, boolean redCards) {
@@ -158,11 +158,12 @@ public class PlayerField {
     public Point getBeginPosition() {
         return this.beginPosition;
     }
-    /* ------------------------------------- Other methods ---------------------------------------------------------- */
 
     public void setBeginPosition(Point beginPosition) {
         this.beginPosition = beginPosition;
     }
+
+    /* ------------------------------------- Other methods ---------------------------------------------------------- */
 
     private Position numberToPosition(Integer x) {
         switch (x) {
@@ -193,7 +194,7 @@ public class PlayerField {
     }
 
     /**
-     * Moves the player accordingly with the position of the ball.
+     * Moves the player accordingly to the position of the ball.
      *
      * @param pos_ball
      * @param hasBall
@@ -235,17 +236,17 @@ public class PlayerField {
     @Override
     public String toString() {
         return "PlayerField{" +
-                "player=" + player +
-                "joga a=" + mainPosition +
-                ", position=" + position +
+                "player=" + this.player +
+                "joga a=" + this.mainPosition +
+                ", position=" + this.position +
                 '}';
     }
 
     public String stringToChoose() {
         return " PlayerField{" +
-                " player=" + player.getName() +
-                " Número=" + player.getNum() +
-                " joga a=" + mainPosition +
+                " player=" + this.player.getName() +
+                " Número=" + this.player.getNum() +
+                " joga a=" + this.mainPosition +
                 '}';
     }
 

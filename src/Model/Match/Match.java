@@ -144,12 +144,12 @@ public class Match extends MatchRegister {
     /* ------------------------------------- Other methods ---------------------------------------------------------- */
 
     /**
-     * confrontation é uma função que examina o estado actual do campo.
-     * Após obter os jogadores que são involvidos nos confrontos de ambas as equipas, são calculadas as global skills de cada sub-equipa.
-     * Dependendo desses valores, utiliza a função prob para calcular quem tem a maior probabilidade ganhar o confronto.
-     * E aplica essa probabilidade, dando uma "vantagem"  (ou seja, um valor boolean que decide quem ganhou o confronto.) à função aftermath.
+     * confrontation is a function that examines the current state of the field.
+     * After obtaining the players involved in the confrontation from both teams, the global skills of each sub-team are calculated.
+     * Depending on those values, it utilizes the function prob to calculate who has the bigger probability to win the confrontation.
+     * And then applies that probability, giving an "advantage" (meaning, a boolean value to decide who won the confrontation.) to the aftermath function.
+     *
      */
-
     public void confrontation() {
 
         Random rand = new Random();
@@ -180,15 +180,16 @@ public class Match extends MatchRegister {
     }
 
     /**
-     * A função prob é uma função que calcula a probabilidade de uma equipa ganhar num confronto.
-     * Ela irá devolver um valor double que servirá como um limite para a equipa Home ganhar.
-     * De forma simplificada, quando o valor x é escolhido de forma aleatória no intervalo [0,1] em confrontation através de um Random(),
-     * se o valor for inferior ao limite que prob irá retornar, a equipa Home ganha, mas se for igual, ou mesmo superior, a equipa Away irá ganhar o confronto.
+     *
+     * The function prob is a function that calculates the probability of a team of winning in a confrontation.
+     * It will return a double value which will serve as a limit for the Home team to win.
+     * In a simplified manner, when the x value is picked randomly in an interval [0,1] in confrontation through a Random(),
+     * if the value is inferior to the limit that prob will return, the Home team wins, but if it's equal, or even superior, the Away team will win the confrontation.
+     *
      * @param homeSquadSkill
      * @param awaySquadSkill
      * @return
      */
-
     public double prob(double homeSquadSkill, double awaySquadSkill) {
 
         double probability = 0;
@@ -217,33 +218,34 @@ public class Match extends MatchRegister {
     }
 
     /**
-     * Função que lida com as consequências de um confronto.
-     * Através de um valor boolean "vantage", saberemos quem ganhou o confronto (true = Home,false = Away) e iremos depois obter o jogador mais próximo dessa equipa.
-     * Com essa informação e com a distância da bola à baliza adversária, as coordenadas da bola são modificadas de forma a fazer prosseguir.
-     * Se a distância da bola à baliza adversária for muito pequena, a bola entra e o jogo é reposicionado como no início.
+     *
+     * Function which handles the aftermath of a confrontation.
+     * Through a boolean value "vantage", we will know who know the confrontation (true = Home,false = Away) and we will then obtain the closest player of that team to the ball.
+     * With this information and the distance of the ball to the opponent's goal, the coordinates of the ball are modified in a way to make it progress.
+     * If the distance of the ball to the enemy goal is too small, the ball enters the goal and the game is repositioned like at the beginning.
+     *
      * @param vantage
      */
-
     public void aftermath(boolean vantage) {
         Point homeGoal = new Point(0, 45);
         Point awayGoal = new Point(120, 45);
 
         Comparator<PlayerField> dist = (x, y) -> (int) (x.getPosition().distance(this.ball_tracker) - y.getPosition().distance(this.ball_tracker));
 
-        this.homePl.movePlayers(ball_tracker, ball_pos, true);
-        this.awayPl.movePlayers(ball_tracker, ball_pos, false);
+        this.homePl.movePlayers(this.ball_tracker, this.ball_pos, true);
+        this.awayPl.movePlayers(this.ball_tracker, this.ball_pos, false);
 
         Random rand = new Random();
         this.ball_pos = vantage;
         // Home: + [0, 20] x, [-5, 5] y
         // Home: - [0, 20] x, [-5, 5] y
         if (vantage) {
-            Point jog = homePl.getPlayersPlaying().stream().min(dist).get().getPosition();
+            Point jog = this.homePl.getPlayersPlaying().stream().min(dist).get().getPosition();
             this.ball_tracker.setY(jog.getY());
             this.ball_tracker.setX(jog.getX() + 1);
         } //this.ball_tracker.addVector( rand.nextDouble() * 20 , ((rand.nextDouble() * 2) - 1) * 5);
         else {
-            Point jog = awayPl.getPlayersPlaying().stream().min(dist).get().getPosition();
+            Point jog = this.awayPl.getPlayersPlaying().stream().min(dist).get().getPosition();
             this.ball_tracker.setY(jog.getY());
             this.ball_tracker.setX(jog.getX() - 1);
             //this.ball_tracker.addVector( rand.nextDouble() * -20 , ((rand.nextDouble() * 2) - 1) * 5);
@@ -269,11 +271,11 @@ public class Match extends MatchRegister {
     }
 
     /**
-     * Função que determina se um jogador é mais provável de passar a bola ou fazer um drible, dependendo das suas estatísticas.
+     *
+     * Function that determines if a player is more probable of passing the ball or drible through, depending on its stats.
      * @param ball_owner
      * @return
      */
-
     public boolean drible_passe(PlayerField ball_owner) {
 
         Random rand = new Random();
@@ -291,11 +293,10 @@ public class Match extends MatchRegister {
     }
 
     /**
-     * Função que determina se um jogador é mais provável de rematar a bola ou de passar a bola, dependendo das suas estatísticas.
+     * Function that determines if a player is more likely of going for a kick or passing the ball, depending on its stats.
      * @param ball_owner
      * @return
      */
-
     public boolean remate_passe(PlayerField ball_owner) {
 
         Random rand = new Random();
@@ -313,10 +314,9 @@ public class Match extends MatchRegister {
     }
 
     /**
-     * Função que corre uma simulação do jogo.
+     * Function that runs a simulation of the game.
      * @param refreshTime
      */
-
     public void run(double refreshTime) {
         //Simulação com refresh's
         confrontation();
@@ -334,11 +334,10 @@ public class Match extends MatchRegister {
     }
 
     /**
-     * Função que irá trocar dois jogadores, um em campo e outro no banco, de lugares.
+     * Function that will swap two players, one on the field and another on the bench.
      * @param in
      * @param out
      */
-
     public void changePlayer(PlayerField in,PlayerField out,boolean home){
         this.homePl.replace(in, out);
         super.addReplace(in.getPlayer().getNum(), out.getPlayer().getNum(),home);
@@ -349,9 +348,9 @@ public class Match extends MatchRegister {
         // Sets the ball_tracker at midfield
         this.ball_tracker.setX(60);
         this.ball_tracker.setY(45);
-        this.homePl.setPlayersPlaying(PlayersField.initialPositionAfterGoal(homePl.getStrategy(),
+        this.homePl.setPlayersPlaying(PlayersField.initialPositionAfterGoal(this.homePl.getStrategy(),
                 this.homePl.getPlayersPlaying(), true));
-        this.awayPl.setPlayersPlaying(PlayersField.initialPositionAfterGoal(awayPl.getStrategy(),
+        this.awayPl.setPlayersPlaying(PlayersField.initialPositionAfterGoal(this.awayPl.getStrategy(),
                 this.awayPl.getPlayersPlaying(), false));
     }
 

@@ -1,10 +1,5 @@
 package View;
 
-import Model.Match.Match;
-import Model.Match.Point;
-
-import java.util.List;
-
 /**
  * View of one match, except Java Swing part.
  */

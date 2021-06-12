@@ -8,9 +8,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- This class is use to contenting all data regarding the game
- It's here where we comand basically everything (Create a team, transfer a player)
- It has methods for saving and loading game purposes
+ This class is used for containing all data regarding the game.
+ It's here where we command basically everything (Create a team, transfer a player)
+ It has methods for saving and loading game purposes.
  */
 
 public class Status implements Serializable {
@@ -124,11 +124,11 @@ public class Status implements Serializable {
     /*----------------------- Private functions ----------------------------*/
 
     /**
-     * Gets a line from the text file and converts to a full team.
+     * Gets a line from the text file and converts it to a full team.
      * @param line First line
      * @param file Scanner of the file, with path included
      * @return String Next line of the file, after the last player of this team.
-     * @throws InvalidLineExcpetion In case the line is invalid
+     * @throws InvalidLineExcpetion In case the line is invalid.
      */
     private String addTeam(String line, Scanner file ) throws InvalidLineExcpetion {
         StringBuilder team = new StringBuilder(line.substring(7)+"###");
@@ -144,8 +144,8 @@ public class Status implements Serializable {
     }
 
     /**
-     * Converts one line of the text file, converts to a MatchRegister, and adds to the status.
-     * @param match Line of the txt file
+     * Converts one line of the text file into a MatchRegister, and adds it to the status.
+     * @param match Line of the txt file.
      */
     private void addMatch(String match){
         String[] info = match.substring(5).split(",");
@@ -239,8 +239,8 @@ public class Status implements Serializable {
     }
 
     /**
-     * Inserts a new game in the current register
-     * @param match Match to be added
+     * Inserts a new game in the current register.
+     * @param match Match to be added.
      */
 
     public void addMatch(Match match){

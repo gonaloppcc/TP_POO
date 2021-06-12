@@ -69,7 +69,7 @@ public class Team implements Serializable {
     /*------------------------------------------ Getters e Setters ---------------------------------------------------*/
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -81,7 +81,7 @@ public class Team implements Serializable {
     }
 
     public List<Player> getPlayers() {
-        return players.stream().map(Player::clone).collect(Collectors.toList());
+        return this.players.stream().map(Player::clone).collect(Collectors.toList());
     }
 
     public void setPlayers(List<Player> players) {
@@ -92,15 +92,15 @@ public class Team implements Serializable {
 
     /**
      * Get a list of all Players with that name.
-     * @param name Name to search
-     * @return All players of that team with the name given.
+     * @param name Name to search.
+     * @return All players of that team with the name given as an argument.
      */
     public List<Player> getPlayer(String name){
-        return players.stream().filter(x -> x.getName().equals(name)).collect(Collectors.toList());
+        return this.players.stream().filter(x -> x.getName().equals(name)).collect(Collectors.toList());
     }
 
     /**
-     * Convert a line related to one player to one object of the class Player, and then stores in this team.
+     * Convert a line related to one player to one object of the class Player, and then stores it in this team.
      * @param line Line from a text file.
      * @throws InvalidLineExcpetion When the line is invalid.
      */
@@ -114,35 +114,35 @@ public class Team implements Serializable {
                 StatusView.InvalidLine();
                 throw new InvalidLineExcpetion(atributes.toString());
             }
-            players.add(new GoalKeeper(atributes));
+            this.players.add(new GoalKeeper(atributes));
         }
         if (line.startsWith("Lateral")) {
             if (atributes.length != 10) {
                 StatusView.InvalidLine();
                 throw new InvalidLineExcpetion(atributes.toString());
             }
-            players.add(new BackWing(atributes));
+            this.players.add(new BackWing(atributes));
         }
         if (line.startsWith("Defesa")) {
             if (atributes.length != 9) {
                 StatusView.InvalidLine();
                 throw new InvalidLineExcpetion(atributes.toString());
             }
-            players.add(new Defender(atributes));
+            this.players.add(new Defender(atributes));
         }
         if (line.startsWith("Medio")) {
             if (atributes.length != 10) {
                 StatusView.InvalidLine();
                 throw new InvalidLineExcpetion(atributes.toString());
             }
-            players.add(new Midfield(atributes));
+            this.players.add(new Midfield(atributes));
         }
         if (line.startsWith("Avancado")) {
             if (atributes.length != 9) {
                 StatusView.InvalidLine();
                 throw new InvalidLineExcpetion(atributes.toString());
             }
-            players.add(new Striker(info[1].split(",")));
+            this.players.add(new Striker(info[1].split(",")));
         }
     }
 

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Stores the information of a game, but not the necessary information to simulate a game.
+ * Stores information of a game, but not the necessary information to simulate a game.
  * This has the equivalent information of a text file.
  */
 public class MatchRegister implements Serializable {
@@ -25,12 +25,12 @@ public class MatchRegister implements Serializable {
 
     public MatchRegister() {
         this.date = LocalDate.of(2010, 10, 10);
-        homeRepl = new ArrayList<>();
-        awayRepl = new ArrayList<>();
-        scoreAway = 0;
-        scoreHome = 0;
-        homeTeam = null;
-        awayTeam = null;
+        this.homeRepl = new ArrayList<>();
+        this.awayRepl = new ArrayList<>();
+        this.scoreAway = 0;
+        this.scoreHome = 0;
+        this.homeTeam = null;
+        this.awayTeam = null;
     }
 
     public MatchRegister(LocalDate date, Team homeTeam, Team awayTeam, int scoreHome, int scoreAway, List<Replaces> homeRepl, List<Replaces> awayRepl) {
@@ -45,22 +45,22 @@ public class MatchRegister implements Serializable {
 
     public MatchRegister(String[] line, Team home, Team awayTeam) throws InvalidLineExcpetion {
         try {
-            homeTeam = home;
+            this.homeTeam = home;
             this.awayTeam = awayTeam;
-            scoreHome = Integer.parseInt(line[2]);
-            scoreAway = Integer.parseInt(line[3]);
+            this.scoreHome = Integer.parseInt(line[2]);
+            this.scoreAway = Integer.parseInt(line[3]);
             String[] data = line[4].split("-");
-            date = LocalDate.of(Integer.parseInt(data[0]), Integer.parseInt(data[1]), Integer.parseInt(data[2]));
-            homeRepl = new ArrayList<>();
-            awayRepl = new ArrayList<>();
+            this.date = LocalDate.of(Integer.parseInt(data[0]), Integer.parseInt(data[1]), Integer.parseInt(data[2]));
+            this.homeRepl = new ArrayList<>();
+            this.awayRepl = new ArrayList<>();
             boolean isItHome = true;
             for (int i = 5; i < line.length; i++) {
                 if (line[i].contains("->")) {
                     Replaces one = new Replaces(Integer.parseInt(line[i].split("->")[0]), Integer.parseInt(line[i].split("->")[1]));
-                    if (isItHome) homeRepl.add(one);
-                    else awayRepl.add(one);
+                    if (isItHome) this.homeRepl.add(one);
+                    else this.awayRepl.add(one);
                 }
-                if (isItHome && !line[i].contains("->") && homeRepl.size() > 0) isItHome = false;
+                if (isItHome && !line[i].contains("->") && this.homeRepl.size() > 0) isItHome = false;
             }
         } catch (Exception e) {
             throw new InvalidLineExcpetion();
@@ -71,7 +71,7 @@ public class MatchRegister implements Serializable {
 
 
     public LocalDate getDate() {
-        return date;
+        return this.date;
     }
 
     public void setDate(LocalDate date) {
@@ -79,7 +79,7 @@ public class MatchRegister implements Serializable {
     }
 
     public Team getHomeTeam() {
-        return homeTeam;
+        return this.homeTeam;
     }
 
     public void setHomeTeam(Team homeTeam) {
@@ -87,7 +87,7 @@ public class MatchRegister implements Serializable {
     }
 
     public Team getAwayTeam() {
-        return awayTeam;
+        return this.awayTeam;
     }
 
     public void setAwayTeam(Team awayTeam) {
@@ -95,7 +95,7 @@ public class MatchRegister implements Serializable {
     }
 
     public int getScoreHome() {
-        return scoreHome;
+        return this.scoreHome;
     }
 
     public void setScoreHome(int scoreHome) {
@@ -103,7 +103,7 @@ public class MatchRegister implements Serializable {
     }
 
     public int getScoreAway() {
-        return scoreAway;
+        return this.scoreAway;
     }
 
     public void setScoreAway(int scoreAway) {
@@ -111,21 +111,21 @@ public class MatchRegister implements Serializable {
     }
 
     public void addReplace(int in, int out, boolean home) {
-        if (home) homeRepl.add(new Replaces(in, out));
-        else awayRepl.add(new Replaces(in, out));
+        if (home) this.homeRepl.add(new Replaces(in, out));
+        else this.awayRepl.add(new Replaces(in, out));
     }
     /* ------------------------------------- To String ---------------------------------------------------------- */
 
     @Override
     public String toString() {
         return "MatchRegister{" +
-                "date=" + date +
-                ", homeTeam=" + homeTeam.getName() +
-                ", awayTeam=" + awayTeam.getName() +
-                ", scoreHome=" + scoreHome +
-                ", scoreAway=" + scoreAway +
-                ", homeRepl=" + homeRepl +
-                ", awayRepl=" + awayRepl +
+                "date=" + this.date +
+                ", homeTeam=" + this.homeTeam.getName() +
+                ", awayTeam=" + this.awayTeam.getName() +
+                ", scoreHome=" + this.scoreHome +
+                ", scoreAway=" + this.scoreAway +
+                ", homeRepl=" + this.homeRepl +
+                ", awayRepl=" + this.awayRepl +
                 '}';
     }
 }

@@ -27,18 +27,19 @@ public class Point {
     }
 
     /**
-     * Define em que posição um dado jogador vai estar em função da sua posição.
-     * Se for lateral, pode ser esquerdo ou direito.
-     * As áreas dividem-se da seguinte forma, com campo (250, 50):
-     * Centro: 10-40  Lateral 0-10, 40-50
-     * Defesa: 0-80
-     * Médio: 80-170
-     * Ataque: 170-250
+     * Defines in which position a given player will be depending on his position.
+     * If it's a lateral, it can be a left one or a right one.
+     * The areas divide themselves in the following way, with a field (250, 50):
+     * Center: 10-40  Lateral 0-10, 40-50
+     * Defense: 0-80
+     * Midfield: 80-170
+     * Attack: 170-250
+     *
      *
      * @param fraction
      * @param lateral
      * @param pos
-     * @param home To know which side the player is
+     * @param home To know which side the player is.
      */
     public static Point createInitialPosition(float fraction, boolean lateral, Position pos, boolean home) {
         Random rnd = new Random();
@@ -98,8 +99,8 @@ public class Point {
     @Override
     public String toString() {
         return "Point{" +
-                "x=" + x +
-                ", y=" + y +
+                "x=" + this.x +
+                ", y=" + this.y +
                 '}';
     }
 
