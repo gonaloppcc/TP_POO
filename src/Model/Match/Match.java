@@ -359,7 +359,6 @@ public class Match extends MatchRegister {
                     }
 
                     else {
-
                         ball_tracker.addVector(rand.nextDouble() * -10, rand.nextDouble() * 10);
 
                     }
