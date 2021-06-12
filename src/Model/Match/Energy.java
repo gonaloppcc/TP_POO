@@ -41,6 +41,8 @@ public class Energy {
     }
 
     public void decrease() {
-        this.energy -= decreaseRate;
+        double e = energy - decreaseRate;
+        if (e < 10) e = 10;
+        this.energy = e;
     }
 }

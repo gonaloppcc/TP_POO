@@ -1,16 +1,11 @@
 package View;
 
 import Model.Match.Match;
-import Model.Match.PlayersField;
 import Model.Match.Point;
-
-import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -18,7 +13,7 @@ public class Field extends JPanel implements ActionListener {
 
     private final int B_WIDTH = 1200;
     private final int B_HEIGHT = 1400;
-    private final int DELAY = 2000;
+    private final int DELAY = 250;
     Match match;
     private Timer timer;
 
@@ -28,7 +23,7 @@ public class Field extends JPanel implements ActionListener {
         initField();
     }
 
-    public static boolean playTime(int time) {
+    public static boolean playTime(double time) {
         return (time >= 0 && time < 45) || (time > 45 && time < 90);
     }
 
@@ -84,7 +79,7 @@ public class Field extends JPanel implements ActionListener {
         g2d.dispose();
 
         // Time of the game
-        g.drawString(String.valueOf(match.getTime()), 300, 200);
+        g.drawString(String.valueOf(Math.round(match.getTime())), 300, 200);
 
         g.setColor(Color.BLACK);
         g.fillOval((5 * (int) match.getBall_tracker().getX()) + 300, (int) (4.5 * match.getBall_tracker().getY()) + 200, 12, 12);
@@ -122,7 +117,6 @@ public class Field extends JPanel implements ActionListener {
 
         }
         if (match.getTime() == 45) {
-            match.inicialPositions();
             g.dispose();
         }
     }
@@ -130,7 +124,7 @@ public class Field extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (playTime(match.getTime())) {
-            match.run(1);
+            match.run(0.25);
             repaint();
         }
     }

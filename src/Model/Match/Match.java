@@ -1,13 +1,9 @@
 package Model.Match;
 
-import Model.Player.GoalKeeper;
-import Model.Player.Player;
 import Model.Team;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Match extends MatchRegister {
 
@@ -23,7 +19,7 @@ public class Match extends MatchRegister {
 
     private Point ball_tracker;
 
-    private int time;
+    private double time;
 
 
     /*------------------------------------------------Constructors----------------------------------------------------*/
@@ -113,11 +109,11 @@ public class Match extends MatchRegister {
         Match.dimensionField = dimensionField;
     }
 
-    public int getTime() {
+    public double getTime() {
         return time;
     }
 
-    public void setTime(int time) {
+    public void setTime(double time) {
         this.time = time;
     }
 
@@ -338,7 +334,7 @@ public class Match extends MatchRegister {
      * @param refreshTime
      */
 
-    public void run(int refreshTime) {
+    public void run(double refreshTime) {
         //Simulação com refresh's
         confrontation();
         time += refreshTime;
@@ -367,6 +363,7 @@ public class Match extends MatchRegister {
 
 
     public void inicialPositions() {
+        // Sets the ball_tracker at midfield
         this.ball_tracker.setX(60);
         this.ball_tracker.setY(45);
         this.homePl.setPlayersPlaying(PlayersField.initialPositionAfterGoal(homePl.getStrategy(),
