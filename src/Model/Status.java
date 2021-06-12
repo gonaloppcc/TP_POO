@@ -187,7 +187,7 @@ public class Status implements Serializable {
             }
         }
 
-        /*------------------------------------------ Getters / Setters and other similiar methods ---------------------------------------------------*/
+        /*------------------------------------------ Getters / Setters and similiar methods ---------------------------------------------------*/
 
     public String getGameName() {
         return gameName;

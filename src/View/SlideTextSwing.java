@@ -30,6 +30,7 @@ public class SlideTextSwing {
                 if (newWidth >= desiredWidth) {
                     ((Timer) e.getSource()).stop();
                     label.setForeground(Color.red);
+                    System.exit(0);
                     return;
                 }
             }
