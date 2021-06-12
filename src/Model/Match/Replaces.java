@@ -11,11 +11,14 @@ public class Replaces implements Serializable {
     int in;
 
     /*--------------- Constructor  ----------------*/
+
     public Replaces(int out, int in) {
         this.out = out;
         this.in = in;
     }
+
     /*---------------------- Other methods ---------------*/
+
     @Override
     public String toString() {
         return "Replaces{" +

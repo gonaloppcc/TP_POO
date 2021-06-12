@@ -5,6 +5,7 @@ import View.StatusView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -112,35 +113,35 @@ public class Team implements Serializable {
         if (line.startsWith("Guarda-Redes")) {
             if (atributes.length != 10) {
                 StatusView.InvalidLine();
-                throw new InvalidLineExcpetion(atributes.toString());
+                throw new InvalidLineExcpetion(Arrays.toString(atributes));
             }
             this.players.add(new GoalKeeper(atributes));
         }
         if (line.startsWith("Lateral")) {
             if (atributes.length != 10) {
                 StatusView.InvalidLine();
-                throw new InvalidLineExcpetion(atributes.toString());
+                throw new InvalidLineExcpetion(Arrays.toString(atributes));
             }
             this.players.add(new BackWing(atributes));
         }
         if (line.startsWith("Defesa")) {
             if (atributes.length != 9) {
                 StatusView.InvalidLine();
-                throw new InvalidLineExcpetion(atributes.toString());
+                throw new InvalidLineExcpetion(Arrays.toString(atributes));
             }
             this.players.add(new Defender(atributes));
         }
         if (line.startsWith("Medio")) {
             if (atributes.length != 10) {
                 StatusView.InvalidLine();
-                throw new InvalidLineExcpetion(atributes.toString());
+                throw new InvalidLineExcpetion(Arrays.toString(atributes));
             }
             this.players.add(new Midfield(atributes));
         }
         if (line.startsWith("Avancado")) {
             if (atributes.length != 9) {
                 StatusView.InvalidLine();
-                throw new InvalidLineExcpetion(atributes.toString());
+                throw new InvalidLineExcpetion(Arrays.toString(atributes));
             }
             this.players.add(new Striker(info[1].split(",")));
         }

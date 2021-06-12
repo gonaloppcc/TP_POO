@@ -185,10 +185,14 @@ public class PlayerField {
     }
 
     public double skill() { // Skill formula
-        return this.player.globalSkill() * (this.energy.getEnergy() / 100) * (bestPosition(this.player).equals(this.mainPosition) ? 1 : 0.5); // Falta ter em atenção o facto do jogador não estar na sua posição
+        return this.player.globalSkill() * (this.energy.getEnergy() / 100) * (bestPosition(this.player).equals(this.mainPosition) ? 1 : 0.5);
     }
 
-    // Combines the x and y arguments with the position of the player
+    /**
+     * Combines the x and y arguments with the position of the player
+     * @param x x coordinate
+     * @param y y coordinate
+     */
     public void move(int x, int y) {
         this.position.addVector(x, y);
     }
@@ -196,26 +200,14 @@ public class PlayerField {
     /**
      * Moves the player accordingly to the position of the ball.
      *
-     * @param pos_ball
-     * @param hasBall
+     * @param pos_ball ball position
+     * @param hasBall if the player has the ball
      */
-    public void movePlayer(Point pos_ball, boolean hasBall, boolean homeTeam) {
+    public void movePlayer(Point pos_ball, boolean hasBall) {
         double distance = (this.energy.getEnergy() / 100) * PlayerField.distance;
-        if (homeTeam) {
-            if (hasBall) moveForward(pos_ball, distance);
-            else moveBack(pos_ball, distance);
-        } else {
-            if (hasBall) moveForward(pos_ball, distance);
-            else moveBack(pos_ball, distance);
-        }
-        /*
-        if (hasBall && homeTeam) this.moveForward(pos_ball, distance);
-        else if (hasBall) this.moveBack(pos_ball, distance);
-        else if (homeTeam && pos_ball.getX() < this.position.getX()) this.moveBack(pos_ball, distance);
-        else if (!homeTeam && pos_ball.getX() > this.position.getX()) this.moveForward(pos_ball, distance);
-        else ;
+        if (hasBall) moveForward(pos_ball, distance);
+        else moveBack(pos_ball, distance);
 
-         */
         this.energy.decrease();
     }
 
@@ -223,14 +215,12 @@ public class PlayerField {
         Random r = new Random();
         if (this.position.getY() > 45) this.position.addVector(0, -4);
         this.position.addVector(-distance, ((r.nextDouble() * 2) - 1) * 1);
-        ;//addVector(-distance / (getPosition().getX() - pos_ball.getX()), distance / (getPosition().getY() - pos_ball.getY()));
     }
 
     private void moveForward(Point pos_ball, double distance) {
         Random r = new Random();
         if (this.position.getY() > 45) this.position.addVector(0, -4);
         this.position.addVector(distance, ((r.nextDouble() * 2) - 1) * 1);
-        //this.position.addVector(distance / (getPosition().getX() - pos_ball.getX()), distance / (pos_ball.getY() - getPosition().getY()));
     }
 
     @Override
@@ -276,8 +266,8 @@ public class PlayerField {
 
     /**
      * When a substitution occurs in game.
-     * @param in
-     * @param out
+     * @param in a playerField to enter the game
+     * @param out a playerField to leave the game
      */
     public static void copy(PlayerField in, PlayerField out){
         in.player = in.getPlayer();

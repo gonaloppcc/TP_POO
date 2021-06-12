@@ -60,32 +60,17 @@ public class Match extends MatchRegister {
 
     public static Match game_play(Team homeTeam, Team awayTeam, Integer[] defaultBot, Integer[] strategyPlayer) {
 
-        Match game = new Match(homeTeam, awayTeam, defaultBot, strategyPlayer); // Criar o jogo com os estados base.
-        boolean swap_side = game.isBall_pos(); // Variável para o intervalo, é precisa para saber o state drive.
-        float time; // Iniciar o contador.
+        Match game = new Match(homeTeam, awayTeam, defaultBot, strategyPlayer); // Creates the game with
+        boolean swap_side = game.isBall_pos(); // For the half time, so we change the side that starts with the ball
+        float time; // Starts the time
 
-        for (time = 0; time <= 45; time += 0.25) {
-            game.confrontation();
-            boolean b = game.homePl.getPlayersPlaying().stream().map(PlayerField::getPosition).
-                    anyMatch(p -> p.getX() > 120 || p.getX() < 0 || p.getY() > 90 || p.getY() < 0);
-            boolean b2 = game.awayPl.getPlayersPlaying().stream().map(PlayerField::getPosition).
-                    anyMatch(p -> p.getX() > 120 || p.getX() < 0 || p.getY() > 90 || p.getY() < 0);
-          //  System.out.println(b || b2);
-        } // Primeira metade do jogo.
+        for (time = 0; time <= 45; time += 0.25) game.confrontation(); // First half
 
         game.ball_pos = !swap_side;
         game.ball_tracker.setX(60);
         game.ball_tracker.setY(45);
 
-        for (time = 45; time <= 90; time += 0.25) {
-            game.confrontation(); // Segunda metade do jogo.
-         //   System.out.println(game.getBall_tracker());
-            boolean b = game.homePl.getPlayersPlaying().stream().map(PlayerField::getPosition).
-                    anyMatch(p -> p.getX() > 120 || p.getX() < 0 || p.getY() > 90 || p.getY() < 0);
-            boolean b2 = game.awayPl.getPlayersPlaying().stream().map(PlayerField::getPosition).
-                    anyMatch(p -> p.getX() > 120 || p.getX() < 0 || p.getY() > 90 || p.getY() < 0);
-           // System.out.println(b || b2);
-        }
+        for (time = 45; time <= 90; time += 0.25) game.confrontation(); // Second half
 
         return game;
 
@@ -176,7 +161,6 @@ public class Match extends MatchRegister {
         advantage = x < probHomeWin; // Dá o sucesso do confronto à equipa de casa.
 
         aftermath(advantage);
-
     }
 
     /**
