@@ -10,23 +10,19 @@ public class Match extends MatchRegister {
     private static Point dimensionField;
     private PlayersField homePl;
 
-    // Tamanho do campo. (Tenho de perguntar ao Pires se a variável pode ser final ou static dado que é um valor constante.)
     private PlayersField awayPl;
+
     // Variável que controla quem possui a bola neste momento. True representa homeTeam e False representa awayTeam.
     private boolean ball_pos;
 
     // Tracker da bola. A posição da bola, sendo o ponto (45, 90) o centro do campo.
-
     private Point ball_tracker;
 
     private double time;
 
-
     /*------------------------------------------------Constructors----------------------------------------------------*/
 
-    //Tenho de fazer este
     public Match(Team homeTeam, Team awayTeam, Integer[] defaultBot, Integer[] strategyPlayer) {
-        //Tenho de fazer este
 
         super(LocalDate.now(), homeTeam, awayTeam, 0, 0, new ArrayList<>(), new ArrayList<>());
 

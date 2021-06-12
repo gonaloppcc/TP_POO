@@ -52,10 +52,10 @@ public class StatusView {
 
     public void printOptions() {
         System.out.print("""
-                What do you want to do?       
-                1) Check current game, manage teams and players?
-                2) Play a random Game?
-                3) Save Game or Load (in binary File)?
+                What do you want to do
+                1) Check current game, manage teams and players
+                2) Play a random Game
+                3) Save Game or Load (in binary File)
                 4) Exit
                 5) See credits
                 """);

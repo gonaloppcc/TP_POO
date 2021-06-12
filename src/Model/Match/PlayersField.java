@@ -1,9 +1,4 @@
 package Model.Match;
-//Coisas para fazer, importante
-/*
-Nos getter e setter meter clones, se não é apenas o endereço que vai e pode dar problemas
-Meter os enum a funcionar para ele poder usar aqui os enum, caso contrário é muito chato
- */
 
 import Model.Player.*;
 import Model.Team;

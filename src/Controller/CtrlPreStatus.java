@@ -23,7 +23,7 @@ public class CtrlPreStatus {
             if (s.length() == 0) {
                 return null;
             }
-            if (s.compareTo("meh") == 0) return "src/Files/profFicheiro";
+            if (s.compareTo("default") == 0) return "src/Files/profFicheiro";
             if (isValidPath(s)) {
                 return s;
             }
