@@ -1,10 +1,8 @@
 package View;
 
 import Model.Match.Match;
-import Model.Match.Point;
 
 import java.awt.EventQueue;
-import java.util.List;
 import javax.swing.JFrame;
 
 public class SwingTimerEx extends JFrame {
@@ -23,7 +21,7 @@ public class SwingTimerEx extends JFrame {
 
         setTitle("Football Field");
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     public static void displayField(Match match) {
