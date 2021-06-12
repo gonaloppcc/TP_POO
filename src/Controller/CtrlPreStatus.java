@@ -1,6 +1,6 @@
 package Controller;
 
-import View.PreStatus;
+import View.PreStatusView;
 
 import java.io.File;
 import java.util.Scanner;
@@ -11,9 +11,13 @@ import java.util.Scanner;
  */
 public class CtrlPreStatus {
 
+    /**
+     * Returns a String with a path to a file that exists.
+     * @return String with path
+     */
     public String readStatus() {
         Scanner in = new Scanner(System.in);
-        PreStatus errors = new PreStatus();
+        PreStatusView errors = new PreStatusView();
         while (true) {
             String s = in.nextLine();
             if (s.length() == 0) {
@@ -24,7 +28,7 @@ public class CtrlPreStatus {
                 return s;
             }
             else {
-                errors.invalidChoice();
+                errors.invalidPath();
             }
         }
     }
@@ -33,7 +37,7 @@ public class CtrlPreStatus {
     public static boolean isValidPath(String path) {
         File temp = new File(path);
         boolean exists = temp.exists();
-        System.out.println("Temp file exists : " + exists);
+        if (exists) PreStatusView.validPath(path);
         return  exists;
     }
 }

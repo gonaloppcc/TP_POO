@@ -5,6 +5,9 @@ import Model.Match.Point;
 
 import java.util.List;
 
+/**
+ * View of one match, except Java Swing part.
+ */
 public class MatchView {
 
     public  static void simulateOrNot(){

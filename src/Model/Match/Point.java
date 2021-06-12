@@ -2,6 +2,7 @@ package Model.Match;
 
 import java.util.Random;
 
+
 public class Point {
     private double x;
     private double y;

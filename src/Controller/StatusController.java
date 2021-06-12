@@ -1,7 +1,6 @@
 package Controller;
 
 
-import Model.Match.Match;
 import Model.Status;
 import Model.Team;
 import View.SlideTextSwing;
@@ -9,12 +8,18 @@ import View.StatusView;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
+/**
+ * Main controller of the game.
+ * Manages the different options of the game.
+ */
 public class StatusController {
     private Status model;
     private final StatusView view;
     private final Scanner terminal;
+
+
+    /*------------------------------- Constructors ------------------------*/
 
     public StatusController(Status model, StatusView view) {
         this.model = model;
@@ -22,18 +27,12 @@ public class StatusController {
         this.terminal = new Scanner(System.in);
     }
 
-    public List<String> getTeamsName() {
-        return model.getTeams().entrySet().stream().map(Map.Entry::getKey).collect(Collectors.toList());
-    }
+    /*------------------------------- Main functon ------------------------*/
 
-    public void updateView() {
-        view.printStatus(model.getGameName(), model.getTeams());
-    }
 
     public void interactions() {
         if (model.getTeams().size() > 0) chooseTeam();
-        boolean exit = false;
-        while (!exit) {
+        while (true) {
             view.printOptions();
             String num = terminal.nextLine();
             try {
@@ -41,23 +40,19 @@ public class StatusController {
                     case 1: //Verificar jogo, talvez trocar jogadores
                         StatusCheckGame novo = new StatusCheckGame();
                         this.model = novo.run(model.clone());
-                        System.out.println("1");
                         break;
                     case 2: //Jogar random
                         playOption();
-                        System.out.println("2");
 
                         break;
                     case 3: //Salvar ficheiro
                         saveLoadOption();
-                        System.out.println("3");
                         break;
-                    case 4:
+                    case 4: //End Game
                         view.EndGame();
                         return;
                     case 5:
                         SlideTextSwing noveo = new SlideTextSwing();
-                        //Depois não faz bem o exit
                         break;
                     default:
                         StatusView.InvalidOption();
@@ -69,10 +64,16 @@ public class StatusController {
         }
     }
 
+    /*------------------------------- Other functions ------------------------*/
+
+    /**
+     * Sets the favourite team of the player.
+     * This team is used to the confrontations, option 2 of the menu, because it is the home team.
+     */
     private void chooseTeam() {
         boolean validTeam = false;
         if (model.getTeams().size() < 1) {
-            view.noValidTeam();
+            StatusView.noValidTeam();
             return;
         }
         while (!validTeam) {
@@ -81,20 +82,22 @@ public class StatusController {
             StatusView.chooseTeam(model.getTeams().keySet(), "Please choose your favourite team (write name):");
             String teamChoosen = terminal.nextLine();
             if (teamChoosen.equals("meh")) {
-                List<String> valuesList = new ArrayList<String>(model.getTeams().keySet());
+                List<String> valuesList = new ArrayList<>(model.getTeams().keySet());
                 model.setPlayerTeam(valuesList.get(0));
                 return;
             }
             if (model.getTeams().containsKey(teamChoosen.trim())) {
                 model.setPlayerTeam(teamChoosen);
-                validTeam = !validTeam;
+                validTeam = true;
             } else StatusView.InvalidOption();
         }
     }
 
+    /**
+     * Third option of the menu.
+     */
     public void saveLoadOption() {
-        boolean validChoice = false;
-        while (!validChoice) {
+        while (true) {
             view.SaveOrLoad();
             String choice = terminal.nextLine();
             if (choice.trim().equals("Save")) {
@@ -123,13 +126,21 @@ public class StatusController {
 
     }
 
+    /**
+     * Second option of the menu
+     * It asks some questions before calling the Match.
+     */
     private void playOption() {
+        //If the opposite team is choosen or not.
         view.randomOrChoose();
         Team opposite;
+        if (model.getTeams().size() < 2) {
+            StatusView.noValidTeam();
+            return;
+        }
         while (true) {
             String option = terminal.nextLine();
             if (option.trim().toLowerCase(Locale.ROOT).equals("s")) {
-                //Caso escolha contra quem jogar
                 StatusCheckGame toChoose = new StatusCheckGame(model);
                 opposite = toChoose.getTeam("To play against");
                 break;
