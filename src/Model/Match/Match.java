@@ -216,8 +216,8 @@ public class Match extends MatchRegister {
 
         Comparator<PlayerField> dist = (x, y) -> (int) (x.getPosition().distance(this.ball_tracker) - y.getPosition().distance(this.ball_tracker));
 
-        this.homePl.movePlayers(this.ball_tracker, this.ball_pos, true);
-        this.awayPl.movePlayers(this.ball_tracker, this.ball_pos, false);
+        this.homePl.movePlayers(this.ball_tracker, this.ball_pos);
+        this.awayPl.movePlayers(this.ball_tracker, this.ball_pos);
 
         Random rand = new Random();
         this.ball_pos = vantage;

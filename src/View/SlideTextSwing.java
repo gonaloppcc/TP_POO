@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 public class SlideTextSwing {
 
     private JWindow window = new JWindow();
-    private JLabel label = new JLabel("Créditos:  Gonçalo e Tomás fizeram o jogo \n Diogo fez a interação com o jogador");
+    private JLabel label = new JLabel("Créditos: Trabalho realizado por Diogo Pires, Gonçalo Soares e Tomás Francisco");
     private JPanel windowContents = new JPanel();
 
     public SlideTextSwing() {
@@ -31,7 +31,6 @@ public class SlideTextSwing {
                     ((Timer) e.getSource()).stop();
                     label.setForeground(Color.red);
                     System.exit(0);
-                    return;
                 }
             }
         });
