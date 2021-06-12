@@ -44,7 +44,6 @@ public class Field extends JPanel implements ActionListener {
     }
 
     private void drawField(Graphics g) {
-        if (match.getTime() <= 90) {
             setBackground(Color.YELLOW);
             //System.out.println(this.home);
             g.setColor(Color.BLACK);
@@ -100,9 +99,8 @@ public class Field extends JPanel implements ActionListener {
 
 
             Toolkit.getDefaultToolkit().sync();
-        } else { // Game over
-            gameOver(g);
-        }
+        if (match.getTime() >= 90); // Game over
+            //gameOver(g);
     }
 
     private void gameOver(Graphics g) {
