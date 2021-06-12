@@ -42,11 +42,7 @@ public class PlayersField {
      */
 
     public static List<Player> getHowManyInThatPosition(List<Player> team, int position) {
-        Comparator<Player> cmpPlayer = new Comparator<Player>() {
-            public int compare(Player p1, Player p2) {
-                return p1.globalSkill() - p2.globalSkill();
-            }
-        };
+        Comparator<Player> cmpPlayer = Comparator.comparingInt(Player::globalSkill);
         if (position == 0) return team.stream().filter(x -> x instanceof GoalKeeper).sorted(cmpPlayer)
                 .collect(Collectors.toList());
         if (position == 1) return team.stream().filter(x -> x instanceof Defender).sorted(cmpPlayer)
@@ -210,7 +206,7 @@ public class PlayersField {
         while (true) {
             PlayersFieldView.printPlayerFields(teamI);
             try{
-            Integer playerNum = Integer.parseInt(terminal.nextLine());
+            int playerNum = Integer.parseInt(terminal.nextLine());
 
             if (teamI.stream().anyMatch(x -> x.getPlayer().getNum() == playerNum))
                 return teamI.stream().filter(x -> x.getPlayer().getNum() == playerNum).collect(Collectors.toList()).get(0);

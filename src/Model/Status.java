@@ -159,13 +159,12 @@ public class Status implements Serializable {
 
         if (home != null && away != null)
         {
-            MatchRegister one = null;
+            MatchRegister one;
             try {
                 one = new MatchRegister(info, home, away);
                 if (games.containsKey(one.getDate())) games.get(one.getDate()).add(one);
                 else games.put(one.getDate(), new ArrayList<>(List.of(one)));
-            } catch (InvalidLineExcpetion invalidLineExcpetion) {
-                return;
+            } catch (InvalidLineExcpetion ignored) {
             }
         }
     }

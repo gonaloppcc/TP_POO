@@ -9,26 +9,46 @@ import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+/**
+ * Field is object that is used to represent graphically a given match.
+ */
 public class Field extends JPanel implements ActionListener {
-
+    // Screen size
     private final int B_WIDTH = 1200;
     private final int B_HEIGHT = 1400;
+
+    // Refresh delay
     private final int DELAY = 250;
+
+    // The shown match
     Match match;
+
+    // The timer used
     private Timer timer;
 
 
+    /**
+     * Constructors a Field given a match.
+     * @param match a match
+     */
     public Field(Match match) {
         this.match = match;
         initField();
     }
 
+    /**
+     * Returns true if a given match has a valid time.
+     * @param time a time
+     * @return true if the time is valid
+     */
     public static boolean playTime(double time) {
         return (time >= 0 && time < 45) || (time > 45 && time < 90);
     }
 
+    /**
+     * Initializes this Field object.
+     */
     private void initField() {
-
         setBackground(Color.YELLOW);
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
 
@@ -36,6 +56,10 @@ public class Field extends JPanel implements ActionListener {
         timer.start();
     }
 
+    /**
+     * Paints the Field.
+     * @param g a graphics
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -43,10 +67,12 @@ public class Field extends JPanel implements ActionListener {
         drawField(g);
     }
 
+    /**
+     * Draws the football field.
+     * @param g a graphics
+     */
     private void drawField(Graphics g) {
-
         setBackground(Color.YELLOW);
-        //System.out.println(this.home);
         g.setColor(Color.BLACK);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 100));
         g.drawString("Football field", 300, 100);
@@ -61,10 +87,12 @@ public class Field extends JPanel implements ActionListener {
 
         g.fillRect(300, 200, 624, 423);
         g.setColor(Color.BLACK);
-//Balizas
+
+        // Balizas
         g.fillRect(270, 350, 30, 120);
         g.fillRect(920, 350, 30, 120);
-        //Áreas
+
+        // Áreas
         g.drawRect(300, 280, 180, 240);
         g.drawRect(744, 280, 180, 240);
         g.drawOval(612, 390, 30, 30);
@@ -75,7 +103,7 @@ public class Field extends JPanel implements ActionListener {
         g2d.drawLine(300 + 5 * 30, 200, 300 + 5 * 30, (int) (200 + 90 * 4.5));
         g2d.drawLine(300 + 5 * 90, 200, 300 + 5 * 90, (int) (200 + 90 * 4.5));
 
-        //gets rid of the copy
+        // Gets rid of the copy
         g2d.dispose();
 
         // Time of the game
@@ -100,31 +128,16 @@ public class Field extends JPanel implements ActionListener {
 
 
         Toolkit.getDefaultToolkit().sync();
-        if (match.getTime() >= 90) ; // Game over
-        //gameOver(g);
     }
 
-    private void gameOver(Graphics g) {
-        if (match.getTime() >= 90) {
-            String msg = "Game Over";
-            Font small = new Font("Helvetica", Font.BOLD, 14);
-            FontMetrics metr = getFontMetrics(small);
-
-            g.setColor(Color.BLACK);
-            g.setFont(small);
-            g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)) / 2, B_HEIGHT / 2);
-            g.dispose();
-
-        }
-        if (match.getTime() == 45) {
-            g.dispose();
-        }
-    }
-
+    /**
+     * Given a event this method does something.
+     * @param e a actionEvent
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (playTime(match.getTime())) {
-            match.run(0.25);
+            match.run(0.25); // Runs the game if the game time is not over.
             repaint();
         }
     }
