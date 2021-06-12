@@ -48,10 +48,10 @@ public class Point {
             else return new Point(positionInX, yMax-(lateralsDimension/2));
 
         } else {      //No x ele pode
-            if (pos.equals(Position.DEFENDER)) return new Point(convertHomeAway(rnd.nextInt(30), home), lateralsDimension+ roundFloat(fraction, 50));
+            if (pos.equals(Position.DEFENDER)) return new Point(convertHomeAway(15, home), lateralsDimension+ roundFloat(fraction, 50));
             else {
-                if (pos.equals(Position.MIDFIELD)) return new Point(convertHomeAway(rnd.nextInt(60)+30, home), lateralsDimension+ roundFloat(fraction, 50));
-                else return new Point(convertHomeAway(rnd.nextInt(30)+90, home), lateralsDimension+ roundFloat(fraction, 50));
+                if (pos.equals(Position.MIDFIELD)) return new Point(convertHomeAway(55, home), lateralsDimension+ roundFloat(fraction, 50));
+                else return new Point(convertHomeAway(100, home), lateralsDimension+ roundFloat(fraction, 50));
             }
 
         }

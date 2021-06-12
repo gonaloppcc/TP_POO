@@ -185,7 +185,7 @@ public class PlayersField {
 
     // Function that moves players in the field
     public void movePlayers(Point pos_ball, boolean homeHasBall) {
-        this.playersPlaying.forEach(playerField -> playerField.movePlayer(pos_ball, homeHasBall));
+        this.playersPlaying.stream().filter(p -> p.getMainPosition() != Position.GOALKEEPER).forEach(playerField -> playerField.movePlayer(pos_ball, homeHasBall));
 
     }
 

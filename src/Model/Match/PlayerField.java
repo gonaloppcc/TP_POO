@@ -10,6 +10,7 @@ class PlayerField {
     private Player player;
     private Point position; // current position on the field
     private Position mainPosition; // main position
+    private Point beginPosition;
     private boolean lateral;
     private Energy energy; // range [0, 100]
     private int yellowCards;//0 não tem nenhum, 1 tem amarelo, 2 tem vermelho
@@ -20,7 +21,7 @@ class PlayerField {
     /*------------------------------------------------Constructors----------------------------------------------------*/
 
     public PlayerField(Player playerToSet, boolean home) {
-        this.player = playerToSet;
+        player = playerToSet;
         mainPosition = bestPosition(playerToSet);
         lateral = mainPosition.equals(Position.LATERAL);
         energy = new Energy(100);
@@ -31,16 +32,19 @@ class PlayerField {
             if (home) position = new Point(1, 45);
             else position = new Point(119, 45);
         }
+
+        beginPosition = position.clone();
     }
 
     public PlayerField(Player playerToSet, float where, boolean home) {
-        this.player = playerToSet;
+        player = playerToSet;
         mainPosition = bestPosition(playerToSet);
         lateral = mainPosition.equals(Position.LATERAL);
         energy = new Energy(100);
         yellowCards = 0;
         redCard = false;
         position = Point.createInitialPosition(where, lateral, mainPosition, home);
+        beginPosition = position.clone();
     }
 
     /**
@@ -53,20 +57,21 @@ class PlayerField {
      */
     public PlayerField(Player playerToSet, float where, Integer positionGiven, boolean home) {
         Position notNatural = numberToPosition(positionGiven);
-        this.player = playerToSet;
+        player = playerToSet;
         mainPosition = notNatural;
         lateral = notNatural.equals(Position.LATERAL);
         energy = new Energy(100);
         yellowCards = 0;
         redCard = false;
         position = Point.createInitialPosition(where, lateral, notNatural, home);
-
+        beginPosition = position.clone();
     }
 
-    public PlayerField(Player player, Point position, Position mainPosition, boolean lateral, Energy energy, int yellowCards, boolean redCards) {
+    public PlayerField(Player player, Point position, Position mainPosition, Point beginPosition, boolean lateral, Energy energy, int yellowCards, boolean redCards) {
         this.player = player.clone();
         this.position = position;
         this.mainPosition = mainPosition;
+        this.beginPosition = beginPosition;
         this.lateral = lateral;
         this.energy = energy.clone();
         this.yellowCards = yellowCards;
@@ -74,17 +79,21 @@ class PlayerField {
     }
 
     public PlayerField(PlayerField playerField) {
-        this(playerField.getPlayer(), playerField.getPosition(), playerField.getMainPosition(), playerField.isLateral(), playerField.getEnergy(), playerField.getYellowCards(), playerField.isRedCard());
+        this(playerField.getPlayer(), playerField.getPosition(), playerField.getMainPosition(), playerField.getBeginPosition(), playerField.isLateral(), playerField.getEnergy(), playerField.getYellowCards(), playerField.isRedCard());
     }
 
     /*------------------------------------------ Getters e Setters ---------------------------------------------------*/
 
-    private static Position bestPosition(Player x) { // <- Não devia ser static?
+    private static Position bestPosition(Player x) {
         if (x instanceof GoalKeeper) return Position.GOALKEEPER;
         if (x instanceof Defender) return Position.DEFENDER;
         if (x instanceof Midfield) return Position.MIDFIELD;
         if (x instanceof Striker) return Position.STRIKER;
         return Position.LATERAL;
+    }
+
+    public static double getDistance() {
+        return distance;
     }
 
     public Player getPlayer() {
@@ -139,10 +148,17 @@ class PlayerField {
         return redCard;
     }
 
-    /* ------------------------------------- Other methods ---------------------------------------------------------- */
-
     public void setRedCard(boolean redCard) {
         this.redCard = redCard;
+    }
+
+    public Point getBeginPosition() {
+        return beginPosition;
+    }
+    /* ------------------------------------- Other methods ---------------------------------------------------------- */
+
+    public void setBeginPosition(Point beginPosition) {
+        this.beginPosition = beginPosition;
     }
 
     private Position numberToPosition(Integer x) {
@@ -187,11 +203,11 @@ class PlayerField {
     }
 
     private void moveBack(Point pos_ball, double distance) {
-        this.position.addVector(-distance, distance/(getPosition().getY()-pos_ball.getY()));
+        this.position.addVector(-distance, distance / (getPosition().getY() - pos_ball.getY()));
     }
 
     private void moveForward(Point pos_ball, double distance) {
-        this.position.addVector(distance, distance / (pos_ball.getY()-getPosition().getY()));
+        this.position.addVector(distance, distance / (pos_ball.getY() - getPosition().getY()));
 
     }
 
