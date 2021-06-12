@@ -80,4 +80,8 @@ public class StatusView {
     public static void noValidTeam() {
         System.out.println("There is no valid team");
     }
+
+    public static void numberOfInvalidLines(int num){
+        System.out.println("The file has "+num+ " invalid lines");
+    }
 }

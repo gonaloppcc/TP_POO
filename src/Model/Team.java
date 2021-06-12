@@ -25,7 +25,7 @@ public class Team implements Serializable {
         this.players = new ArrayList<>();
     }
 
-    public Team(String fromFile) throws NotValidException {
+    public Team(String fromFile) throws InvalidLineExcpetion {
         String [] divisoes = fromFile.split("###");
         this.name = divisoes[0];
         //for (String x : divisoes) System.out.println("Jogador: "+x);
@@ -102,45 +102,45 @@ public class Team implements Serializable {
     /**
      * Convert a line related to one player to one object of the class Player, and then stores in this team.
      * @param line Line from a text file.
-     * @throws NotValidException When the line is invalid.
+     * @throws InvalidLineExcpetion When the line is invalid.
      */
-    public void addPlayer(String line) throws NotValidException {
-        if (!line.contains(":") || !line.contains(",")) throw new NotValidException(line);
+    public void addPlayer(String line) throws InvalidLineExcpetion {
+        if (!line.contains(":") || !line.contains(",")) throw new InvalidLineExcpetion(line);
         String[] info = line.split(":");
         String[] atributes =  info[1].split(",");
         for (String x : atributes) x =  x.trim();
         if (line.startsWith("Guarda-Redes")) {
             if (atributes.length != 10) {
                 StatusView.InvalidLine();
-                throw new NotValidException(atributes.toString());
+                throw new InvalidLineExcpetion(atributes.toString());
             }
             players.add(new GoalKeeper(atributes));
         }
         if (line.startsWith("Lateral")) {
             if (atributes.length != 10) {
                 StatusView.InvalidLine();
-                throw new NotValidException(atributes.toString());
+                throw new InvalidLineExcpetion(atributes.toString());
             }
             players.add(new BackWing(atributes));
         }
         if (line.startsWith("Defesa")) {
             if (atributes.length != 9) {
                 StatusView.InvalidLine();
-                throw new NotValidException(atributes.toString());
+                throw new InvalidLineExcpetion(atributes.toString());
             }
             players.add(new Defender(atributes));
         }
         if (line.startsWith("Medio")) {
             if (atributes.length != 10) {
                 StatusView.InvalidLine();
-                throw new NotValidException(atributes.toString());
+                throw new InvalidLineExcpetion(atributes.toString());
             }
             players.add(new Midfield(atributes));
         }
         if (line.startsWith("Avancado")) {
             if (atributes.length != 9) {
                 StatusView.InvalidLine();
-                throw new NotValidException(atributes.toString());
+                throw new InvalidLineExcpetion(atributes.toString());
             }
             players.add(new Striker(info[1].split(",")));
         }
