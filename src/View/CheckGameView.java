@@ -1,9 +1,11 @@
 package View;
 
+import Model.Match.MatchRegister;
 import Model.Player.Player;
 import Model.Team;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CheckGameView {
     public static void printOptions() {
@@ -13,7 +15,8 @@ public class CheckGameView {
                 2) Create player
                 3) Check team
                 4) Exchange player 
-                5) Go back to previous menu
+                5) See history 
+                6) Go back to previous menu
                 """);
     }
 
@@ -45,7 +48,7 @@ public class CheckGameView {
     }
 
     public static void printTeam(Team toPrint) {
-        System.out.println(toPrint.toStringSkillsAndHistory());
+        if (toPrint != null) System.out.println(toPrint.toStringSkillsAndHistory());
     }
     public static void playersWithNumber(List<Player> sameName){
         System.out.println(concatWithNumbers(sameName));
@@ -56,10 +59,23 @@ public class CheckGameView {
         for (int i = 0; i < list.size(); i++) res.append(i+")"+list.get(i));
         return res.toString();
     }
-    private static String myPrint(List<String> teams){
-        for (int i = 5; i < teams.size(); i+= 5)
-            teams.set(i, teams.get(i).concat(" \n "));
-        return String.join(" // ", teams);
+    private static String myPrint(List<String> line, int num){
+        for (int i = num; i < line.size(); i+= num)
+            line.set(i, line.get(i).concat(" \n "));
+        return String.join(" // ", line);
     }
+
+    public static void InsertDateToSeeGames(){
+        System.out.println("Please insert a date to see the games in between" +
+                "\nThe format is 'year-month-day/year-month-day' (two digits for month)");
+    }
+
+    public static void printGames(List<MatchRegister> x){
+        System.out.println("Those are the games in between\n" +
+                myPrint(x.stream().map(MatchRegister::toString).collect(Collectors.toList()),1));
+    }
+
+
 }
+
 

@@ -77,4 +77,7 @@ public class StatusView {
     public void randomOrChoose(){
         System.out.println("Do you want to choose who you are going to play (s/n)?");
     }
+    public static void noValidTeam() {
+        System.out.println("There is no valid team");
+    }
 }

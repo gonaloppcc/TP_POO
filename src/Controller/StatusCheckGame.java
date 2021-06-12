@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.Match.MatchRegister;
 import Model.NotValidException;
 import Model.Player.Player;
 import Model.Status;
@@ -7,8 +8,12 @@ import Model.Team;
 import View.CheckGameView;
 import View.StatusView;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 /**
  * Class used in the first option of the menu "1) Check current game, manage teams and players?"
@@ -57,7 +62,10 @@ public class StatusCheckGame {
                       case 4: //Change player
                           changePlayer();
                           break;
-                      case 5:
+                      case 5: //See History
+                          seeHistory();
+                          break;
+                      case 6:
                           stayHere = false;//Go back
                           break;
                       default:
@@ -78,11 +86,15 @@ public class StatusCheckGame {
      * @return
      */
     public Team getTeam(String message){
-        while (true){
-            String possibleTeam = printTeamReturnName(message);
-            if (status.getTeams().containsKey(possibleTeam.trim())) return status.getTeam(possibleTeam.trim());
-            else StatusView.InvalidOption();
+        if (status.getTeams().size() < 1) StatusView.noValidTeam();
+        else {
+            while (true){
+                String possibleTeam = printTeamReturnName(message);
+                if (status.getTeams().containsKey(possibleTeam.trim())) return status.getTeam(possibleTeam.trim());
+                else StatusView.InvalidOption();
+            }
         }
+    return null;
     }
     /*---------------------------- Private Functions ----------------------*/
 
@@ -178,6 +190,43 @@ public class StatusCheckGame {
             Team destin = getTeam("to where he goest");
             destin.addPlayer(moved);
         }
+
+    private void seeHistory(){
+        while(true){
+            CheckGameView.InsertDateToSeeGames();
+            String maybeDate = terminal.nextLine();
+           try {
+               String[] splitted = maybeDate.split("/");
+//               DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ISO_);
+               LocalDate init;
+               LocalDate end;
+               init = LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse(splitted[0]));
+               end = LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse(splitted[1]));
+               if (init.isAfter(end)) throw new Exception();
+               List<MatchRegister> toPrint = status.getGames().values().stream()
+                       .filter(x -> getsGamesInBetween(init, end, x)).flatMap(x -> x.stream()).collect(Collectors.toList());
+               CheckGameView.printGames(toPrint);
+               return;
+           }
+           catch (Exception e){
+               StatusView.InvalidOption();
+           }
+           }
+
     }
+
+    /**
+     * Check if this games, all with the same date, are between those two dates.
+     * Because they are stored by date.
+     * @param init
+     * @param end
+     * @param toCheck
+     */
+    private boolean getsGamesInBetween(LocalDate init, LocalDate end, List<MatchRegister> toCheck){
+        LocalDate one = toCheck.get(0).getDate();
+        if (one.isAfter(init) && one.isBefore(end)) return true;
+        return false;
+    }
+}
 
 
