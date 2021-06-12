@@ -153,8 +153,9 @@ public class StatusCheckGame {
      * @param sameName
      * @return
      */
-    private Player chooserPlayerManyNames(List<Player> sameName) {
+    private static Player chooserPlayerManyNames(List<Player> sameName) {
         CheckGameView.playersWithNumber(sameName);
+        Scanner terminal = new Scanner(System.in);
         int option;
         while(true) {
             CheckGameView.playersWithNumber(sameName);
@@ -182,6 +183,8 @@ public class StatusCheckGame {
            }
 
        }
+
+
 
     private void changePlayer(){
             Team origin = getTeam("from where it comes");

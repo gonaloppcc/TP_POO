@@ -7,10 +7,14 @@ Meter os enum a funcionar para ele poder usar aqui os enum, caso contrário é m
 
 import Model.Player.*;
 import Model.Team;
+import View.CheckGameView;
+import View.PlayersFieldView;
+import View.StatusView;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class PlayersField {
@@ -25,35 +29,35 @@ public class PlayersField {
 //}
 
 
-
     /**
      * Get the players in a given position, position 0 is the GoalKeeper.
      * A lista é ordenada
+     *
      * @param team
      * @param position
      * @return
      */
 
-    public static List<Player> getHowManyInThatPosition(List<Player> team, int position){
-    Comparator<Player> cmpPlayer = new Comparator<Player>() {
-        public int compare(Player p1, Player p2) {
-            return p1.globalSkill() - p2.globalSkill();
-        }
-    };
-    if (position == 0) return team.stream().filter(x -> x instanceof GoalKeeper).sorted(cmpPlayer)
-            .collect(Collectors.toList());
-    if (position == 1 ) return team.stream().filter(x -> x instanceof Defender).sorted(cmpPlayer)
-            .collect(Collectors.toList());
-    if (position == 2 ) return team.stream().filter(x -> x instanceof Midfield).sorted(cmpPlayer)
-            .collect(Collectors.toList());
-    if (position == 3 ) return team.stream().filter(x -> x instanceof Striker).sorted(cmpPlayer)
-            .collect(Collectors.toList());
-    if (position == 4 ) return team.stream().filter(x -> x instanceof BackWing).sorted(cmpPlayer)
-            .collect(Collectors.toList());
-    if (position == -1) return team.stream().sorted(cmpPlayer.reversed()).collect(Collectors.toList());
-    System.out.println("Erro neste posição: "+position);
-    return null;
-}
+    public static List<Player> getHowManyInThatPosition(List<Player> team, int position) {
+        Comparator<Player> cmpPlayer = new Comparator<Player>() {
+            public int compare(Player p1, Player p2) {
+                return p1.globalSkill() - p2.globalSkill();
+            }
+        };
+        if (position == 0) return team.stream().filter(x -> x instanceof GoalKeeper).sorted(cmpPlayer)
+                .collect(Collectors.toList());
+        if (position == 1) return team.stream().filter(x -> x instanceof Defender).sorted(cmpPlayer)
+                .collect(Collectors.toList());
+        if (position == 2) return team.stream().filter(x -> x instanceof Midfield).sorted(cmpPlayer)
+                .collect(Collectors.toList());
+        if (position == 3) return team.stream().filter(x -> x instanceof Striker).sorted(cmpPlayer)
+                .collect(Collectors.toList());
+        if (position == 4) return team.stream().filter(x -> x instanceof BackWing).sorted(cmpPlayer)
+                .collect(Collectors.toList());
+        if (position == -1) return team.stream().sorted(cmpPlayer.reversed()).collect(Collectors.toList());
+        System.out.println("Erro neste posição: " + position);
+        return null;
+    }
 
     public PlayersField(Team bot, Integer[] strategy, boolean home) {
 
@@ -62,7 +66,7 @@ public class PlayersField {
         playersBench = new ArrayList<>();
         List<Player> onField = new ArrayList<>();
         List<Player> allPlayers = bot.getPlayers();
-         //onField.addAll(bot.getPlayers().stream().filter(x -> x instanceof GoalKeeper).sorted(cmpPlayer).limit(1).collect(Collectors.toList()));
+        //onField.addAll(bot.getPlayers().stream().filter(x -> x instanceof GoalKeeper).sorted(cmpPlayer).limit(1).collect(Collectors.toList()));
 //        onField.add(getHowManyInThatPosition(allPlayers, 0).get(0));
 //        allPlayers.remove(onField.get(0));
         for (int i = 0; i < strategy.length; i++)
@@ -72,13 +76,12 @@ public class PlayersField {
                 if (x.size() >= strategy[i]) {
                     onField.addAll(x.subList(0, strategy[i]));
                     allPlayers.removeAll(x.subList(0, strategy[i]));
-                }
-                else {
+                } else {
                     //Adiciona jogadores corretos nessa posição
                     onField.addAll(x);
                     allPlayers.removeAll(x);
                     //Adiciona maus jogadores para encher
-                    List<Player> positionNotNatural = getHowManyInThatPosition(allPlayers, -1).subList(0, strategy[i]-x.size());
+                    List<Player> positionNotNatural = getHowManyInThatPosition(allPlayers, -1).subList(0, strategy[i] - x.size());
                     onField.addAll(positionNotNatural);
                     allPlayers.removeAll(positionNotNatural);
                 }
@@ -87,25 +90,26 @@ public class PlayersField {
         for (Player bench : allPlayers) playersBench.add(new PlayerField(bench, home));
         playersPlaying.addAll(initialPosition(strategy, onField, home));
         System.out.println("Uma equipa: ");
-        for(PlayerField x : playersPlaying) System.out.println("Um: "+x);
+        for (PlayerField x : playersPlaying) System.out.println("Um: " + x);
     }
 
     /**
-     *  Takes a list of players ready to play, and sorts them in field.
-     *  This method uses adequate constructors to distribute them.
-      * @param strategy
+     * Takes a list of players ready to play, and sorts them in field.
+     * This method uses adequate constructors to distribute them.
+     *
+     * @param strategy
      * @param onField
      * @param home
      * @return
      */
-    private static List<PlayerField> initialPosition(Integer[] strategy, List<Player> onField, boolean home){
+    private static List<PlayerField> initialPosition(Integer[] strategy, List<Player> onField, boolean home) {
         List<PlayerField> initialsPositions = new ArrayList<>();
         initialsPositions.add(new PlayerField(onField.remove(0), home));
         int lidos = 0;
         for (int position = 1; position < strategy.length; position++)
             for (int player = 0; player < strategy[position] && lidos < onField.size(); player++) {
-                if(strategy[position] != 0){
-                    initialsPositions.add(new  PlayerField(onField.get(lidos), ((float)player) / ((float)strategy[position]), position, home));
+                if (strategy[position] != 0) {
+                    initialsPositions.add(new PlayerField(onField.get(lidos), ((float) player) / ((float) strategy[position]), position, home));
                     lidos++;
                 }
 
@@ -113,7 +117,7 @@ public class PlayersField {
         return initialsPositions;
     }
 
-    public static List<PlayerField> initialPositionAfterGoal(Integer[] strategy, List<PlayerField> onField, boolean home){
+    public static List<PlayerField> initialPositionAfterGoal(Integer[] strategy, List<PlayerField> onField, boolean home) {
         List<PlayerField> initialsPositions = new ArrayList<>();
         List<Player> sortGivenList = new ArrayList<>();
         sortGivenList.add(onField.stream().filter(PlayerField::isGoalKeeperInField).collect(Collectors.toList()).get(0).getPlayer());
@@ -127,7 +131,7 @@ public class PlayersField {
     // Construtores
     public PlayersField(List<PlayerField> playersPlaying, List<PlayerField> playersBench) {
         this.playersPlaying = playersPlaying;
-        this.playersBench  = playersBench;
+        this.playersBench = playersBench;
     }
 
     public List<PlayerField> getPlayersCloseToTheBall(Point ballPosition) {
@@ -161,26 +165,16 @@ public class PlayersField {
         this.playersBench = playersBench;
     }
 
-    //Função que faz um substituição
+
     public void replace(PlayerField in, PlayerField out) {
-        if (!playersBench.contains(in) || !playersPlaying.contains(out)) return;
-        // ^ Talvez retorna um valor de retorno para dizer se a substituição correu bem
+        if (playersBench.contains(in) && playersPlaying.contains(out)) {
+            PlayerField.copy(in, out);
+            playersPlaying.remove(out);
+            playersPlaying.add(in);
+            playersBench.add(out);
+            playersBench.remove(in);
+        }
 
-        // Vai do banco para o campo
-        playersBench.remove(in);
-        playersPlaying.add(in);
-
-        // Do campo vai para o banco
-        playersPlaying.remove(out);
-        playersBench.add(out);
-    }
-
-    public void replace(PlayerField in, PlayerField out, Position inPosition, boolean lateral) {
-        this.replace(in, out);
-
-        // Colocar uma nova mainPosition e meter a lateral
-        in.setMainPosition(inPosition);
-        in.setLateral(lateral);
     }
 
     // Function that moves players in the field
@@ -198,11 +192,30 @@ public class PlayersField {
         this.strategy = strategy;
     }
 
-    public List<Point> playersPosition(){
+    public List<Point> playersPosition() {
         List<Point> p = new ArrayList<>(playersPlaying.size());
         for (PlayerField pl : playersPlaying) p.add(pl.getPosition());
         return p;
         //return playersPlaying.stream().map(PlayerField::getPosition).collect(Collectors.toList());
     }
-}
 
+    public static PlayerField getPlayer(List<PlayerField> teamI) {
+        Player target;
+        Scanner terminal = new Scanner(System.in);
+        //Escolhe o jogador que sai
+        while (true) {
+            PlayersFieldView.printPlayerFields(teamI);
+            try{
+            Integer playerNum = Integer.parseInt(terminal.nextLine());
+
+            if (teamI.stream().anyMatch(x -> x.getPlayer().getNum() == playerNum))
+                return teamI.stream().filter(x -> x.getPlayer().getNum() == playerNum).collect(Collectors.toList()).get(0);
+                StatusView.InvalidOption();
+            }
+            catch(Exception e) {
+            StatusView.InvalidOption();
+            }
+
+        }
+    }
+}

@@ -59,7 +59,7 @@ public class CheckGameView {
         for (int i = 0; i < list.size(); i++) res.append(i+")"+list.get(i));
         return res.toString();
     }
-    private static String myPrint(List<String> line, int num){
+    public static String myPrint(List<String> line, int num){
         for (int i = num; i < line.size(); i+= num)
             line.set(i, line.get(i).concat(" \n "));
         return String.join(" // ", line);

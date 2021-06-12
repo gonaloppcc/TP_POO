@@ -475,4 +475,8 @@ public class Match extends MatchRegister {
         else awayPl.setStrategy(strategy);
     }
 
+    public void changePlayer(PlayerField in,PlayerField out){
+        homePl.replace(in, out);
+    }
+
 }

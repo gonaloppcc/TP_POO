@@ -1,6 +1,9 @@
 package Controller;
 
 import Model.Match.Match;
+import Model.Match.PlayerField;
+import Model.Match.PlayersField;
+import Model.Player.Player;
 import Model.Team;
 import View.MatchView;
 import View.StatusView;
@@ -34,6 +37,7 @@ public class MatchController {
             this.game = new Match(home, away, new Integer[]{1, 3, 3, 3, 1}, getStrategy());
             SwingTimerEx.displayField(game);
             replaceQuestion();
+            game.setTime(46);
             SwingTimerEx.displayField(game);
         } else {
             this.game = Match.game_play(home, away, new Integer[]{1, 3, 3, 3, 1}, getStrategy());
@@ -126,13 +130,17 @@ public class MatchController {
             String option = terminal.nextLine();
             if (option.trim().toLowerCase(Locale.ROOT).equals("s")) {
                 //Caso escolha contra quem jogar
-               return;
+                PlayerField out = PlayersField.getPlayer(game.getHomePl().getPlayersPlaying());
+                PlayerField in = PlayersField.getPlayer(game.getHomePl().getPlayersBench());
+
             }
-            if (option.trim().toLowerCase(Locale.ROOT).equals("n")) {
-                //Só existe uma equipa, joga contra ele próprio
-                return;
+           else {
+               if (option.trim().toLowerCase(Locale.ROOT).equals("n")) {
+                    //Só existe uma equipa, joga contra ele próprio
+                    return;
                 }
-            StatusView.InvalidLine();
+                StatusView.InvalidLine();
+            }
         }
         }
     }

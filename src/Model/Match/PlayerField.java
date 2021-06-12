@@ -5,7 +5,7 @@ import com.sun.nio.sctp.PeerAddressChangeNotification;
 
 import java.util.List;
 
-class PlayerField {
+public class PlayerField {
     private static final double distance = 2;
     private Player player;
     private Point position; // current position on the field
@@ -19,6 +19,7 @@ class PlayerField {
     private boolean redCard;
 
     /*------------------------------------------------Constructors----------------------------------------------------*/
+
 
     public PlayerField(Player playerToSet, boolean home) {
         player = playerToSet;
@@ -77,6 +78,7 @@ class PlayerField {
         this.yellowCards = yellowCards;
         this.redCard = redCards;
     }
+
 
     public PlayerField(PlayerField playerField) {
         this(playerField.getPlayer(), playerField.getPosition(), playerField.getMainPosition(), playerField.getBeginPosition(), playerField.isLateral(), playerField.getEnergy(), playerField.getYellowCards(), playerField.isRedCard());
@@ -216,6 +218,7 @@ class PlayerField {
     public String toString() {
         return "PlayerField{" +
                 "player=" + player +
+                "num =" + player.getNum() +
                 "joga a=" + mainPosition +
                 ", position=" + position +
                 '}';
@@ -243,5 +246,20 @@ class PlayerField {
 
     public boolean isStrikerInField() {
         return this.mainPosition.equals(Position.STRIKER);
+    }
+
+    /**
+     * When a substitution occurs in game.
+     * @param in
+     * @param out
+     */
+    public static void copy(PlayerField in, PlayerField out){
+        in.player = in.getPlayer();
+        in.position = out.beginPosition;
+        in.mainPosition = out.mainPosition;
+        in.beginPosition = out.beginPosition;
+        in.lateral = out.lateral;
+        in.energy = new Energy(100);
+        in.yellowCards = 0;
     }
 }

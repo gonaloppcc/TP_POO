@@ -44,7 +44,7 @@ public class Field extends JPanel implements ActionListener {
     }
 
     private void drawField(Graphics g) {
-        if (match.getTime() <= 90) {
+        if (playTime(match.getTime())) {
             setBackground(Color.YELLOW);
             //System.out.println(this.home);
             g.setColor(Color.BLACK);
@@ -106,24 +106,31 @@ public class Field extends JPanel implements ActionListener {
     }
 
     private void gameOver(Graphics g) {
+        if (match.getTime() >= 90) {
+            String msg = "Game Over";
+            Font small = new Font("Helvetica", Font.BOLD, 14);
+            FontMetrics metr = getFontMetrics(small);
 
-        String msg = "Game Over";
-        Font small = new Font("Helvetica", Font.BOLD, 14);
-        FontMetrics metr = getFontMetrics(small);
+            g.setColor(Color.BLACK);
+            g.setFont(small);
+            g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)) / 2, B_HEIGHT / 2);
+            g.dispose();
 
-        g.setColor(Color.BLACK);
-        g.setFont(small);
-        g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)) / 2, B_HEIGHT / 2);
-        g.dispose();
-    }
+        }
+        if (match.getTime() == 45) g.dispose();
+        }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (match.getTime() > 90) {
+        if (!playTime(match.getTime())) {
             //System.exit(0);
         } else {
             match.run(1);
         }
         repaint();
+    }
+    public static boolean playTime(int time){
+        if ((time >= 0 && time < 45) || (time > 45 && time < 90)) return true;
+        return false;
     }
 }
