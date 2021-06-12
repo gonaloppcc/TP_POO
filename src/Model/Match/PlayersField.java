@@ -7,7 +7,6 @@ Meter os enum a funcionar para ele poder usar aqui os enum, caso contrário é m
 
 import Model.Player.*;
 import Model.Team;
-import View.CheckGameView;
 import View.PlayersFieldView;
 import View.StatusView;
 

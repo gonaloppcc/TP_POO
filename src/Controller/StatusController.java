@@ -49,11 +49,9 @@ public class StatusController {
                         saveLoadOption();
                         break;
                     case 4: //End Game
+                        SlideTextSwing noveo = new SlideTextSwing();
                         view.EndGame();
                         return;
-                    case 5:
-                        SlideTextSwing noveo = new SlideTextSwing();
-                        break;
                     default:
                         StatusView.InvalidOption();
                 }
@@ -100,6 +98,7 @@ public class StatusController {
         while (true) {
             view.SaveOrLoad();
             String choice = terminal.nextLine();
+            if (choice.trim().equals("Exit")) return;
             if (choice.trim().equals("Save")) {
                 view.Path();
                 try {
@@ -159,6 +158,10 @@ public class StatusController {
                 break;
             }
             StatusView.InvalidLine();
+        }
+        if (opposite.getPlayers().size() < 12) {
+            StatusView.invalidTeam();
+            return;
         }
         MatchController simulation = new MatchController(model.getTeam(model.getPlayerTeam()), opposite, model.getPlayersPerTeam());
         model.addMatch(simulation.getGame());

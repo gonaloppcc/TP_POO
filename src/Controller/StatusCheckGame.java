@@ -172,6 +172,8 @@ public class StatusCheckGame {
        Player target;
        //Escolhe o jogador que sai
        while (true){
+
+           CheckGameView.printTeam(team, " Write the full name to select.\n");
            CheckGameView.printTeam(team);
            String player = terminal.nextLine();
            List<Player> sameName = team.getPlayer(player);
