@@ -1,6 +1,7 @@
 package Model.Match;
 
 import Model.Team;
+
 import java.time.LocalDate;
 import java.util.*;
 
@@ -9,11 +10,9 @@ public class Match extends MatchRegister {
     private PlayersField homePl;
     private PlayersField awayPl;
 
-    // Variável que controla quem possui a bola neste momento. True representa homeTeam e False representa awayTeam.
-    private boolean ball_pos;
+    private boolean ball_pos; // if the home team has the ball
 
-    // Tracker da bola. A posição da bola, sendo o ponto (45, 90) o centro do campo.
-    private Point ball_tracker;
+    private Point ball_tracker; // Position of the ball
 
     private double time;
 
@@ -133,17 +132,16 @@ public class Match extends MatchRegister {
      * After obtaining the players involved in the confrontation from both teams, the global skills of each sub-team are calculated.
      * Depending on those values, it utilizes the function prob to calculate who has the bigger probability to win the confrontation.
      * And then applies that probability, giving an "advantage" (meaning, a boolean value to decide who won the confrontation.) to the aftermath function.
-     *
      */
     public void confrontation() {
 
         Random rand = new Random();
 
-        // Obtém todos os jogadores perto da bola, por equipa.
+        // Gets all the closest players to the ball, by team. Obtém todos os jogadores perto da bola, por equipa.
         List<PlayerField> homeSquad = this.homePl.getPlayersCloseToTheBall(this.ball_tracker);
         List<PlayerField> awaySquad = this.awayPl.getPlayersCloseToTheBall(this.ball_tracker);
 
-        // Cálculo de probabilidade(utiliza o Random)
+        // probability calculationProbability Cálculo de probabilidade(utiliza o Random)
 
         double homeSquadSkill = 0;
         for (PlayerField p : homeSquad) homeSquadSkill += p.skill();
@@ -151,20 +149,17 @@ public class Match extends MatchRegister {
         double awaySquadSkill = 0;
         for (PlayerField p : awaySquad) awaySquadSkill += p.skill();
 
-        double x = rand.nextDouble(); // Número que vai servir como o nosso potencial confronto.
-        boolean advantage; // Quem ganha o confronto.
+        double x = rand.nextDouble(); // Random number
+        boolean advantage; // if the home team has won the confrontation
 
-        // O cálculo da probabilidade funciona numa escala de 0-1. Dependendo de quem tem a vantagem, a probabilidade muda para que seja mais provável uma equipa ganhar do que outra, mas não torna imo«possível uma vitória contra a probabilidade.
+        double probHomeWin = prob(homeSquadSkill, awaySquadSkill);
 
-        double probHomeWin = prob(homeSquadSkill, awaySquadSkill); // Função que dá a probabilidade da home Team ganhar range = [0, 1]
-
-        advantage = x < probHomeWin; // Dá o sucesso do confronto à equipa de casa.
+        advantage = x < probHomeWin;
 
         aftermath(advantage);
     }
 
     /**
-     *
      * The function prob is a function that calculates the probability of a team of winning in a confrontation.
      * It will return a double value which will serve as a limit for the Home team to win.
      * In a simplified manner, when the x value is picked randomly in an interval [0,1] in confrontation through a Random(),
@@ -202,7 +197,6 @@ public class Match extends MatchRegister {
     }
 
     /**
-     *
      * Function which handles the aftermath of a confrontation.
      * Through a boolean value "vantage", we will know who know the confrontation (true = Home,false = Away) and we will then obtain the closest player of that team to the ball.
      * With this information and the distance of the ball to the opponent's goal, the coordinates of the ball are modified in a way to make it progress.
@@ -221,32 +215,29 @@ public class Match extends MatchRegister {
 
         Random rand = new Random();
         this.ball_pos = vantage;
-        // Home: + [0, 20] x, [-5, 5] y
-        // Home: - [0, 20] x, [-5, 5] y
+
         if (vantage) {
             Point jog = this.homePl.getPlayersPlaying().stream().min(dist).get().getPosition();
             this.ball_tracker.setY(jog.getY());
             this.ball_tracker.setX(jog.getX() + 1);
-        } //this.ball_tracker.addVector( rand.nextDouble() * 20 , ((rand.nextDouble() * 2) - 1) * 5);
-        else {
+        } else {
             Point jog = this.awayPl.getPlayersPlaying().stream().min(dist).get().getPosition();
             this.ball_tracker.setY(jog.getY());
             this.ball_tracker.setX(jog.getX() - 1);
-            //this.ball_tracker.addVector( rand.nextDouble() * -20 , ((rand.nextDouble() * 2) - 1) * 5);
         }
 
         double rangeAway = awayGoal.distance(this.ball_tracker);
         double rangeHome = homeGoal.distance(this.ball_tracker);
 
         if (rangeAway <= 10) {
-            // Golo
+            // Goal
             this.ball_pos = false;
             inicialPositions();
             super.setScoreHome(super.getScoreHome() + 1);
         }
 
         if (rangeHome <= 10) {
-            // Golo
+            // Goal
             this.ball_pos = false;
             inicialPositions();
             super.setScoreAway(super.getScoreAway() + 1);
@@ -255,8 +246,8 @@ public class Match extends MatchRegister {
     }
 
     /**
-     *
      * Function that determines if a player is more probable of passing the ball or drible through, depending on its stats.
+     *
      * @param ball_owner
      * @return
      */
@@ -278,6 +269,7 @@ public class Match extends MatchRegister {
 
     /**
      * Function that determines if a player is more likely of going for a kick or passing the ball, depending on its stats.
+     *
      * @param ball_owner
      * @return
      */
@@ -299,6 +291,7 @@ public class Match extends MatchRegister {
 
     /**
      * Function that runs a simulation of the game.
+     *
      * @param refreshTime
      */
     public void run(double refreshTime) {
@@ -319,12 +312,13 @@ public class Match extends MatchRegister {
 
     /**
      * Function that will swap two players, one on the field and another on the bench.
+     *
      * @param in
      * @param out
      */
-    public void changePlayer(PlayerField in,PlayerField out,boolean home){
+    public void changePlayer(PlayerField in, PlayerField out, boolean home) {
         this.homePl.replace(in, out);
-        super.addReplace(in.getPlayer().getNum(), out.getPlayer().getNum(),home);
+        super.addReplace(in.getPlayer().getNum(), out.getPlayer().getNum(), home);
     }
 
 

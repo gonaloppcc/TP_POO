@@ -17,8 +17,7 @@ public class PlayerField {
     private Point beginPosition; // position in which the player begins
     private boolean lateral;
     private Energy energy; // range [0, 100]
-    private int yellowCards;//0 não tem nenhum, 1 tem amarelo, 2 tem vermelho
-    // Manipular isto dps para que não ultrapasse certos valores
+    private int yellowCards;
     private boolean redCard;
 
     /*------------------------------------------------Constructors----------------------------------------------------*/
@@ -100,19 +99,19 @@ public class PlayerField {
     }
 
     public Player getPlayer() {
-        return this.player;
+        return this.player.clone();
     }
 
     public void setPlayer(Player player) {
-        this.player = player;
+        this.player = player.clone();
     }
 
     public Point getPosition() {
-        return this.position; //.clone();
+        return this.position.clone();
     }
 
     public void setPosition(Point position) {
-        this.position = position;
+        this.position = position.clone();
     }
 
     public Position getMainPosition() {
@@ -132,11 +131,11 @@ public class PlayerField {
     }
 
     public Energy getEnergy() {
-        return this.energy;
+        return this.energy.clone();
     }
 
     public void setEnergy(Energy energy) {
-        this.energy = energy;
+        this.energy = energy.clone();
     }
 
     public int getYellowCards() {
@@ -156,11 +155,11 @@ public class PlayerField {
     }
 
     public Point getBeginPosition() {
-        return this.beginPosition;
+        return this.beginPosition.clone();
     }
 
     public void setBeginPosition(Point beginPosition) {
-        this.beginPosition = beginPosition;
+        this.beginPosition = beginPosition.clone();
     }
 
     /* ------------------------------------- Other methods ---------------------------------------------------------- */

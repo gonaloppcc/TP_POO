@@ -27,11 +27,6 @@ public class PlayersField {
         this.strategy = strategy.clone();
     }
 
-//static class PlayerComparator (Player p1, Player p2){
-//        return p1.globalS
-//}
-
-
     /**
      * Get the players in a given position, position 0 is the GoalKeeper.
      * The list is sorted.
@@ -40,7 +35,6 @@ public class PlayersField {
      * @param position a position
      * @return list of players in a given position
      */
-
     public static List<Player> getHowManyInThatPosition(List<Player> team, int position) {
         Comparator<Player> cmpPlayer = Comparator.comparingInt(Player::globalSkill);
         if (position == 0) return team.stream().filter(x -> x instanceof GoalKeeper).sorted(cmpPlayer)
@@ -65,27 +59,24 @@ public class PlayersField {
         this.playersBench = new ArrayList<>();
         List<Player> onField = new ArrayList<>();
         List<Player> allPlayers = bot.getPlayers();
-        //onField.addAll(bot.getPlayers().stream().filter(x -> x instanceof GoalKeeper).sorted(cmpPlayer).limit(1).collect(Collectors.toList()));
-//        onField.add(getHowManyInThatPosition(allPlayers, 0).get(0));
-//        allPlayers.remove(onField.get(0));
+
         for (int i = 0; i < strategy.length; i++)
             if (strategy[i] != 0) {
                 List<Player> x = getHowManyInThatPosition(allPlayers, i);
-                //Quando não existem jogadores suficientes para aquela posição
+                // Quando não existem jogadores suficientes para aquela posição
                 if (x.size() >= strategy[i]) {
                     onField.addAll(x.subList(0, strategy[i]));
                     allPlayers.removeAll(x.subList(0, strategy[i]));
                 } else {
-                    //Adiciona jogadores corretos nessa posição
+                    // Adiciona jogadores corretos nessa posição
                     onField.addAll(x);
                     allPlayers.removeAll(x);
-                    //Adiciona maus jogadores para encher
+                    // Adiciona maus jogadores para encher
                     List<Player> positionNotNatural = getHowManyInThatPosition(allPlayers, -1).subList(0, strategy[i] - x.size());
                     onField.addAll(positionNotNatural);
                     allPlayers.removeAll(positionNotNatural);
                 }
             }
-        //Jogadores que restam
         for (Player bench : allPlayers) this.playersBench.add(new PlayerField(bench, home));
         this.playersPlaying.addAll(initialPosition(strategy, onField, home));
         System.out.println("Uma equipa: ");
@@ -96,9 +87,9 @@ public class PlayersField {
      * Takes a list of players ready to play, and sorts them out on field.
      * This method uses adequate constructors to distribute the players..
      *
-     * @param strategy
-     * @param onField
-     * @param home
+     * @param strategy a strategy
+     * @param onField a list of the players in the field
+     * @param home if the team is the home team
      * @return
      */
     private static List<PlayerField> initialPosition(Integer[] strategy, List<Player> onField, boolean home) {
@@ -140,28 +131,20 @@ public class PlayersField {
                 collect(Collectors.toList());
     }
 
-    public List<PlayerField> getBenched() {
-        return this.playersBench;
-    }
-
-    public void setBenched(List<PlayerField> benched) {
-        this.playersBench = benched;
-    }
-
     public List<PlayerField> getPlayersPlaying() {
-        return this.playersPlaying;
+        return this.playersPlaying.stream().map(PlayerField::clone).collect(Collectors.toList());
     }
 
     public void setPlayersPlaying(List<PlayerField> playersPlaying) {
-        this.playersPlaying = playersPlaying;
+        this.playersPlaying = playersPlaying.stream().map(PlayerField::clone).collect(Collectors.toList());
     }
 
     public List<PlayerField> getPlayersBench() {
-        return this.playersBench;
+        return this.playersBench.stream().map(PlayerField::clone).collect(Collectors.toList());
     }
 
     public void setPlayersBench(List<PlayerField> playersBench) {
-        this.playersBench = playersBench;
+        this.playersBench = playersBench.stream().map(PlayerField::clone).collect(Collectors.toList());
     }
 
     public void replace(PlayerField in, PlayerField out) {

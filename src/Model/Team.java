@@ -29,7 +29,6 @@ public class Team implements Serializable {
     public Team(String fromFile) throws InvalidLineExcpetion {
         String [] divisoes = fromFile.split("###");
         this.name = divisoes[0];
-        //for (String x : divisoes) System.out.println("Jogador: "+x);
         Scanner jogadores = new Scanner(divisoes[1]);
         this.players = new ArrayList<>();
 
