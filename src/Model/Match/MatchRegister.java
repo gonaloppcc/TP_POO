@@ -4,13 +4,13 @@ import Model.Team;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Stores the information of a game, but not the necessary information to simulate a game.
+ * This has the equivalent information of a text file.
+ */
 public class MatchRegister implements Serializable {
     //Variáveis de instância
     private LocalDate date;
@@ -22,6 +22,8 @@ public class MatchRegister implements Serializable {
 
     List<Replaces> homeRepl;
     List<Replaces> awayRepl;
+
+    /* ------------------------------------- Constructors  ---------------------------------------------------------- */
 
     public MatchRegister() {
         this.date = LocalDate.of(2010, 10,10);
@@ -49,12 +51,6 @@ public class MatchRegister implements Serializable {
         this.awayTeam = awayTeam;
         scoreHome = Integer.parseInt(line[2]);
         scoreAway = Integer.parseInt(line[3]);
-       // DateTimeFormatterBuilder formatter = new DateTimeFormatterBuilder().appendValue(ChronoField.YEAR, 4)
-        //       .appendValue(ChronoField.MONTH_OF_YEAR, 2)
-        //        .appendValue(ChronoField.DAY_OF_MONTH, 2);
-        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern(formatter);
-        //       date = LocalDate.parse(line[4], formatter.toFormatter());
-        //Não estou a guardar os jogadores
         String[] data = line[4].split("-");
         date = LocalDate.of(Integer.parseInt(data[0]), Integer.parseInt(data[1]), Integer.parseInt(data[2]));
         homeRepl = new ArrayList<>();
@@ -69,6 +65,9 @@ public class MatchRegister implements Serializable {
             if (isItHome && !line[i].contains("->") && homeRepl.size() > 0)  isItHome = !isItHome;
         }
     }
+
+    /* ------------------------------------- Getters and Setters ---------------------------------------------------------- */
+
 
     public LocalDate getDate() {
         return date;
@@ -109,6 +108,12 @@ public class MatchRegister implements Serializable {
     public void setScoreAway(int scoreAway) {
         this.scoreAway = scoreAway;
     }
+
+    public void addReplace(int in, int out, boolean home){
+        if (home) homeRepl.add(new Replaces(in, out));
+        else awayRepl.add(new Replaces(in, out));
+    }
+    /* ------------------------------------- To String ---------------------------------------------------------- */
 
     @Override
     public String toString() {

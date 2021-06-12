@@ -9,8 +9,8 @@ import View.CheckGameView;
 import View.StatusView;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -39,8 +39,8 @@ public class StatusCheckGame {
     /**
      * Runs the main program
      * Prints Options and wait for a valid input
-     * @param toStore
-     * @return
+     * @param toStore Status to check
+     * @return Status changed
      */
     public Status run(Status toStore){
         status = toStore;
@@ -80,10 +80,13 @@ public class StatusCheckGame {
         return toStore;
     }
 
+    /*------------------------ Other functions ---------------------------*/
+
+
     /**
-     * Print teams and gets a valid team
-     * @param message
-     * @return
+     * Print teams and gets a valid team. It can be used in many contexts.
+     * @param message Message for the user to know what is needed.
+     * @return Team choosen
      */
     public Team getTeam(String message){
         if (status.getTeams().size() < 1) StatusView.noValidTeam();
@@ -128,7 +131,7 @@ public class StatusCheckGame {
 
     /**
      * Prints all teams with a phrase, and returns what the user inserted
-     * @param message
+     * @param message Message for the user to know what is needed.
      * @return
      */
     private String printTeamReturnName(String message){
@@ -150,20 +153,21 @@ public class StatusCheckGame {
     /**
      * When a team has more than one player with the same name
      * Prints all and choose one
-     * @param sameName
-     * @return
+     * @param sameName Name of the player to be choosen
+     * @return Player choosen
      */
-    private Player chooserPlayerManyNames(List<Player> sameName) {
+    private static Player chooserPlayerManyNames(List<Player> sameName) {
         CheckGameView.playersWithNumber(sameName);
-        int option;
+        Scanner terminal = new Scanner(System.in);
         while(true) {
             CheckGameView.playersWithNumber(sameName);
-            Integer number = terminal.nextInt();
+            int number = terminal.nextInt();
 
             if (number < sameName.size() &&  number > 0) return sameName.get(number);
             StatusView.InvalidOption();
         }
     }
+
    private Player getPlayer(Team team){
        Player target;
        //Escolhe o jogador que sai
@@ -182,6 +186,8 @@ public class StatusCheckGame {
            }
 
        }
+
+
 
     private void changePlayer(){
             Team origin = getTeam("from where it comes");
@@ -204,7 +210,7 @@ public class StatusCheckGame {
                end = LocalDate.from(DateTimeFormatter.ISO_LOCAL_DATE.parse(splitted[1]));
                if (init.isAfter(end)) throw new Exception();
                List<MatchRegister> toPrint = status.getGames().values().stream()
-                       .filter(x -> getsGamesInBetween(init, end, x)).flatMap(x -> x.stream()).collect(Collectors.toList());
+                       .filter(x -> getsGamesInBetween(init, end, x)).flatMap(Collection::stream).collect(Collectors.toList());
                CheckGameView.printGames(toPrint);
                return;
            }
@@ -220,12 +226,11 @@ public class StatusCheckGame {
      * Because they are stored by date.
      * @param init
      * @param end
-     * @param toCheck
+     * @param toCheck List of all the games
      */
     private boolean getsGamesInBetween(LocalDate init, LocalDate end, List<MatchRegister> toCheck){
         LocalDate one = toCheck.get(0).getDate();
-        if (one.isAfter(init) && one.isBefore(end)) return true;
-        return false;
+        return one.isAfter(init) && one.isBefore(end);
     }
 }
 

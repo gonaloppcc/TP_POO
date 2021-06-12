@@ -213,18 +213,21 @@ public class Match extends MatchRegister {
 
         Comparator<PlayerField> dist = (x, y) -> (int) (x.getPosition().distance(this.ball_tracker) - y.getPosition().distance(this.ball_tracker));
 
+        this.homePl.movePlayers(ball_tracker, ball_pos, true);
+        this.awayPl.movePlayers(ball_tracker, ball_pos, false);
+
         Random rand = new Random();
         this.ball_pos = vantage;
         // Home: + [0, 20] x, [-5, 5] y
         // Home: - [0, 20] x, [-5, 5] y
         if (vantage) {
             Point jog = homePl.getPlayersPlaying().stream().min(dist).get().getPosition();
-            this.ball_tracker.setY(jog.getY() + 1);
+            this.ball_tracker.setY(jog.getY());
             this.ball_tracker.setX(jog.getX() + 1);
         } //this.ball_tracker.addVector( rand.nextDouble() * 20 , ((rand.nextDouble() * 2) - 1) * 5);
         else {
             Point jog = awayPl.getPlayersPlaying().stream().min(dist).get().getPosition();
-            this.ball_tracker.setY(jog.getY() - 1);
+            this.ball_tracker.setY(jog.getY());
             this.ball_tracker.setX(jog.getX() - 1);
             //this.ball_tracker.addVector( rand.nextDouble() * -20 , ((rand.nextDouble() * 2) - 1) * 5);
         }
@@ -235,29 +238,16 @@ public class Match extends MatchRegister {
         if (rangeAway <= 10) {
             // Golo
             this.ball_pos = false;
-            this.ball_tracker.setX(60);
-            this.ball_tracker.setY(45);
-            this.homePl.setPlayersPlaying(PlayersField.initialPositionAfterGoal(homePl.getStrategy(),
-                    this.homePl.getPlayersPlaying(), true));
-            this.awayPl.setPlayersPlaying(PlayersField.initialPositionAfterGoal(awayPl.getStrategy(),
-                    this.awayPl.getPlayersPlaying(), false));
-            super.setScoreAway(super.getScoreAway() + 1);
+            inicialPositions();
+            super.setScoreHome(super.getScoreHome() + 1);
         }
 
         if (rangeHome <= 10) {
             // Golo
             this.ball_pos = false;
-            this.ball_tracker.setX(60);
-            this.ball_tracker.setY(45);
-            this.homePl.setPlayersPlaying(PlayersField.initialPositionAfterGoal(homePl.getStrategy(),
-                    this.homePl.getPlayersPlaying(), true));
-            this.awayPl.setPlayersPlaying(PlayersField.initialPositionAfterGoal(awayPl.getStrategy(),
-                    this.awayPl.getPlayersPlaying(), false));
-            super.setScoreHome(super.getScoreHome() + 1);
+            inicialPositions();
+            super.setScoreAway(super.getScoreAway() + 1);
         }
-
-        this.homePl.movePlayers(ball_tracker, ball_pos, true);
-        this.awayPl.movePlayers(ball_tracker, ball_pos, false);
 
     }
 
@@ -487,6 +477,22 @@ public class Match extends MatchRegister {
     public void setStrategy(Integer[] strategy, boolean home) {
         if (home) homePl.setStrategy(strategy);
         else awayPl.setStrategy(strategy);
+    }
+
+    public void changePlayer(PlayerField in,PlayerField out, boolean home){
+
+        homePl.replace(in, out);
+        super.addReplace(in.getPlayer().getNum(), out.getPlayer().getNum(), home);
+    }
+
+
+    public void inicialPositions() {
+        this.ball_tracker.setX(60);
+        this.ball_tracker.setY(45);
+        this.homePl.setPlayersPlaying(PlayersField.initialPositionAfterGoal(homePl.getStrategy(),
+                this.homePl.getPlayersPlaying(), true));
+        this.awayPl.setPlayersPlaying(PlayersField.initialPositionAfterGoal(awayPl.getStrategy(),
+                this.awayPl.getPlayersPlaying(), false));
     }
 
 }

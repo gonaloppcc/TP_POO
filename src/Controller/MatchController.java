@@ -1,6 +1,9 @@
 package Controller;
 
 import Model.Match.Match;
+import Model.Match.PlayerField;
+import Model.Match.PlayersField;
+import Model.Player.Player;
 import Model.Team;
 import View.MatchView;
 import View.StatusView;
@@ -34,11 +37,13 @@ public class MatchController {
             this.game = new Match(home, away, new Integer[]{1, 3, 3, 3, 1}, getStrategy());
             SwingTimerEx.displayField(game);
             replaceQuestion();
+            game.setTime(46);
             SwingTimerEx.displayField(game);
         } else {
             this.game = Match.game_play(home, away, new Integer[]{1, 3, 3, 3, 1}, getStrategy());
             System.out.println("Game score: " + game.getScoreHome() + "-" + game.getScoreAway());
         }
+
         //Sai deste menu, devia retornar o match para o guardar no stats
     }
     
@@ -99,12 +104,16 @@ public class MatchController {
         for (int i = 1; i < res.length - 1 && total < numberOnField; i++) {
             view.toZone(convertPositionfromNumber(i), numberOnField - total);
             while (true) {
+                try{
                 temp = terminal.nextInt();
                 if (temp + total > numberOnField) StatusView.InvalidLine();
                 else {
                     res[i] = temp;
                     total += temp;
                     break;
+                }}
+                catch(Exception e){
+                    StatusView.InvalidOption();
                 }
             }
         }
@@ -125,14 +134,18 @@ public class MatchController {
             view.ReplacePlayers();
             String option = terminal.nextLine();
             if (option.trim().toLowerCase(Locale.ROOT).equals("s")) {
-                //Caso escolha contra quem jogar
-               return;
+                PlayerField out = PlayersField.getPlayer(game.getHomePl().getPlayersPlaying());
+                PlayerField in = PlayersField.getPlayer(game.getHomePl().getPlayersBench());
+                game.changePlayer(in, out, true);
+
             }
-            if (option.trim().toLowerCase(Locale.ROOT).equals("n")) {
-                //Só existe uma equipa, joga contra ele próprio
-                return;
+           else {
+               if (option.trim().toLowerCase(Locale.ROOT).equals("n")) {
+                    //Só existe uma equipa, joga contra ele próprio
+                    return;
                 }
-            StatusView.InvalidLine();
+                StatusView.InvalidLine();
+            }
         }
         }
     }
