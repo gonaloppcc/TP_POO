@@ -33,7 +33,8 @@ public class MatchController {
         if (simulatioOrNot()) {
             this.game = new Match(home, away, new Integer[]{1, 3, 3, 3, 1}, getStrategy());
             SwingTimerEx.displayField(game);
-
+            replaceQuestion();
+            SwingTimerEx.displayField(game);
         } else {
             this.game = Match.game_play(home, away, new Integer[]{1, 3, 3, 3, 1}, getStrategy());
             System.out.println("Game score: " + game.getScoreHome() + "-" + game.getScoreAway());
@@ -119,4 +120,20 @@ public class MatchController {
     //    game.setHomePl(game.getHomeTeam(), strategy);
     //}
 
-}
+    private void replaceQuestion() {
+        while (true) {
+            view.ReplacePlayers();
+            String option = terminal.nextLine();
+            if (option.trim().toLowerCase(Locale.ROOT).equals("s")) {
+                //Caso escolha contra quem jogar
+               return;
+            }
+            if (option.trim().toLowerCase(Locale.ROOT).equals("n")) {
+                //Só existe uma equipa, joga contra ele próprio
+                return;
+                }
+            StatusView.InvalidLine();
+        }
+        }
+    }
+
