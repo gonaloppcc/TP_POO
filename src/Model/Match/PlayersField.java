@@ -2,7 +2,6 @@ package Model.Match;
 
 import Model.Player.*;
 import Model.Team;
-import View.CheckGameView;
 import View.PlayersFieldView;
 import View.StatusView;
 

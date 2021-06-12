@@ -21,6 +21,10 @@ public class StatusView {
             return String.join(" // ", teams);
     }
 
+    public static void invalidTeam() {
+        System.out.println("The team choosed don't have sufficient players");
+    }
+
     public void printStatus(String gameName, Map<String, Team> teams) {
         System.out.printf("""
                 You are playing %s       
@@ -30,7 +34,7 @@ public class StatusView {
     }
     public void SaveOrLoad(){
         //System.out.println("Choose the path to save the file (it will be Stored");
-        System.out.println("\\\"Load\\\"   or \\\"Save\\\"?");
+        System.out.println("\\\"Load\\\"   or \\\"Save\\\"?" + "\nOr  to \\\"Exit\\\" to go back");
     }
 
     public void Path(){
@@ -52,7 +56,6 @@ public class StatusView {
                 2) Play a random Game
                 3) Save Game or Load (in binary File)
                 4) Exit
-                5) See credits
                 """);
     }
 

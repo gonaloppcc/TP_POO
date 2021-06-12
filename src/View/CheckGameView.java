@@ -18,7 +18,7 @@ public class CheckGameView {
                 2) Create player
                 3) Check team
                 4) Exchange player 
-                5) See history 
+                5) See previous games
                 6) Go back to previous menu
                 """);
     }
@@ -52,6 +52,9 @@ public class CheckGameView {
 
     public static void printTeam(Team toPrint) {
         if (toPrint != null) System.out.println(toPrint.toStringSkillsAndHistory());
+    }
+    public static void printTeam(Team toPrint, String message) {
+        if (toPrint != null) System.out.println(message + toPrint.toStringSkillsAndHistory());
     }
     public static void playersWithNumber(List<Player> sameName){
         System.out.println(concatWithNumbers(sameName));
