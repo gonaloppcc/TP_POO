@@ -1,10 +1,15 @@
 package Model.Match;
 
+/**
+ * This class is used to control the energy of a player.
+ */
 public class Energy {
     private double energy; // Has to be in this range [0, 100]
     private double decreaseRate; // Normal value: 1
     // decreaseRate is the amount of energy that drops per minute
     // decreaseRate is linear
+
+    /*------------------------------------------------Constructors----------------------------------------------------*/
 
     public Energy(double energy) {
         if (energy >= 100) this.energy = 100;
@@ -17,6 +22,8 @@ public class Energy {
         this.energy = energy;
         this.decreaseRate = decreaseRate;
     }
+
+    /*------------------------------------------ Getters e Setters ---------------------------------------------------*/
 
     public double getEnergy() {
         return this.energy;
@@ -36,10 +43,16 @@ public class Energy {
         this.decreaseRate = decreaseRate;
     }
 
+    /* ------------------------------------- Other methods ---------------------------------------------------------- */
+
+
     public Energy clone() {
         return new Energy(energy, decreaseRate);
     }
 
+    /**
+     * Decreases the energy.
+     */
     public void decrease() {
         double e = energy - decreaseRate;
         if (e < 10) e = 10;

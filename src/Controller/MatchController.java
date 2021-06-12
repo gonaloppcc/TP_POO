@@ -80,16 +80,12 @@ public class MatchController {
     }
 
     private String convertPositionfromNumber(Integer pos) {
-        switch (pos) {
-            case 1:
-                return "Defender";
-            case 2:
-                return "Midfield";
-            case 3:
-                return "Striker";
-            default:
-                return "BackWing";
-        }
+        return switch (pos) {
+            case 1 -> "Defender";
+            case 2 -> "Midfield";
+            case 3 -> "Striker";
+            default -> "BackWing";
+        };
     }
 
     /**

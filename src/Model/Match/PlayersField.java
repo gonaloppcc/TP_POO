@@ -36,9 +36,9 @@ public class PlayersField {
      * Get the players in a given position, position 0 is the GoalKeeper.
      * A lista é ordenada
      *
-     * @param team
-     * @param position
-     * @return
+     * @param team a team
+     * @param position a position
+     * @return list of players in a given position
      */
 
     public static List<Player> getHowManyInThatPosition(List<Player> team, int position) {
@@ -173,16 +173,17 @@ public class PlayersField {
             playersBench.add(out);
             playersBench.remove(in);
         }
-
     }
 
-    // Function that moves players in the field
-    public void movePlayers(Point pos_ball, boolean homeHasBall, boolean homeTeam) {
+    /**
+     * Function that moves players in the field
+     * @param pos_ball position of the ball
+     * @param homeHasBall if the home team has the ball
+     */
+    public void movePlayers(Point pos_ball, boolean homeHasBall) {
         this.playersPlaying.stream().filter(p -> p.getMainPosition() != Position.GOALKEEPER && p.distance(pos_ball) <= 30).
-                forEach(playerField -> playerField.movePlayer(pos_ball, homeHasBall, homeTeam));
-
+                forEach(playerField -> playerField.movePlayer(pos_ball, homeHasBall));
     }
-
 
     public Integer[] getStrategy() {
         return strategy.clone();
@@ -196,7 +197,6 @@ public class PlayersField {
         List<Point> p = new ArrayList<>(playersPlaying.size());
         for (PlayerField pl : playersPlaying) p.add(pl.getPosition());
         return p;
-        //return playersPlaying.stream().map(PlayerField::getPosition).collect(Collectors.toList());
     }
 
     public static PlayerField getPlayer(List<PlayerField> teamI) {

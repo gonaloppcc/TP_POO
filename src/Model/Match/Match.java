@@ -62,32 +62,17 @@ public class Match extends MatchRegister {
 
     public static Match game_play(Team homeTeam, Team awayTeam, Integer[] defaultBot, Integer[] strategyPlayer) {
 
-        Match game = new Match(homeTeam, awayTeam, defaultBot, strategyPlayer); // Criar o jogo com os estados base.
-        boolean swap_side = game.isBall_pos(); // Variável para o intervalo, é precisa para saber o state drive.
-        float time; // Iniciar o contador.
+        Match game = new Match(homeTeam, awayTeam, defaultBot, strategyPlayer); // Creates the game with
+        boolean swap_side = game.isBall_pos(); // For the half time, so we change the side that starts with the ball
+        float time; // Starts the time
 
-        for (time = 0; time <= 45; time += 0.25) {
-            game.confrontation();
-            boolean b = game.homePl.getPlayersPlaying().stream().map(PlayerField::getPosition).
-                    anyMatch(p -> p.getX() > 120 || p.getX() < 0 || p.getY() > 90 || p.getY() < 0);
-            boolean b2 = game.awayPl.getPlayersPlaying().stream().map(PlayerField::getPosition).
-                    anyMatch(p -> p.getX() > 120 || p.getX() < 0 || p.getY() > 90 || p.getY() < 0);
-          //  System.out.println(b || b2);
-        } // Primeira metade do jogo.
+        for (time = 0; time <= 45; time += 0.25) game.confrontation(); // First half
 
         game.ball_pos = !swap_side;
         game.ball_tracker.setX(60);
         game.ball_tracker.setY(45);
 
-        for (time = 45; time <= 90; time += 0.25) {
-            game.confrontation(); // Segunda metade do jogo.
-         //   System.out.println(game.getBall_tracker());
-            boolean b = game.homePl.getPlayersPlaying().stream().map(PlayerField::getPosition).
-                    anyMatch(p -> p.getX() > 120 || p.getX() < 0 || p.getY() > 90 || p.getY() < 0);
-            boolean b2 = game.awayPl.getPlayersPlaying().stream().map(PlayerField::getPosition).
-                    anyMatch(p -> p.getX() > 120 || p.getX() < 0 || p.getY() > 90 || p.getY() < 0);
-           // System.out.println(b || b2);
-        }
+        for (time = 45; time <= 90; time += 0.25) game.confrontation(); // Second half
 
         return game;
 
@@ -151,7 +136,6 @@ public class Match extends MatchRegister {
      * Dependendo desses valores, utiliza a função prob para calcular quem tem a maior probabilidade ganhar o confronto.
      * E aplica essa probabilidade, dando uma "vantagem"  (ou seja, um valor boolean que decide quem ganhou o confronto.) à função aftermath.
      */
-
     public void confrontation() {
 
         Random rand = new Random();
@@ -178,8 +162,6 @@ public class Match extends MatchRegister {
         advantage = x < probHomeWin; // Dá o sucesso do confronto à equipa de casa.
 
         aftermath(advantage);
-        //homePl.movePlayers(ball_tracker, ball_pos);
-        //awayPl.movePlayers(ball_tracker, !ball_pos);
     }
 
     /**
@@ -187,11 +169,11 @@ public class Match extends MatchRegister {
      * Ela irá devolver um valor double que servirá como um limite para a equipa Home ganhar.
      * De forma simplificada, quando o valor x é escolhido de forma aleatória no intervalo [0,1] em confrontation através de um Random(),
      * se o valor for inferior ao limite que prob irá retornar, a equipa Home ganha, mas se for igual, ou mesmo superior, a equipa Away irá ganhar o confronto.
+     *
      * @param homeSquadSkill
      * @param awaySquadSkill
      * @return
      */
-
     public double prob(double homeSquadSkill, double awaySquadSkill) {
 
         double probability = 0;
@@ -224,17 +206,17 @@ public class Match extends MatchRegister {
      * Através de um valor boolean "vantage", saberemos quem ganhou o confronto (true = Home,false = Away) e iremos depois obter o jogador mais próximo dessa equipa.
      * Com essa informação e com a distância da bola à baliza adversária, as coordenadas da bola são modificadas de forma a fazer prosseguir.
      * Se a distância da bola à baliza adversária for muito pequena, a bola entra e o jogo é reposicionado como no início.
+     *
      * @param vantage
      */
-
     public void aftermath(boolean vantage) {
         Point homeGoal = new Point(0, 45);
         Point awayGoal = new Point(120, 45);
 
         Comparator<PlayerField> dist = (x, y) -> (int) (x.getPosition().distance(this.ball_tracker) - y.getPosition().distance(this.ball_tracker));
 
-        this.homePl.movePlayers(ball_tracker, ball_pos, true);
-        this.awayPl.movePlayers(ball_tracker, ball_pos, false);
+        this.homePl.movePlayers(ball_tracker, ball_pos);
+        this.awayPl.movePlayers(ball_tracker, ball_pos);
 
         Random rand = new Random();
         this.ball_pos = vantage;
@@ -273,10 +255,10 @@ public class Match extends MatchRegister {
 
     /**
      * Função que determina se um jogador é mais provável de passar a bola ou fazer um drible, dependendo das suas estatísticas.
+     *
      * @param ball_owner
      * @return
      */
-
     public boolean drible_passe(PlayerField ball_owner) {
 
         Random rand = new Random();
@@ -295,10 +277,10 @@ public class Match extends MatchRegister {
 
     /**
      * Função que determina se um jogador é mais provável de rematar a bola ou de passar a bola, dependendo das suas estatísticas.
+     *
      * @param ball_owner
      * @return
      */
-
     public boolean remate_passe(PlayerField ball_owner) {
 
         Random rand = new Random();
@@ -317,9 +299,9 @@ public class Match extends MatchRegister {
 
     /**
      * Função que corre uma simulação do jogo.
+     *
      * @param refreshTime
      */
-
     public void run(double refreshTime) {
         //Simulação com refresh's
         confrontation();
@@ -338,13 +320,13 @@ public class Match extends MatchRegister {
 
     /**
      * Função que irá trocar dois jogadores, um em campo e outro no banco, de lugares.
+     *
      * @param in
      * @param out
      */
-
-    public void changePlayer(PlayerField in,PlayerField out,boolean home){
+    public void changePlayer(PlayerField in, PlayerField out, boolean home) {
         homePl.replace(in, out);
-        super.addReplace(in.getPlayer().getNum(), out.getPlayer().getNum(),home);
+        super.addReplace(in.getPlayer().getNum(), out.getPlayer().getNum(), home);
     }
 
 
