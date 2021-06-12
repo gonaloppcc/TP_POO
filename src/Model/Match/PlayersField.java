@@ -98,14 +98,14 @@ public class PlayersField {
      * @param home
      * @return
      */
-    private List<PlayerField> initialPosition(Integer[] strategy, List<Player> onField, boolean home){
+    private static List<PlayerField> initialPosition(Integer[] strategy, List<Player> onField, boolean home){
         List<PlayerField> initialsPositions = new ArrayList<>();
-        playersPlaying.add(new PlayerField(onField.remove(0), home));
+        initialsPositions.add(new PlayerField(onField.remove(0), home));
         int lidos = 0;
         for (int position = 1; position < strategy.length; position++)
             for (int player = 0; player < strategy[position] && lidos < onField.size(); player++) {
                 if(strategy[position] != 0){
-                    playersPlaying.add(new  PlayerField(onField.get(lidos), ((float)player) / ((float)strategy[position]), position, home));
+                    initialsPositions.add(new  PlayerField(onField.get(lidos), ((float)player) / ((float)strategy[position]), position, home));
                     lidos++;
                 }
 
@@ -113,7 +113,7 @@ public class PlayersField {
         return initialsPositions;
     }
 
-    public List<PlayerField> initialPositionAfterGoal(Integer[] strategy, List<PlayerField> onField, boolean home){
+    public static List<PlayerField> initialPositionAfterGoal(Integer[] strategy, List<PlayerField> onField, boolean home){
         List<PlayerField> initialsPositions = new ArrayList<>();
         List<Player> sortGivenList = new ArrayList<>();
         sortGivenList.add(onField.stream().filter(PlayerField::isGoalKeeperInField).collect(Collectors.toList()).get(0).getPlayer());
@@ -185,7 +185,7 @@ public class PlayersField {
 
     // Function that moves players in the field
     public void movePlayers(Point pos_ball, boolean homeHasBall) {
-        this.playersPlaying.forEach(playerField -> playerField.movePlayer(pos_ball, homeHasBall));
+        this.playersPlaying.stream().filter(p -> p.getMainPosition() != Position.GOALKEEPER).forEach(playerField -> playerField.movePlayer(pos_ball, homeHasBall));
 
     }
 

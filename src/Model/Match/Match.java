@@ -38,7 +38,8 @@ public class Match extends MatchRegister {
         this.ball_pos = rand.nextBoolean();
         this.awayPl = new PlayersField(awayTeam, defaultBot, false);
         this.homePl = new PlayersField(homeTeam, strategyPlayer, true);
-        this.ball_tracker = new Point(45, 90);
+        this.ball_tracker = new Point(60, 45);
+        this.time = 0;
 
     }
 
@@ -65,7 +66,6 @@ public class Match extends MatchRegister {
 
         for (time = 0; time <= 45; time += 0.25) {
             game.confrontation();
-            System.out.println(game.getBall_tracker());
             boolean b = game.homePl.getPlayersPlaying().stream().map(PlayerField::getPosition).
                     anyMatch(p -> p.getX() > 120 || p.getX() < 0 || p.getY() > 90 || p.getY() < 0);
             boolean b2 = game.awayPl.getPlayersPlaying().stream().map(PlayerField::getPosition).
@@ -175,10 +175,9 @@ public class Match extends MatchRegister {
 
         advantage = x < probHomeWin; // Dá o sucesso do confronto à equipa de casa.
 
-        aftermath(advantage);
+        afterGoncalo(advantage);
         //homePl.movePlayers(ball_tracker, ball_pos);
         //awayPl.movePlayers(ball_tracker, !ball_pos);
-        ball_tracker.addVector(rand.nextDouble() * 10, rand.nextDouble() * 10);
     }
 
     public double prob(double homeSquadSkill, double awaySquadSkill) {
@@ -208,19 +207,60 @@ public class Match extends MatchRegister {
         return probability;
     }
 
+    public void afterGoncalo(boolean vantage) {
+        Point homeGoal = new Point(0, 45);
+        Point awayGoal = new Point(120, 45);
+
+        Random rand = new Random();
+        this.ball_pos = vantage;
+        if (vantage) this.ball_tracker.addVector( rand.nextDouble() * 20 , ((rand.nextDouble() * 2) - 1) * 5);
+        else this.ball_tracker.addVector( rand.nextDouble() * -20 , ((rand.nextDouble() * 2) - 1) * 5);
+
+        double rangeAway = awayGoal.distance(this.ball_tracker);
+        double rangeHome = homeGoal.distance(this.ball_tracker);
+
+        if (rangeAway <= 10) {
+            // Golo
+            this.ball_pos = false;
+            this.ball_tracker.setX(60);
+            this.ball_tracker.setY(45);
+            this.homePl.setPlayersPlaying(PlayersField.initialPositionAfterGoal(homePl.getStrategy(),
+                    this.homePl.getPlayersPlaying(), true));
+            this.awayPl.setPlayersPlaying(PlayersField.initialPositionAfterGoal(awayPl.getStrategy(),
+                    this.awayPl.getPlayersPlaying(), false));
+            super.setScoreAway(super.getScoreAway() + 1);
+        }
+
+        if (rangeHome <= 10) {
+            // Golo
+            this.ball_pos = false;
+            this.ball_tracker.setX(60);
+            this.ball_tracker.setY(45);
+            this.homePl.setPlayersPlaying(PlayersField.initialPositionAfterGoal(homePl.getStrategy(),
+                    this.homePl.getPlayersPlaying(), true));
+            this.awayPl.setPlayersPlaying(PlayersField.initialPositionAfterGoal(awayPl.getStrategy(),
+                    this.awayPl.getPlayersPlaying(), false));
+            super.setScoreHome(super.getScoreHome() + 1);
+        }
+
+        this.homePl.movePlayers(ball_tracker, ball_pos);
+        this.awayPl.movePlayers(ball_tracker, ball_pos);
+
+    }
+
     public void aftermath(boolean vantage) {
 
         Random rand = new Random();
-        Point homeGoal = new Point(0,45);
-        Point awayGoal = new Point(120,45);
+        Point homeGoal = new Point(0, 45);
+        Point awayGoal = new Point(120, 45);
         double range;
-        Comparator<PlayerField> dist = (x,y) -> (int) (x.getPosition().distance(this.ball_tracker) - y.getPosition().distance(this.ball_tracker));
+        Comparator<PlayerField> dist = (x, y) -> (int) (x.getPosition().distance(this.ball_tracker) - y.getPosition().distance(this.ball_tracker));
 
         if (vantage) {
 
             if (this.ball_pos) {
 
-                range =  awayGoal.distance(this.ball_tracker);
+                range = awayGoal.distance(this.ball_tracker);
 
                 if (range <= 10) { // Golo
 
@@ -233,9 +273,7 @@ public class Match extends MatchRegister {
                         this.homePl.initialPositionAfterGoal(this.homePl.getStrategy(), this.homePl.getPlayersPlaying(), true);
                         this.awayPl.initialPositionAfterGoal(this.awayPl.getStrategy(), this.awayPl.getPlayersPlaying(), false);
 
-                    }
-
-                    else {
+                    } else {
 
                         ball_tracker.addVector(rand.nextDouble() * 10, rand.nextDouble() * 10);
                         this.homePl.movePlayers(ball_tracker, ball_pos);
@@ -249,9 +287,7 @@ public class Match extends MatchRegister {
 
                         ball_tracker.addVector(rand.nextDouble() * 10, rand.nextDouble() * 10);
 
-                    }
-
-                    else {
+                    } else {
 
                         ball_tracker.addVector(rand.nextDouble() * 10, rand.nextDouble() * 10);
 
@@ -266,9 +302,7 @@ public class Match extends MatchRegister {
 
                         ball_tracker.addVector(rand.nextDouble() * 10, rand.nextDouble() * 10);
 
-                    }
-
-                    else {
+                    } else {
 
                         ball_tracker.addVector(rand.nextDouble() * 10, rand.nextDouble() * 10);
                     }
@@ -281,9 +315,7 @@ public class Match extends MatchRegister {
                     if (remate_passe(this.homePl.getPlayersCloseToTheBall(this.ball_tracker).get(0))) {
 
                         ball_tracker.addVector(rand.nextDouble() * 10, rand.nextDouble() * 10);
-                    }
-
-                    else {
+                    } else {
 
                         ball_tracker.addVector(rand.nextDouble() * 10, rand.nextDouble() * 10);
                     }
@@ -319,9 +351,7 @@ public class Match extends MatchRegister {
                         this.homePl.initialPositionAfterGoal(this.homePl.getStrategy(), this.homePl.getPlayersPlaying(), true);
                         this.awayPl.initialPositionAfterGoal(this.awayPl.getStrategy(), this.awayPl.getPlayersPlaying(), false);
 
-                    }
-
-                    else {
+                    } else {
 
                         ball_tracker.addVector(rand.nextDouble() * -10, rand.nextDouble() * 10);
                         this.homePl.movePlayers(ball_tracker, ball_pos);
@@ -336,9 +366,7 @@ public class Match extends MatchRegister {
                     if (drible_passe(this.awayPl.getPlayersCloseToTheBall(this.ball_tracker).get(0))) {
 
                         ball_tracker.addVector(rand.nextDouble() * -10, rand.nextDouble() * 10);
-                    }
-
-                    else {
+                    } else {
 
                         ball_tracker.addVector(rand.nextDouble() * -10, rand.nextDouble() * 10);
 
@@ -356,9 +384,8 @@ public class Match extends MatchRegister {
 
                         ball_tracker.addVector(rand.nextDouble() * -10, rand.nextDouble() * 10);
 
-                    }
+                    } else {
 
-                    else {
                         ball_tracker.addVector(rand.nextDouble() * -10, rand.nextDouble() * 10);
 
                     }
@@ -374,9 +401,7 @@ public class Match extends MatchRegister {
 
                         ball_tracker.addVector(rand.nextDouble() * -10, rand.nextDouble() * 10);
 
-                    }
-
-                    else {
+                    } else {
 
                         ball_tracker.addVector(rand.nextDouble() * -10, rand.nextDouble() * 10);
 
@@ -400,7 +425,7 @@ public class Match extends MatchRegister {
 
     }
 
-    public boolean drible_passe (PlayerField ball_owner) {
+    public boolean drible_passe(PlayerField ball_owner) {
 
         Random rand = new Random();
 
@@ -416,7 +441,7 @@ public class Match extends MatchRegister {
 
     }
 
-    public boolean remate_passe (PlayerField ball_owner) {
+    public boolean remate_passe(PlayerField ball_owner) {
 
         Random rand = new Random();
 

@@ -33,22 +33,7 @@ public class MatchController {
         if (simulatioOrNot()) {
             this.game = new Match(home, away, new Integer[]{1, 3, 3, 3, 1}, getStrategy());
             SwingTimerEx.displayField(game);
-            while (game.getTime() < 90) game.run(5);
-            /*
-            while (game.getTime() < 90) {
-                if (game.getTime() == 45) {
-                }
-                view.CampoTodo(game.getPlayersPositions(true), game.getPlayersPositions(false), game.getBall_tracker());
 
-                terminal.nextLine();
-
-                System.out.println(game.getPlayersPositions(true));
-                view.CampoTodo(game.getPlayersPositions(true), game.getPlayersPositions(false), game.getBall_tracker());
-                game.run(5);
-                terminal.nextLine();
-            }
-
-             */
         } else {
             this.game = Match.game_play(home, away, new Integer[]{1, 3, 3, 3, 1}, getStrategy());
             System.out.println("Game score: " + game.getScoreHome() + "-" + game.getScoreAway());
